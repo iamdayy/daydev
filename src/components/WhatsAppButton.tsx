@@ -1,11 +1,11 @@
 "use client";
 
+import { whatsapp } from "@/models/whatsapp";
+
 export default function WhatsAppButton() {
   const handleClick = () => {
-    window.open(
-      "https://wa.me/6281234567890?text=Halo%20Daydev%2C%20saya%20ingin%20konsultasi%20gratis%20mengenai%20pengembangan%20aplikasi.",
-      "_blank"
-    );
+    const url = `https://wa.me/${encodeURIComponent(whatsapp.phoneNumber)}?text=${encodeURIComponent(whatsapp.defaultMessage)}`;
+    window.open(url, "_blank");
   };
 
   return (

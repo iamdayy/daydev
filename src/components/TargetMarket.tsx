@@ -1,6 +1,7 @@
 "use client";
 
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { whatsapp } from "@/models/whatsapp";
 
 const segments = [
   {
@@ -82,8 +83,8 @@ export default function TargetMarket() {
             <span className="text-[#f39c12]"> Kebutuhan</span>
           </h2>
           <p className="fade-in text-gray-500 text-lg max-w-2xl mx-auto">
-            Kami memahami bahwa setiap klien memiliki kebutuhan unik. Karena itu,
-            kami menyediakan layanan yang disesuaikan secara spesifik.
+            Kami memahami bahwa setiap klien memiliki kebutuhan unik. Karena
+            itu, kami menyediakan layanan yang disesuaikan secara spesifik.
           </p>
         </div>
 
@@ -100,10 +101,12 @@ export default function TargetMarket() {
                 </div>
               )}
               {/* Card header */}
-              <div className={`p-6 bg-gradient-to-br ${seg.color} text-white`}>
+              <div className={`p-6 bg-linear-to-br ${seg.color} text-white`}>
                 <div className="text-4xl mb-3">{seg.icon}</div>
                 <h3 className="text-2xl font-bold mb-1">{seg.title}</h3>
-                <p className="text-white/80 text-sm font-medium">{seg.tagline}</p>
+                <p className="text-white/80 text-sm font-medium">
+                  {seg.tagline}
+                </p>
               </div>
 
               {/* Card body */}
@@ -113,8 +116,13 @@ export default function TargetMarket() {
                 </p>
                 <ul className="space-y-2.5">
                   {seg.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2.5 text-sm text-gray-700">
-                      <span className={`mt-0.5 w-5 h-5 rounded-full ${seg.badge} flex items-center justify-center flex-shrink-0 text-xs font-bold`}>
+                    <li
+                      key={feature}
+                      className="flex items-start gap-2.5 text-sm text-gray-700"
+                    >
+                      <span
+                        className={`mt-0.5 w-5 h-5 rounded-full ${seg.badge} flex items-center justify-center shrink-0 text-xs font-bold`}
+                      >
                         ✓
                       </span>
                       {feature}
@@ -126,7 +134,7 @@ export default function TargetMarket() {
               {/* Card footer */}
               <div className="px-6 pb-6 bg-white">
                 <a
-                  href={`https://wa.me/6281234567890?text=Halo%20Daydev%2C%20saya%20dari%20segmen%20${seg.title}%20dan%20ingin%20konsultasi%20gratis.`}
+                  href={`https://wa.me/${whatsapp.phoneNumber}?text=Halo%20Daydev%2C%20saya%20dari%20segmen%20${seg.title}%20dan%20ingin%20konsultasi%20gratis.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`block w-full text-center py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-300 border-2 ${

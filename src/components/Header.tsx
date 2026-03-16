@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const navLinks = [
   { label: "Beranda", href: "#beranda" },
@@ -43,8 +44,14 @@ export default function Header() {
           }}
           className="flex items-center gap-2 group"
         >
-          <div className="w-9 h-9 bg-[#f39c12] rounded-lg flex items-center justify-center font-bold text-[#2c3e50] text-lg group-hover:scale-110 transition-transform">
-            D
+          <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center font-bold text-[#2c3e50] text-lg group-hover:scale-110 transition-transform">
+            <Image
+              src="/logo.png"
+              alt="Daydev Logo"
+              width={20}
+              height={20}
+              className="object-contain"
+            />
           </div>
           <span className="text-white font-bold text-xl tracking-tight">
             day<span className="text-[#f39c12]">dev</span>
@@ -85,12 +92,32 @@ export default function Header() {
           aria-label="Toggle menu"
         >
           {menuOpen ? (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           ) : (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           )}
         </button>

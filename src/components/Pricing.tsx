@@ -1,133 +1,15 @@
 "use client";
 
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-
-const pricingPlans = [
-  {
-    category: "Mahasiswa",
-    icon: "🎓",
-    badge: "Mulai 1 Jutaan",
-    description: "Solusi terjangkau untuk kebutuhan akademik & skripsi",
-    plans: [
-      {
-        name: "Paket Skripsi Basic",
-        price: "Rp 1.500.000",
-        period: "/ project",
-        features: [
-          "Sistem berbasis web sederhana",
-          "1 modul utama",
-          "Database MySQL",
-          "Dokumentasi teknis dasar",
-          "Revisi 2x",
-        ],
-        cta: "Pilih Paket",
-        popular: false,
-      },
-      {
-        name: "Paket Skripsi Pro",
-        price: "Rp 2.500.000",
-        period: "/ project",
-        features: [
-          "Sistem web lengkap",
-          "Hingga 5 modul",
-          "Database MySQL / MongoDB",
-          "Dokumentasi & laporan lengkap",
-          "Revisi tanpa batas",
-          "Bimbingan teknis sampai sidang",
-        ],
-        cta: "Pilih Paket",
-        popular: true,
-      },
-    ],
-    themeColor: "#8b5cf6",
-    lightBg: "#f5f3ff",
-  },
-  {
-    category: "UMKM",
-    icon: "🏪",
-    badge: "Mulai 3 Jutaan",
-    description: "Digitalisasi bisnis Anda dengan sistem yang tepat",
-    plans: [
-      {
-        name: "Paket Digital Starter",
-        price: "Rp 3.000.000",
-        period: "/ project",
-        features: [
-          "Website company profile",
-          "Halaman produk/layanan",
-          "Form kontak & WhatsApp",
-          "Mobile responsive",
-          "Hosting 1 tahun gratis",
-        ],
-        cta: "Pilih Paket",
-        popular: false,
-      },
-      {
-        name: "Paket Toko Online",
-        price: "Rp 5.000.000",
-        period: "/ project",
-        features: [
-          "E-commerce lengkap",
-          "Manajemen stok & pesanan",
-          "Payment gateway integration",
-          "Dashboard admin",
-          "Laporan penjualan otomatis",
-          "Notifikasi WA pelanggan",
-        ],
-        cta: "Pilih Paket",
-        popular: true,
-      },
-    ],
-    themeColor: "#10b981",
-    lightBg: "#f0fdf4",
-  },
-  {
-    category: "Startup",
-    icon: "🚀",
-    badge: "Mulai 5 Jutaan",
-    description: "MVP yang kuat dan skalabel untuk bisnis Anda",
-    plans: [
-      {
-        name: "Paket MVP",
-        price: "Rp 5.000.000",
-        period: "/ project",
-        features: [
-          "Web App MVP",
-          "1-3 fitur inti",
-          "Database & API backend",
-          "Admin dashboard",
-          "Deployment ke cloud",
-        ],
-        cta: "Pilih Paket",
-        popular: false,
-      },
-      {
-        name: "Paket Startup Growth",
-        price: "Rp 10.000.000",
-        period: "/ project",
-        features: [
-          "Web + Mobile App",
-          "Fitur lengkap sesuai kebutuhan",
-          "REST API / GraphQL",
-          "Authentication & Authorization",
-          "Analytics & monitoring",
-          "3 bulan support gratis",
-        ],
-        cta: "Pilih Paket",
-        popular: true,
-      },
-    ],
-    themeColor: "#3b82f6",
-    lightBg: "#eff6ff",
-  },
-];
+import { pricingPlans } from "@/models/pricing";
+import { whatsapp } from "@/models/whatsapp";
 
 export default function Pricing() {
   const ref = useScrollAnimation();
 
   const handleCTA = (category: string, planName: string) => {
-    const msg = `Halo Daydev%2C saya tertarik dengan ${planName} untuk kategori ${category}. Bisa minta info lebih lanjut%3F`;
-    window.open(`https://wa.me/6281234567890?text=${msg}`, "_blank");
+    const url = `https://wa.me/${encodeURIComponent(whatsapp.phoneNumber)}?text=${encodeURIComponent(whatsapp.messagePlan(planName, category))}`;
+    window.open(url, "_blank");
   };
 
   return (
@@ -143,7 +25,8 @@ export default function Pricing() {
             <span className="text-[#f39c12]"> Sepadan</span>
           </h2>
           <p className="fade-in text-gray-500 text-lg max-w-2xl mx-auto">
-            Semua paket sudah termasuk konsultasi gratis sebelum memulai. Tidak ada biaya tersembunyi.
+            Semua paket sudah termasuk konsultasi gratis sebelum memulai. Tidak
+            ada biaya tersembunyi.
           </p>
         </div>
 
@@ -174,7 +57,9 @@ export default function Pricing() {
                       {category.badge}
                     </span>
                   </div>
-                  <p className="text-gray-500 text-sm">{category.description}</p>
+                  <p className="text-gray-500 text-sm">
+                    {category.description}
+                  </p>
                 </div>
               </div>
 
@@ -194,8 +79,17 @@ export default function Pricing() {
                       </div>
                     )}
 
-                    <div className="p-6" style={{ backgroundColor: plan.popular ? category.lightBg : "#fff" }}>
-                      <h4 className="font-bold text-[#2c3e50] text-lg mb-1">{plan.name}</h4>
+                    <div
+                      className="p-6"
+                      style={{
+                        backgroundColor: plan.popular
+                          ? category.lightBg
+                          : "#fff",
+                      }}
+                    >
+                      <h4 className="font-bold text-[#2c3e50] text-lg mb-1">
+                        {plan.name}
+                      </h4>
                       <div className="flex items-baseline gap-1 mb-6">
                         <span
                           className="text-3xl font-extrabold"
@@ -203,14 +97,19 @@ export default function Pricing() {
                         >
                           {plan.price}
                         </span>
-                        <span className="text-gray-400 text-sm">{plan.period}</span>
+                        <span className="text-gray-400 text-sm">
+                          {plan.period}
+                        </span>
                       </div>
 
                       <ul className="space-y-3 mb-6">
                         {plan.features.map((f) => (
-                          <li key={f} className="flex items-start gap-2.5 text-sm text-gray-600">
+                          <li
+                            key={f}
+                            className="flex items-start gap-2.5 text-sm text-gray-600"
+                          >
                             <span
-                              className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold text-white"
+                              className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-bold text-white"
                               style={{ backgroundColor: category.themeColor }}
                             >
                               ✓
@@ -252,11 +151,11 @@ export default function Pricing() {
             Butuh Solusi yang Lebih Spesifik?
           </h3>
           <p className="text-gray-300 mb-6">
-            Kami juga menerima proyek custom dengan kebutuhan unik. Diskusikan kebutuhan
-            Anda dan kami akan berikan penawaran terbaik!
+            Kami juga menerima proyek custom dengan kebutuhan unik. Diskusikan
+            kebutuhan Anda dan kami akan berikan penawaran terbaik!
           </p>
           <a
-            href="https://wa.me/6281234567890?text=Halo%20Daydev%2C%20saya%20ingin%20diskusi%20proyek%20custom."
+            href={`https://wa.me/${whatsapp.phoneNumber}?text=Halo%20Daydev%2C%20saya%20ingin%20diskusi%20proyek%20custom.`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-[#f39c12] text-[#2c3e50] px-8 py-3 rounded-full font-bold hover:bg-yellow-400 transition-colors"

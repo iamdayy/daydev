@@ -107,7 +107,7 @@ export default function Footer() {
                   <div>
                     <div className="text-xs text-gray-500 mb-0.5">WhatsApp</div>
                     <div className="text-gray-300 text-sm group-hover:text-[#f39c12] transition-colors">
-                      +62 812-3456-7890
+                      {whatsapp.displayNumber}
                     </div>
                   </div>
                 </a>
@@ -137,26 +137,35 @@ export default function Footer() {
                   </div>
                 </a>
               </li>
-              <li className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                  <svg
-                    className="w-4 h-4 text-blue-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <div className="text-xs text-gray-500 mb-0.5">Website</div>
-                  <div className="text-gray-300 text-sm">daydev.id</div>
-                </div>
+              <li>
+                <a
+                  href="https://instagram.com/daydev__"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-3 group"
+                >
+                  <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                    <svg
+                      className="w-4 h-4 text-blue-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500 mb-0.5">Website</div>
+                    <div className="text-gray-300 text-sm group-hover:text-[#f39c12] transition-colors">
+                      daydev.studio
+                    </div>
+                  </div>
+                </a>
               </li>
             </ul>
           </div>

@@ -7,6 +7,8 @@ export interface Plan {
   period: string;
   features: string[];
   cta: string;
+  demo: string;
+  demoLink: string;
   popular: boolean;
 }
 

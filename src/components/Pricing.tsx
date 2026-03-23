@@ -62,8 +62,8 @@ export default function Pricing() {
                   </p>
                 </div>
               </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* // Plans grid */}
+              <div className="flex flex-row gap-6 justify-start overflow-x-auto">
                 {category.plans.map((plan) => (
                   <div
                     key={plan.name}
@@ -137,6 +137,16 @@ export default function Pricing() {
                       >
                         {plan.cta} →
                       </button>
+                      {plan.demo && (
+                        <a
+                          href={plan.demoLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block mt-3 text-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                      >
+                        {plan.demo}
+                      </a>
+                      )}
                     </div>
                   </div>
                 ))}

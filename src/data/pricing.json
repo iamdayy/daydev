@@ -1,6 +1,66 @@
 [
   {
     "id": 1,
+    "category": "Undangan Digital",
+    "icon": "💌",
+    "badge": "Mulai 100 Ribu-an",
+    "description": "Undangan digital cantik untuk momen spesial Anda",
+    "plans": [
+      {
+        "id": 1,
+        "name": "Paket Undangan Basic",
+        "price": "Rp 99.000",
+        "period": "/ undangan",
+        "features": [
+          "Desain template pilihan",
+          "1 halaman utama",
+          "Form RSVP sederhana",
+          "Hosting 3 bulan gratis",
+          "Revisi 2x"
+        ],
+        "cta": "Pilih Paket",
+        "demo": "Lihat Demo",
+        "demoLink": "https://invitation-minimalist-modern.daydev.studio",
+        "popular": false
+      },
+      {
+        "id": 2,
+        "name": "Paket Undangan Premium",
+        "price": "Rp 199.000",
+        "period": "/ undangan",
+        "features": [
+          "Desain custom sesuai tema",
+          "Halaman utama + galeri + cerita cinta",
+          "Form RSVP lengkap dengan notifikasi WA",
+          "Hosting 3 bulan gratis",
+          "Revisi tanpa batas"
+        ],
+        "cta": "Pilih Paket",
+        "demo": "Lihat Demo",
+        "demoLink": "https://invitation-rustic-floral.daydev.studio",
+        "popular": true
+      },
+      {
+        "id": 3,
+        "name": "Paket Undangan Eksklusif",
+        "price": "Rp 399.000",
+        "period": "/ undangan",
+        "features": [
+          "Desain premium dengan animasi",
+          "Halaman utama + galeri + cerita cinta + peta lokasi",
+          "Form RSVP lengkap dengan notifikasi WA & email",
+          "Hosting 6 bulan gratis",
+          "Revisi tanpa batas + konsultasi tema"
+        ],
+        "cta": "Pilih Paket",
+        "demo": "Lihat Demo",
+        "demoLink": "https://invitation-interactive-storyboard.daydev.studio",
+        "popular": false
+      }
+    ]
+  },
+  {
+    "id": 2,
     "category": "Mahasiswa",
     "icon": "🎓",
     "badge": "Mulai 1 Jutaan",
@@ -42,7 +102,7 @@
     "lightBg": "#f5f3ff"
   },
   {
-    "id": 2,
+    "id": 3,
     "category": "UMKM",
     "icon": "🏪",
     "badge": "Mulai 3 Jutaan",
@@ -84,7 +144,7 @@
     "lightBg": "#f0fdf4"
   },
   {
-    "id": 3,
+    "id": 4,
     "category": "Startup",
     "icon": "🚀",
     "badge": "Mulai 5 Jutaan",

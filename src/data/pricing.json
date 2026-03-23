@@ -57,10 +57,51 @@
         "demoLink": "https://invitation-interactive-storyboard.daydev.studio",
         "popular": false
       }
-    ]
+    ],
+    "themeColor": "#ec4899",
+    "lightBg": "#fdf2f8"
   },
   {
     "id": 2,
+    "category": "Bot Telegram",
+    "icon": "🤖",
+    "badge": "Mulai 500 Ribu-an",
+    "description": "Automasi cerdas untuk bisnis dan kebutuhan pribadi Anda",
+    "plans": [
+      {
+        "id": 1,
+        "name": "Paket Bot Basic",
+        "price": "Rp 499.000",
+        "period": "/ project",
+        "features": [
+          "Bot dengan 1-3 perintah",
+          "Integrasi API sederhana",
+          "Hosting 3 bulan gratis",
+          "Revisi 2x"
+        ],
+        "cta": "Pilih Paket",
+        "popular": false
+      },
+      {
+        "id": 2,
+        "name": "Paket Bot Pro",
+        "price": "Rp 999.000",
+        "period": "/ project",
+        "features": [
+          "Bot dengan 5-10 perintah",
+          "Integrasi API kompleks",
+          "Hosting 6 bulan gratis",
+          "Revisi tanpa batas + konsultasi fitur"
+        ],
+        "cta": "Pilih Paket",
+        "popular": true
+      }
+    ],
+    "themeColor": "#f59e0b",
+    "lightBg": "#fffbeb"
+  },
+  {
+    "id": 3,
     "category": "Mahasiswa",
     "icon": "🎓",
     "badge": "Mulai 1 Jutaan",
@@ -102,7 +143,7 @@
     "lightBg": "#f5f3ff"
   },
   {
-    "id": 3,
+    "id": 4,
     "category": "UMKM",
     "icon": "🏪",
     "badge": "Mulai 3 Jutaan",
@@ -144,7 +185,7 @@
     "lightBg": "#f0fdf4"
   },
   {
-    "id": 4,
+    "id": 5,
     "category": "Startup",
     "icon": "🚀",
     "badge": "Mulai 5 Jutaan",

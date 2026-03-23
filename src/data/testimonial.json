@@ -1,68 +1,35 @@
 [
   {
     "id": 1,
-    "name": "Ari Wibowo",
-    "role": "Founder, TechStartup.id",
+    "name": "Erdy Aditya",
+    "role": "Director, Planet Production",
     "segment": "Startup",
     "segmentColor": "bg-blue-100 text-blue-700",
-    "avatar": "AW",
+    "avatar": "AA",
     "avatarBg": "bg-blue-500",
     "stars": 5,
     "text": "Daydev berhasil mengubah ide kami menjadi MVP yang solid hanya dalam 2 minggu! Tim mereka sangat responsif dan memahami kebutuhan startup. Produk kami sekarang sudah onboard 500+ pengguna pertama."
   },
   {
     "id": 2,
-    "name": "Siti Rahayu",
-    "role": "Pemilik Toko Batik Online",
+    "name": "Fathimah",
+    "role": "Pemilik Konveksi Batik, Pekalongan",
     "segment": "UMKM",
     "segmentColor": "bg-green-100 text-green-700",
-    "avatar": "SR",
+    "avatar": "FM",
     "avatarBg": "bg-green-500",
     "stars": 5,
     "text": "Sebelumnya toko saya hanya jualan offline. Setelah pakai toko online dari Daydev, omzet naik 3x lipat! Sistemnya mudah dipakai dan mereka selalu siap bantu kalau ada kendala."
   },
   {
     "id": 3,
-    "name": "Budi Santoso",
-    "role": "Mahasiswa Teknik Informatika, UGM",
+    "name": "Husni Mubarok",
+    "role": "Mahasiswa Teknik Informatika, ITSNU Pekalongan",
     "segment": "Mahasiswa",
     "segmentColor": "bg-purple-100 text-purple-700",
-    "avatar": "BS",
+    "avatar": "HM",
     "avatarBg": "bg-purple-500",
     "stars": 5,
     "text": "Awalnya saya bingung banget sama skripsi saya. Daydev gak cuma bikin sistemnya, tapi juga nemenin saya sampai paham cara kerjanya. Sidang lancar dan dapet nilai A!"
-  },
-  {
-    "id": 4,
-    "name": "Reza Firmansyah",
-    "role": "Co-Founder, AgriTech Solutions",
-    "segment": "Startup",
-    "segmentColor": "bg-blue-100 text-blue-700",
-    "avatar": "RF",
-    "avatarBg": "bg-indigo-500",
-    "stars": 5,
-    "text": "Quality kodenya bersih, dokumentasinya lengkap, dan delivery tepat waktu. Sangat profesional. Kami sudah 3x menggunakan layanan Daydev untuk fitur-fitur baru."
-  },
-  {
-    "id": 5,
-    "name": "Dewi Kartika",
-    "role": "Owner, Kafe & Resto Kartika",
-    "segment": "UMKM",
-    "segmentColor": "bg-green-100 text-green-700",
-    "avatar": "DK",
-    "avatarBg": "bg-teal-500",
-    "stars": 5,
-    "text": "Sistem kasir dan manajemen menu yang dibuat Daydev sangat membantu operasional kafe saya. Pelayanan lebih cepat, dan laporan harian jadi lebih mudah dipantau."
-  },
-  {
-    "id": 6,
-    "name": "Ahmad Fauzi",
-    "role": "Mahasiswa Sistem Informasi, ITS",
-    "segment": "Mahasiswa",
-    "segmentColor": "bg-purple-100 text-purple-700",
-    "avatar": "AF",
-    "avatarBg": "bg-violet-500",
-    "stars": 5,
-    "text": "Daydev benar-benar sabar dalam mendampingi. Setiap pertanyaan dijawab dengan jelas. Tugas akhir saya selesai lebih cepat dari jadwal dan reviewer sangat puas dengan hasilnya!"
   }
 ]

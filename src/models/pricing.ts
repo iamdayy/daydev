@@ -14,7 +14,7 @@ export interface Plan {
 
 export interface Pricing {
   id: number;
-  category: "UMKM" | "Mahasiswa" | "Startup";
+  category: "UMKM" | "Mahasiswa" | "Startup" | "Bot Telegram" | "Undangan Digital";
   icon: string;
   badge: string;
   description: string;

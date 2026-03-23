@@ -1,3 +1,4 @@
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -114,6 +115,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
+      <head>
+        <GoogleAnalytics />
+      </head>
       <body className="antialiased">
         <script
           type="application/ld+json"

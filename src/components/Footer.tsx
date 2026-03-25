@@ -1,14 +1,15 @@
 import { whatsapp } from "@/models/whatsapp";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer id="kontak" className="bg-[#2c3e50] text-white">
+    <footer className="bg-[#2c3e50] text-white">
       {/* Main footer */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
@@ -19,6 +20,7 @@ export default function Footer() {
                   width={24}
                   height={24}
                   className="object-contain"
+                  sizes="(max-width: 640px) 20px, 24px"
                 />
               </div>
               <span className="text-white font-bold text-2xl">
@@ -62,30 +64,57 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick links */}
+          {/* Services */}
           <div>
-            <h4 className="font-semibold text-white mb-5">Navigasi</h4>
+            <h4 className="font-semibold text-white mb-5">Layanan</h4>
             <ul className="space-y-3">
               {[
-                { label: "Beranda", href: "#beranda" },
-                { label: "Layanan", href: "#layanan" },
-                { label: "Harga", href: "#harga" },
-                { label: "Testimoni", href: "#testimoni" },
-                { label: "Kontak", href: "#kontak" },
+                { label: "Web Development", href: "/services/web-development" },
+                { label: "Mobile Apps", href: "/services/mobile-development" },
+                { label: "Bot Telegram", href: "/services/telegram-bot" },
+                { label: "Undangan Digital", href: "/services/undangan-digital" },
+                { label: "Semua Layanan", href: "/services" },
               ].map((link) => (
                 <li key={link.href}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-gray-400 hover:text-[#f39c12] transition-colors text-sm"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact info */}
+          {/* Company */}
+          <div>
+            <h4 className="font-semibold text-white mb-5">Perusahaan</h4>
+            <ul className="space-y-3">
+              {[
+                { label: "Tentang Kami", href: "/about" },
+                { label: "Portfolio", href: "/portfolio" },
+                { label: "Harga", href: "/pricing" },
+                { label: "Blog", href: "/blog" },
+                { label: "Karir", href: "#" },
+              ].map((link) => (
+                <li key={link.href}>
+                  {link.href === "#" ? (
+                    <span className="text-gray-600 text-sm">{link.label}</span>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-gray-400 hover:text-[#f39c12] transition-colors text-sm"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
           <div>
             <h4 className="font-semibold text-white mb-5">Hubungi Kami</h4>
             <ul className="space-y-4">
@@ -128,41 +157,9 @@ export default function Footer() {
                     </svg>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500 mb-0.5">
-                      Instagram
-                    </div>
+                    <div className="text-xs text-gray-500 mb-0.5">Instagram</div>
                     <div className="text-gray-300 text-sm group-hover:text-[#f39c12] transition-colors">
                       @daydev__
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://instagram.com/daydev__"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-start gap-3 group"
-                >
-                  <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                    <svg
-                      className="w-4 h-4 text-blue-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-500 mb-0.5">Website</div>
-                    <div className="text-gray-300 text-sm group-hover:text-[#f39c12] transition-colors">
-                      daydev.studio
                     </div>
                   </div>
                 </a>

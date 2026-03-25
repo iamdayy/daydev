@@ -22,8 +22,49 @@ function StarRating({ count }: { count: number }) {
 export default function Testimonials() {
   const ref = useScrollAnimation();
 
+  // Calculate average rating
+  const averageRating =
+    testimonials.length > 0
+      ? (
+          testimonials.reduce((sum, t) => sum + t.stars, 0) / testimonials.length
+        ).toFixed(1)
+      : 0;
+
+  // AggregateRating Schema
+  const aggregateRatingSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "Daydev Studio",
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: averageRating,
+      reviewCount: testimonials.length,
+    },
+    review: testimonials.map((t) => ({
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: t.name,
+      },
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: t.stars,
+      },
+      reviewBody: t.text,
+    })),
+  };
+
   return (
-    <section id="testimoni" className="py-20 bg-gray-50" ref={ref}>
+    <>
+      {/* Aggregate Rating Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(aggregateRatingSchema),
+        }}
+      />
+
+      <section id="testimoni" className="py-20 bg-gray-50" ref={ref}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center mb-16">
@@ -100,5 +141,6 @@ export default function Testimonials() {
         </div>
       </div>
     </section>
+    </>
   );
 }

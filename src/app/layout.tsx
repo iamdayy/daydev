@@ -97,9 +97,14 @@ const localBusinessSchema = {
     "Solusi pengembangan aplikasi Web & Mobile terpercaya untuk Startup, UMKM, dan Mahasiswa.",
   url: "https://daydev.studio",
   logo: "https://daydev.studio/logo.png",
+  image: "https://daydev.studio/logo.png",
   serviceArea: {
     "@type": "Country",
     name: "Indonesia",
+  },
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "ID",
   },
   telephone: "+62 851-7528-4253",
   priceRange: "$$",

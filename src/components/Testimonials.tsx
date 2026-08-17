@@ -35,6 +35,14 @@ export default function Testimonials() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "Daydev Studio",
+    url: "https://daydev.studio",
+    image: "https://daydev.studio/logo.png",
+    telephone: "+62 851-7528-4253",
+    priceRange: "$$",
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "ID",
+    },
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: averageRating,

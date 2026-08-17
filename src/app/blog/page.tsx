@@ -1,210 +1,141 @@
 "use client";
 
-import {
-    getAllArticles,
-    getAllCategories,
-    getFeaturedArticles
-} from "@/data/blog";
+import { getAllArticles, getAllCategories, getFeaturedArticles } from "@/data/blog";
+import { ArrowUpRight, BookOpen, Clock3, Search } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+
+function formatDate(date: string) {
+  return new Date(date).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
 
 export default function BlogPage() {
-  const allArticles = getAllArticles();
+  const articles = getAllArticles();
+  const featured = getFeaturedArticles()[0] ?? articles[0];
   const categories = getAllCategories();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState("Semua");
+  const [query, setQuery] = useState("");
 
-  const filteredArticles = selectedCategory
-    ? allArticles.filter((article) => article.category === selectedCategory)
-    : allArticles;
+  const filteredArticles = useMemo(() => {
+    const normalizedQuery = query.toLowerCase().trim();
+    return articles.filter((article) => {
+      const matchesCategory = selectedCategory === "Semua" || article.category === selectedCategory;
+      const matchesQuery = !normalizedQuery || [article.title, article.excerpt, article.category, ...article.tags]
+        .join(" ")
+        .toLowerCase()
+        .includes(normalizedQuery);
+      return matchesCategory && matchesQuery;
+    });
+  }, [articles, query, selectedCategory]);
 
   return (
-    <main className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Blog & Tips</h1>
-          <p className="text-xl text-blue-100">
-            Tips, panduan, dan insight seputar web development, mobile app, dan
-            digital strategy
-          </p>
-        </div>
-      </section>
-
-      {/* Featured Articles */}
-      <section className="py-12 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">
-            Artikel Unggulan
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {getFeaturedArticles().map((article) => (
-              <article
-                key={article.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-              >
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 h-32 relative">
-                  <span className="absolute top-3 right-3 bg-blue-900 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    {article.category}
-                  </span>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
-                    <Link
-                      href={`/blog/${article.slug}`}
-                      className="hover:text-blue-600"
-                    >
-                      {article.title}
-                    </Link>
-                  </h3>
-                  <p className="text-gray-600 mb-4 line-clamp-2">
-                    {article.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <div className="flex gap-2">
-                      <span>{article.author}</span>
-                      <span>•</span>
-                      <span>
-                        {new Date(article.publishedAt).toLocaleDateString(
-                          "id-ID"
-                        )}
-                      </span>
-                    </div>
-                    <span>{article.readingTime} min read</span>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Main Content - Articles List */}
-      <section className="py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Sidebar - Categories */}
-            <aside className="lg:col-span-1">
-              <div className="bg-gray-50 rounded-lg p-6 sticky top-20">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">
-                  Kategori
-                </h3>
-                <div className="space-y-2">
-                  <button
-                    onClick={() => setSelectedCategory(null)}
-                    className={`block w-full text-left px-4 py-2 rounded transition-colors ${
-                      selectedCategory === null
-                        ? "bg-blue-600 text-white"
-                        : "text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    Semua Artikel
-                  </button>
-                  {categories.map((category) => (
-                    <button
-                      key={category}
-                      onClick={() => setSelectedCategory(category)}
-                      className={`block w-full text-left px-4 py-2 rounded transition-colors ${
-                        selectedCategory === category
-                          ? "bg-blue-600 text-white"
-                          : "text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      {category}
-                    </button>
-                  ))}
-                </div>
+    <main className="min-h-screen bg-background text-foreground">
+      <section className="border-b border-border bg-card">
+        <div className="mx-auto max-w-6xl px-4 pb-16 pt-12 sm:px-6 lg:pb-24 lg:pt-20">
+          <div className="grid items-end gap-10 lg:grid-cols-[1fr_0.65fr]">
+            <div>
+              <div className="mb-6 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+                <BookOpen className="size-4" aria-hidden="true" />
+                <span>Daydev Journal</span>
               </div>
-            </aside>
-
-            {/* Main Content - Articles Grid */}
-            <div className="lg:col-span-3">
-              <div className="space-y-6">
-                {filteredArticles.length > 0 ? (
-                  filteredArticles.map((article) => (
-                    <article
-                      key={article.id}
-                      className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
-                    >
-                      <div className="flex flex-col md:flex-row gap-4">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className="text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                              {article.category}
-                            </span>
-                            <span className="text-sm text-gray-500">
-                              {article.readingTime} min read
-                            </span>
-                          </div>
-                          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                            <Link
-                              href={`/blog/${article.slug}`}
-                              className="hover:text-blue-600 transition-colors"
-                            >
-                              {article.title}
-                            </Link>
-                          </h2>
-                          <p className="text-gray-600 mb-4 line-clamp-2">
-                            {article.excerpt}
-                          </p>
-                          <div className="flex items-center gap-4 text-sm text-gray-500">
-                            <span>{article.author}</span>
-                            <span>
-                              {new Date(article.publishedAt).toLocaleDateString(
-                                "id-ID",
-                                {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                }
-                              )}
-                            </span>
-                          </div>
-                          <div className="mt-4">
-                            <Link
-                              href={`/blog/${article.slug}`}
-                              className="inline-block text-blue-600 font-semibold hover:text-blue-700 transition-colors"
-                            >
-                              Baca Selengkapnya →
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </article>
-                  ))
-                ) : (
-                  <div className="text-center py-12">
-                    <p className="text-gray-600 text-lg">
-                      Tidak ada artikel di kategori ini
-                    </p>
-                  </div>
-                )}
-              </div>
+              <h1 className="max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-6xl">
+                Insight yang membantu bisnis tumbuh di ruang digital.
+              </h1>
+              <p className="mt-6 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">
+                Panduan praktis, perspektif produk, dan strategi teknologi dari tim yang membangun website serta aplikasi untuk bisnis nyata.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border bg-background p-5 shadow-sm">
+              <p className="text-sm font-medium text-muted-foreground">Cari insight</p>
+              <label className="mt-3 flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 focus-within:border-primary">
+                <Search className="size-4 text-muted-foreground" aria-hidden="true" />
+                <span className="sr-only">Cari artikel</span>
+                <input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="SEO, website, bisnis..."
+                  className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                />
+              </label>
+              <p className="mt-4 text-xs leading-5 text-muted-foreground">Temukan ide yang relevan untuk langkah digital Anda berikutnya.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Newsletter CTA */}
-      <section className="bg-blue-600 text-white py-12 px-4">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Dapatkan Update Terbaru</h2>
-          <p className="text-blue-100 mb-6">
-            Jangan lewatkan tips dan panduan terbaru setiap minggunya
-          </p>
-          <form className="flex gap-2">
-            <input
-              type="email"
-              placeholder="Email Anda..."
-              className="flex-1 px-4 py-2 rounded text-gray-900 min-w-0"
-              required
-            />
-            <button
-              type="submit"
-              className="bg-blue-800 hover:bg-blue-900 px-6 py-2 rounded font-semibold transition-colors whitespace-nowrap"
-            >
-              Subscribe
-            </button>
-          </form>
+      {featured && (
+        <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-16">
+          <div className="mb-6 flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Pilihan editor</p>
+              <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Mulai dari sini</h2>
+            </div>
+            <span className="hidden text-sm text-muted-foreground sm:block">Insight paling relevan minggu ini</span>
+          </div>
+          <Link href={`/blog/${featured.slug}`} className="group grid overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl lg:grid-cols-[0.85fr_1.15fr]">
+            <div className="flex min-h-64 flex-col justify-between bg-primary p-7 text-primary-foreground sm:p-10">
+              <span className="w-fit rounded-full bg-primary-foreground/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em]">{featured.category}</span>
+              <div>
+                <p className="text-sm text-primary-foreground/75">{formatDate(featured.publishedAt)} · {featured.readingTime} menit membaca</p>
+                <h3 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">{featured.title}</h3>
+              </div>
+            </div>
+            <div className="flex flex-col justify-between p-7 sm:p-10">
+              <p className="max-w-xl text-lg leading-8 text-muted-foreground">{featured.excerpt}</p>
+              <div className="mt-10 flex items-center justify-between gap-4 border-t border-border pt-5 text-sm font-semibold">
+                <span>{featured.author}</span>
+                <span className="flex items-center gap-2 text-primary">Baca artikel <ArrowUpRight className="size-4" aria-hidden="true" /></span>
+              </div>
+            </div>
+          </Link>
+        </section>
+      )}
+
+      <section className="border-y border-border bg-muted/30">
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-16">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Semua artikel</p>
+              <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Baca, terapkan, kembangkan</h2>
+            </div>
+            <div className="flex flex-wrap gap-2" aria-label="Filter kategori">
+              {["Semua", ...categories].map((category) => (
+                <button
+                  key={category}
+                  type="button"
+                  onClick={() => setSelectedCategory(category)}
+                  className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${selectedCategory === category ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-muted-foreground hover:border-primary hover:text-foreground"}`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {filteredArticles.map((article) => (
+              <article key={article.id} className="group flex flex-col rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
+                <div className="flex items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
+                  <span>{article.category}</span>
+                  <span className="flex items-center gap-1 text-muted-foreground"><Clock3 className="size-3" aria-hidden="true" />{article.readingTime} min</span>
+                </div>
+                <h3 className="mt-5 text-xl font-bold leading-8 tracking-tight"><Link href={`/blog/${article.slug}`} className="group-hover:text-primary">{article.title}</Link></h3>
+                <p className="mt-3 line-clamp-3 flex-1 leading-7 text-muted-foreground">{article.excerpt}</p>
+                <div className="mt-6 flex items-center justify-between border-t border-border pt-4 text-sm text-muted-foreground"><span>{formatDate(article.publishedAt)}</span><Link href={`/blog/${article.slug}`} className="font-semibold text-primary">Baca <ArrowUpRight className="ml-1 inline size-4" aria-hidden="true" /></Link></div>
+              </article>
+            ))}
+          </div>
+          {filteredArticles.length === 0 && <div className="rounded-2xl border border-dashed border-border bg-card px-6 py-16 text-center"><h3 className="text-lg font-semibold">Belum ada artikel yang cocok</h3><p className="mt-2 text-muted-foreground">Coba kata kunci atau kategori lain.</p></div>}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:py-20">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-3xl bg-secondary p-8 sm:p-10 lg:flex-row lg:items-center">
+          <div><p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Punya tantangan digital?</p><h2 className="mt-2 max-w-xl text-2xl font-bold tracking-tight sm:text-3xl">Mari ubah ide Anda menjadi produk yang bekerja.</h2></div>
+          <Link href="/contact" className="inline-flex shrink-0 items-center gap-2 rounded-full bg-primary px-5 py-3 font-semibold text-primary-foreground transition-transform hover:scale-[1.02]">Diskusikan proyek <ArrowUpRight className="size-4" aria-hidden="true" /></Link>
         </div>
       </section>
     </main>

@@ -1,0 +1,33 @@
+{
+  "hero": [
+    {
+      "value": "50+",
+      "label": "Proyek selesai"
+    },
+    {
+      "value": "3 hari",
+      "label": "Pengiriman cepat"
+    },
+    {
+      "value": "100%",
+      "label": "Kepuasan klien"
+    }
+  ],
+  "proof": [
+    {
+      "value": "50+",
+      "label": "Proyek selesai",
+      "description": "Website, aplikasi mobile, dan automasi yang sudah diluncurkan."
+    },
+    {
+      "value": "3 hari",
+      "label": "Rata-rata MVP",
+      "description": "Validasi ide lebih cepat dengan scope yang jelas dan terukur."
+    },
+    {
+      "value": "100%",
+      "label": "Kepuasan klien",
+      "description": "Pendampingan transparan dari diskusi awal sampai rilis."
+    }
+  ]
+}

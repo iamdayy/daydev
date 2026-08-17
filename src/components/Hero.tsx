@@ -1,5 +1,6 @@
 "use client";
 
+import siteStats from "@/data/site-stats.json";
 import { whatsapp } from "@/models/whatsapp";
 
 export default function Hero() {
@@ -86,11 +87,7 @@ export default function Hero() {
 
             {/* Stats */}
             <div className="mt-12 grid grid-cols-3 gap-6 max-w-sm mx-auto lg:mx-0">
-              {[
-                { value: "50+", label: "Proyek Selesai" },
-                { value: "3 Hari", label: "Pengiriman Cepat" },
-                { value: "100%", label: "Kepuasan Klien" },
-              ].map((stat) => (
+              {siteStats.hero.map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className="text-[#f39c12] font-bold text-2xl">
                     {stat.value}

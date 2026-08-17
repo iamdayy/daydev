@@ -1,3 +1,4 @@
+import FeaturedProjects from "@/components/FeaturedProjects";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
@@ -13,6 +14,7 @@ export default function Home() {
       <Header />
       <Hero />
       <TargetMarket />
+      <FeaturedProjects />
 
       {/* Quick Services Preview */}
       <section className="py-16 px-4 bg-slate-50">

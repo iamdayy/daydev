@@ -201,7 +201,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id">
+    <html lang="id" className="bg-background">
       <head>
         <GoogleAnalytics />
         {/* Multiple Structured Data Schemas */}

@@ -190,68 +190,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 px-4 bg-slate-900 text-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-bold mb-2">500+</div>
-              <p className="text-slate-300">Projects Selesai</p>
-            </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">200+</div>
-              <p className="text-slate-300">Happy Clients</p>
-            </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">50+</div>
-              <p className="text-slate-300">Team Members</p>
-            </div>
-            <div>
-              <div className="text-4xl font-bold mb-2">5★</div>
-              <p className="text-slate-300">Average Rating</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">Tim Kami</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-32 h-32 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-4xl">
-                👨‍💻
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Frontend Developer</h3>
-              <p className="text-slate-600 text-sm">
-                Spesialis dalam React, Vue, dan UI/UX implementation
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-32 h-32 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-4xl">
-                ⚙️
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Backend Developer</h3>
-              <p className="text-slate-600 text-sm">
-                Expert dalam Node.js, Python, dan system architecture
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-32 h-32 bg-gradient-to-br from-pink-400 to-pink-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-4xl">
-                🎨
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">UI/UX Designer</h3>
-              <p className="text-slate-600 text-sm">
-                Fokus pada user experience dan design yang menarik
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-slate-900 to-slate-800 text-white">
         <div className="max-w-4xl mx-auto text-center">

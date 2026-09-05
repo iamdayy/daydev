@@ -27,7 +27,7 @@ export default function PricingPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-slate-50 to-slate-100">
+      <section className="py-20 px-4 bg-muted">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
             Paket & Harga
@@ -43,7 +43,7 @@ export default function PricingPage() {
       <Pricing />
 
       {/* Price Calculator */}
-      <section className="py-20 px-4 bg-slate-50">
+      <section className="py-20 px-4 bg-muted">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">
             Kalkulator Harga Custom
@@ -60,7 +60,7 @@ export default function PricingPage() {
           </h2>
 
           <div className="space-y-6">
-            <details className="bg-slate-50 p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
+            <details className="bg-muted p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
               <summary className="font-bold text-slate-900 flex justify-between items-center">
                 Apakah ada paket cicilan?
                 <span className="text-2xl group-open:rotate-180 transition-transform">
@@ -74,7 +74,7 @@ export default function PricingPage() {
               </p>
             </details>
 
-            <details className="bg-slate-50 p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
+            <details className="bg-muted p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
               <summary className="font-bold text-slate-900 flex justify-between items-center">
                 Berapa banyak revisi yang termasuk dalam paket?
                 <span className="text-2xl group-open:rotate-180 transition-transform">
@@ -88,7 +88,7 @@ export default function PricingPage() {
               </p>
             </details>
 
-            <details className="bg-slate-50 p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
+            <details className="bg-muted p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
               <summary className="font-bold text-slate-900 flex justify-between items-center">
                 Apakah harga termasuk maintenance/support jangka panjang?
                 <span className="text-2xl group-open:rotate-180 transition-transform">
@@ -102,7 +102,7 @@ export default function PricingPage() {
               </p>
             </details>
 
-            <details className="bg-slate-50 p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
+            <details className="bg-muted p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
               <summary className="font-bold text-slate-900 flex justify-between items-center">
                 Apakah ada diskon untuk project besar atau kontrak jangka panjang?
                 <span className="text-2xl group-open:rotate-180 transition-transform">
@@ -116,7 +116,7 @@ export default function PricingPage() {
               </p>
             </details>
 
-            <details className="bg-slate-50 p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
+            <details className="bg-muted p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
               <summary className="font-bold text-slate-900 flex justify-between items-center">
                 Apa yang sudah termasuk dalam setiap paket?
                 <span className="text-2xl group-open:rotate-180 transition-transform">
@@ -134,7 +134,7 @@ export default function PricingPage() {
       </section>
 
       {/* Comparison Table */}
-      <section className="py-20 px-4 bg-slate-50">
+      <section className="py-20 px-4 bg-muted">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">
             Perbandingan Paket
@@ -194,7 +194,7 @@ export default function PricingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-slate-900 to-slate-800 text-white">
+      <section className="py-20 px-4 bg-foreground text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Belum Menemukan Paket yang Tepat?
@@ -206,7 +206,7 @@ export default function PricingPage() {
             href="https://wa.me/6285175284253"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-colors"
+            className="inline-block px-8 py-4 bg-accent text-foreground rounded-full font-bold hover:opacity-90 transition-colors"
           >
             Hubungi Kami Sekarang
           </a>

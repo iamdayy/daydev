@@ -24,7 +24,7 @@ export default function AboutPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-slate-50 to-slate-100">
+      <section className="py-20 px-4 bg-muted">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
             Tentang Daydev Studio
@@ -71,7 +71,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story Section */}
-      <section className="py-20 px-4 bg-slate-50">
+      <section className="py-20 px-4 bg-muted">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-slate-900 mb-8">Cerita Kami</h2>
           <div className="space-y-6 text-slate-600 leading-relaxed">
@@ -191,7 +191,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-slate-900 to-slate-800 text-white">
+      <section className="py-20 px-4 bg-foreground text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Siap untuk Bermitra dengan Kami?
@@ -204,7 +204,7 @@ export default function AboutPage() {
             href="https://wa.me/6285175284253"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-colors"
+            className="inline-block px-8 py-4 bg-accent text-foreground rounded-full font-bold hover:opacity-90 transition-colors"
           >
             Hubungi Kami via WhatsApp
           </a>

@@ -17,80 +17,20 @@ export default function Home() {
       <TargetMarket />
       <FeaturedProjects />
 
-      {/* Quick Services Preview */}
-      <section className="py-16 px-4 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Layanan Kami</h2>
-
-          <div className="grid md:grid-cols-4 gap-6 mb-8">
-            <Link
-              href="/services/web-development"
-              className="group p-6 bg-white rounded-lg border-2 border-slate-200 hover:border-blue-400 transition-all hover:shadow-lg"
-            >
-              <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">
-                🌐
-              </div>
-              <h3 className="font-bold text-slate-900 group-hover:text-blue-600">
-                Web Development
-              </h3>
-              <p className="text-sm text-slate-600 mt-2">
-                Website modern & responsive
-              </p>
-            </Link>
-
-            <Link
-              href="/services/mobile-development"
-              className="group p-6 bg-white rounded-lg border-2 border-slate-200 hover:border-orange-400 transition-all hover:shadow-lg"
-            >
-              <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">
-                📱
-              </div>
-              <h3 className="font-bold text-slate-900 group-hover:text-orange-600">
-                Mobile Apps
-              </h3>
-              <p className="text-sm text-slate-600 mt-2">
-                Aplikasi iOS & Android
-              </p>
-            </Link>
-
-            <Link
-              href="/services/telegram-bot"
-              className="group p-6 bg-white rounded-lg border-2 border-slate-200 hover:border-orange-400 transition-all hover:shadow-lg"
-            >
-              <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">
-                🤖
-              </div>
-              <h3 className="font-bold text-slate-900 group-hover:text-orange-600">
-                Bot Telegram
-              </h3>
-              <p className="text-sm text-slate-600 mt-2">
-                Automasi bisnis 24/7
-              </p>
-            </Link>
-
-            <Link
-              href="/services/undangan-digital"
-              className="group p-6 bg-white rounded-lg border-2 border-slate-200 hover:border-pink-400 transition-all hover:shadow-lg"
-            >
-              <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">
-                💌
-              </div>
-              <h3 className="font-bold text-slate-900 group-hover:text-pink-600">
-                Undangan Digital
-              </h3>
-              <p className="text-sm text-slate-600 mt-2">
-                Undangan online interaktif
-              </p>
-            </Link>
+      {/* Services Preview */}
+      <section className="bg-background px-4 py-24 sm:px-6" id="layanan">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-primary">Dari ide ke rilis</p>
+            <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-5xl">Teknologi yang bekerja untuk tujuan bisnis Anda.</h2>
           </div>
-
-          <div className="text-center">
-            <Link
-              href="/services"
-              className="inline-block px-6 py-3 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition-colors"
-            >
-              Lihat Semua Layanan
-            </Link>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {[{ href: "/services/web-development", title: "Website", description: "Website cepat, rapi, dan siap mengubah pengunjung menjadi pelanggan." }, { href: "/services/mobile-development", title: "Mobile app", description: "Produk mobile yang terasa natural dan siap tumbuh bersama pengguna." }, { href: "/services/telegram-bot", title: "Automasi", description: "Kurangi pekerjaan repetitif dengan alur kerja yang lebih cerdas." }, { href: "/services/undangan-digital", title: "Undangan digital", description: "Pengalaman acara yang elegan, interaktif, dan mudah dibagikan." }].map((service) => (
+              <Link key={service.href} href={service.href} className="group flex min-h-64 flex-col justify-between rounded-3xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl">
+                <div><div className="mb-8 flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-primary"><span className="text-xl font-bold">+</span></div><h3 className="text-xl font-bold text-foreground group-hover:text-primary">{service.title}</h3><p className="mt-3 leading-6 text-muted-foreground">{service.description}</p></div>
+                <span className="mt-8 text-sm font-semibold text-primary">Pelajari layanan <ArrowUpRight className="ml-1 inline size-4 transition-transform group-hover:translate-x-1" /></span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

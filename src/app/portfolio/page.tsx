@@ -1,29 +1,17 @@
-import Link from "next/link";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Portfolio | Daydev Studio", description: "Case study website, aplikasi, dan automasi yang dibangun Daydev Studio." };
 
 const projects = [
-  { title: "Website bisnis yang siap menghasilkan", type: "Web Development", description: "Landing page dan website company profile dengan struktur yang jelas untuk membangun kepercayaan dan mendatangkan inquiry." },
-  { title: "Produk digital untuk kebutuhan spesifik", type: "Custom Application", description: "Aplikasi yang dirancang mengikuti alur kerja bisnis, bukan sekadar template yang dipaksakan." },
-  { title: "Pengalaman digital yang lebih mudah diakses", type: "UI/UX & Development", description: "Interface responsif dengan performa dan pengalaman pengguna sebagai prioritas." },
+  { category: "Undangan digital", title: "Planet Production", description: "Undangan digital interaktif dengan RSVP otomatis dan notifikasi WhatsApp untuk acara besar.", result: "500+ tamu terdata", stack: "Next.js · WhatsApp · RSVP", tone: "from-primary to-[#16a394]" },
+  { category: "Web development", title: "Konveksi Batik Pekalongan", description: "Website katalog dan pemesanan yang membantu bisnis lokal menjangkau pelanggan di luar kota.", result: "Omzet naik 3x", stack: "Next.js · CMS · SEO", tone: "from-accent to-[#f5ad7c]" },
+  { category: "Mobile development", title: "Event Organizer App", description: "Aplikasi manajemen peserta dengan check-in cepat dan laporan real-time untuk tim event.", result: "Check-in 10x lebih cepat", stack: "React Native · API · Dashboard", tone: "from-[#384a86] to-[#7184c7]" },
 ];
 
 export default function PortfolioPage() {
-  return (
-    <main className="min-h-screen bg-background px-4 py-16 text-foreground sm:px-6 lg:py-24">
-      <div className="mx-auto max-w-6xl">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Portfolio</p>
-        <h1 className="mt-4 max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-6xl">Beberapa cara kami membantu ide menjadi produk digital.</h1>
-        <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">Lihat pendekatan Daydev dalam membangun website dan aplikasi yang terlihat profesional, mudah digunakan, dan relevan dengan tujuan bisnis.</p>
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
-          {projects.map((project) => (
-            <article key={project.title} className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">{project.type}</p>
-              <h2 className="mt-5 text-xl font-bold leading-8">{project.title}</h2>
-              <p className="mt-3 leading-7 text-muted-foreground">{project.description}</p>
-            </article>
-          ))}
-        </div>
-        <div className="mt-12 rounded-3xl bg-secondary p-8 sm:p-10"><h2 className="text-2xl font-bold">Punya project yang ingin dibangun?</h2><p className="mt-3 text-muted-foreground">Mari bahas kebutuhan dan langkah terbaiknya bersama.</p><Link href="/contact" className="mt-6 inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-primary-foreground">Mulai diskusi</Link></div>
-      </div>
-    </main>
-  );
+  return <main><Header /><section className="bg-foreground px-4 pb-20 pt-36 text-primary-foreground sm:px-6"><div className="mx-auto max-w-6xl"><p className="mb-5 text-sm font-bold uppercase tracking-[0.2em] text-accent">Portfolio pilihan</p><h1 className="max-w-4xl text-balance text-4xl font-bold tracking-tight sm:text-6xl">Pekerjaan yang dirancang untuk menghasilkan dampak.</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-primary-foreground/70">Bukan sekadar tampilan. Setiap proyek dimulai dari masalah yang jelas dan diakhiri dengan produk yang siap digunakan.</p></div></section><section className="px-4 py-24 sm:px-6"><div className="mx-auto max-w-6xl"><div className="grid gap-8 lg:grid-cols-3">{projects.map((project) => <article key={project.title} className="group overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"><div className={`relative flex h-64 items-end overflow-hidden bg-gradient-to-br ${project.tone} p-6`}><div className="absolute right-12 top-10 h-36 w-28 rotate-6 rounded-2xl border border-white/40 bg-white/20 shadow-2xl backdrop-blur-sm transition-transform group-hover:rotate-12 group-hover:scale-105" /><span className="relative rounded-full bg-background/90 px-3 py-1.5 text-xs font-bold text-foreground">Case study</span></div><div className="flex flex-col gap-4 p-7"><p className="text-xs font-bold uppercase tracking-wider text-primary">{project.category}</p><h2 className="text-2xl font-bold text-foreground">{project.title}</h2><p className="leading-7 text-muted-foreground">{project.description}</p><div className="flex items-center gap-2 border-t border-border pt-4 text-sm font-semibold text-primary"><CheckCircle2 className="size-4" />{project.result}</div><p className="text-xs font-medium text-muted-foreground">{project.stack}</p></div></article>)}</div></div></section><section className="bg-muted px-4 py-24 sm:px-6"><div className="mx-auto max-w-3xl text-center"><h2 className="text-3xl font-bold text-foreground sm:text-5xl">Ingin proyek Anda menjadi case study berikutnya?</h2><p className="mt-5 leading-7 text-muted-foreground">Mari mulai dengan percakapan singkat tentang tujuan, pengguna, dan hasil yang ingin dicapai.</p><a href="https://wa.me/6285175284253" target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center rounded-full bg-primary px-7 py-3 font-bold text-primary-foreground">Diskusikan proyek <ArrowUpRight className="ml-2 size-4" /></a></div></section><Footer /><WhatsAppButton /></main>;
 }

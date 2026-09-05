@@ -32,15 +32,15 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-[#2c3e50] shadow-lg py-3"
-          : "bg-[#2c3e50]/95 backdrop-blur-sm py-4"
+isScrolled
+          ? "bg-foreground/95 shadow-lg py-3 backdrop-blur-sm"
+          : "bg-foreground/95 py-4 backdrop-blur-sm"
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center font-bold text-[#2c3e50] text-lg group-hover:scale-110 transition-transform">
+          <div className="flex size-9 items-center justify-center rounded-lg bg-primary-foreground text-lg font-bold text-foreground transition-transform group-hover:scale-110">
             <Image
               src="/logo.png"
               alt="Daydev Logo"
@@ -51,7 +51,7 @@ export default function Header() {
               sizes="(max-width: 640px) 16px, 20px"
             />
           </div>
-          <span className="text-white font-bold text-xl tracking-tight">
+          <span className="text-primary-foreground font-bold text-xl tracking-tight">
             day<span className="text-[#f39c12]">dev</span>
           </span>
         </Link>
@@ -86,7 +86,9 @@ export default function Header() {
         <button
           className="md:hidden text-white p-2"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
+          aria-label={menuOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-navigation"
         >
           {menuOpen ? (
             <svg
@@ -122,7 +124,7 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-[#2c3e50] border-t border-white/10 px-4 pb-4">
+        <div id="mobile-navigation" className="md:hidden border-t border-primary-foreground/10 bg-foreground px-4 pb-4">
           {navLinks.map((link) => (
             <Link
               key={link.href}

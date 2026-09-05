@@ -55,12 +55,15 @@ export default function Hero() {
             </h1>
 
             <p className="text-gray-300 text-lg sm:text-xl leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
-              Solusi pengembangan aplikasi{" "}
-              <span className="text-white font-semibold">Web &amp; Mobile</span>{" "}
-              terpercaya untuk{" "}
-              <span className="text-[#f39c12] font-semibold">Startup</span>,{" "}
-              <span className="text-[#f39c12] font-semibold">UMKM</span>, dan{" "}
-              <span className="text-[#f39c12] font-semibold">Mahasiswa</span>.
+              {"Solusi pengembangan aplikasi "}
+              <span className="text-white font-semibold">Web &amp; Mobile</span>
+              {" terpercaya untuk "}
+              <span className="text-[#f39c12] font-semibold">Startup</span>
+              {", "}
+              <span className="text-[#f39c12] font-semibold">UMKM</span>
+              {", dan "}
+              <span className="text-[#f39c12] font-semibold">Mahasiswa</span>
+              {"."}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">

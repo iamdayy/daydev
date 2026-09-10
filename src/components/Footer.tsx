@@ -6,14 +6,14 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#2c3e50] text-white">
+    <footer className="bg-[#172033] text-white">
       {/* Main footer */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center font-bold text-[#2c3e50] text-xl">
+              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center font-bold text-[#172033] text-xl">
                 <Image
                   src="/logo.png"
                   alt="Daydev Logo"
@@ -24,12 +24,12 @@ export default function Footer() {
                 />
               </div>
               <span className="text-white font-bold text-2xl">
-                day<span className="text-[#f39c12]">dev</span>
+                day<span className="text-[#ea7b3c]">dev</span>
               </span>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-sm mb-6">
-              Solusi pengembangan aplikasi Web &amp; Mobile terpercaya untuk
-              Startup, UMKM, dan Mahasiswa. Dari ide menjadi aplikasi nyata.
+            <p className="text-slate-300 text-sm leading-relaxed max-w-sm mb-6">
+              Jasa pembuatan aplikasi Web &amp; Mobile untuk Startup, UMKM, dan
+              Mahasiswa. Dari ide menjadi aplikasi nyata.
             </p>
             {/* Social links */}
             <div className="flex items-center gap-4">
@@ -37,7 +37,7 @@ export default function Footer() {
                 href={`https://wa.me/${whatsapp.phoneNumber}?text=${encodeURIComponent(whatsapp.defaultMessage)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center hover:bg-green-400 transition-colors"
+                className="w-11 h-11 bg-green-500 rounded-xl flex items-center justify-center hover:bg-green-400 transition-colors"
                 aria-label="WhatsApp"
               >
                 <svg
@@ -51,7 +51,7 @@ export default function Footer() {
                 href="https://instagram.com/daydev__"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-linear-to-br from-purple-500 via-pink-500 to-orange-400 rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity"
+                className="w-11 h-11 bg-linear-to-br from-purple-500 via-pink-500 to-orange-400 rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity"
                 aria-label="Instagram"
               >
                 <svg
@@ -78,7 +78,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-[#f39c12] transition-colors text-sm"
+                    className="text-slate-300 hover:text-[#ea7b3c] transition-colors text-sm"
                   >
                     {link.label}
                   </Link>
@@ -96,19 +96,14 @@ export default function Footer() {
                 { label: "Portfolio", href: "/portfolio" },
                 { label: "Harga", href: "/pricing" },
                 { label: "Blog", href: "/blog" },
-                { label: "Karir", href: "#" },
               ].map((link) => (
                 <li key={link.href}>
-                  {link.href === "#" ? (
-                    <span className="text-gray-600 text-sm">{link.label}</span>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className="text-gray-400 hover:text-[#f39c12] transition-colors text-sm"
-                    >
-                      {link.label}
-                    </Link>
-                  )}
+                  <Link
+                    href={link.href}
+                    className="text-slate-300 hover:text-[#ea7b3c] transition-colors text-sm"
+                  >
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -134,8 +129,8 @@ export default function Footer() {
                     </svg>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500 mb-0.5">WhatsApp</div>
-                    <div className="text-gray-300 text-sm group-hover:text-[#f39c12] transition-colors">
+                    <div className="text-xs text-slate-400 mb-0.5">WhatsApp</div>
+                    <div className="text-gray-300 text-sm group-hover:text-[#ea7b3c] transition-colors">
                       {whatsapp.displayNumber}
                     </div>
                   </div>
@@ -157,8 +152,8 @@ export default function Footer() {
                     </svg>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-500 mb-0.5">Instagram</div>
-                    <div className="text-gray-300 text-sm group-hover:text-[#f39c12] transition-colors">
+                    <div className="text-xs text-slate-400 mb-0.5">Instagram</div>
+                    <div className="text-gray-300 text-sm group-hover:text-[#ea7b3c] transition-colors">
                       @daydev__
                     </div>
                   </div>
@@ -172,11 +167,11 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gray-400 text-sm text-center sm:text-left">
+          <p className="text-slate-300 text-sm text-center sm:text-left">
             &copy; {currentYear} Daydev. Semua hak dilindungi.
           </p>
-          <p className="text-gray-500 text-xs">
-            Dibuat dengan ❤️ untuk Indonesia
+          <p className="text-slate-400 text-xs">
+            Dibuat untuk Indonesia
           </p>
         </div>
       </div>

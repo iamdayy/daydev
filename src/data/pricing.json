@@ -2,7 +2,7 @@
   {
     "id": 1,
     "category": "Undangan Digital",
-    "icon": "💌",
+    "icon": "Mail",
     "badge": "Mulai 100 Ribu-an",
     "description": "Undangan digital cantik untuk momen spesial Anda",
     "plans": [
@@ -18,8 +18,8 @@
           "Hosting 3 bulan gratis",
           "Revisi 2x"
         ],
-        "cta": "Pilih Paket",
-        "demo": "Lihat Demo",
+        "cta": "Pesan via WhatsApp",
+        "demo": "Buka Demo Live",
         "demoLink": "https://invitation-minimalist-modern.daydev.studio",
         "popular": false
       },
@@ -35,8 +35,8 @@
           "Hosting 3 bulan gratis",
           "Revisi tanpa batas"
         ],
-        "cta": "Pilih Paket",
-        "demo": "Lihat Demo",
+        "cta": "Pesan via WhatsApp",
+        "demo": "Buka Demo Live",
         "demoLink": "https://invitation-rustic-floral.daydev.studio",
         "popular": true
       },
@@ -52,19 +52,19 @@
           "Hosting 6 bulan gratis",
           "Revisi tanpa batas + konsultasi tema"
         ],
-        "cta": "Pilih Paket",
-        "demo": "Lihat Demo",
+        "cta": "Pesan via WhatsApp",
+        "demo": "Buka Demo Live",
         "demoLink": "https://invitation-interactive-storyboard.daydev.studio",
         "popular": false
       }
     ],
-    "themeColor": "#ec4899",
-    "lightBg": "#fdf2f8"
+    "themeColor": "#c2410c",
+    "lightBg": "#fff7ed"
   },
   {
     "id": 2,
     "category": "Bot Telegram",
-    "icon": "🤖",
+    "icon": "Bot",
     "badge": "Mulai 500 Ribu-an",
     "description": "Automasi cerdas untuk bisnis dan kebutuhan pribadi Anda",
     "plans": [
@@ -79,7 +79,7 @@
           "Hosting 3 bulan gratis",
           "Revisi 2x"
         ],
-        "cta": "Pilih Paket",
+        "cta": "Pesan via WhatsApp",
         "popular": false
       },
       {
@@ -93,17 +93,17 @@
           "Hosting 6 bulan gratis",
           "Revisi tanpa batas + konsultasi fitur"
         ],
-        "cta": "Pilih Paket",
+        "cta": "Pesan via WhatsApp",
         "popular": true
       }
     ],
-    "themeColor": "#f59e0b",
-    "lightBg": "#fffbeb"
+    "themeColor": "#0f766e",
+    "lightBg": "#f0fdfa"
   },
   {
     "id": 3,
     "category": "Mahasiswa",
-    "icon": "🎓",
+    "icon": "GraduationCap",
     "badge": "Mulai 1 Jutaan",
     "description": "Solusi terjangkau untuk kebutuhan akademik & skripsi",
     "plans": [
@@ -119,7 +119,7 @@
           "Dokumentasi teknis dasar",
           "Revisi 2x"
         ],
-        "cta": "Pilih Paket",
+        "cta": "Pesan via WhatsApp",
         "popular": false
       },
       {
@@ -135,17 +135,17 @@
           "Revisi tanpa batas",
           "Bimbingan teknis sampai sidang"
         ],
-        "cta": "Pilih Paket",
+        "cta": "Pesan via WhatsApp",
         "popular": true
       }
     ],
-    "themeColor": "#8b5cf6",
-    "lightBg": "#f5f3ff"
+    "themeColor": "#334155",
+    "lightBg": "#f8fafc"
   },
   {
     "id": 4,
     "category": "UMKM",
-    "icon": "🏪",
+    "icon": "Store",
     "badge": "Mulai 3 Jutaan",
     "description": "Digitalisasi bisnis Anda dengan sistem yang tepat",
     "plans": [
@@ -161,7 +161,7 @@
           "Mobile responsive",
           "Hosting 1 tahun gratis"
         ],
-        "cta": "Pilih Paket",
+        "cta": "Pesan via WhatsApp",
         "popular": false
       },
       {
@@ -177,17 +177,17 @@
           "Laporan penjualan otomatis",
           "Notifikasi WA pelanggan"
         ],
-        "cta": "Pilih Paket",
+        "cta": "Pesan via WhatsApp",
         "popular": true
       }
     ],
-    "themeColor": "#10b981",
-    "lightBg": "#f0fdf4"
+    "themeColor": "#0e7490",
+    "lightBg": "#ecfeff"
   },
   {
     "id": 5,
     "category": "Startup",
-    "icon": "🚀",
+    "icon": "Rocket",
     "badge": "Mulai 5 Jutaan",
     "description": "MVP yang kuat dan skalabel untuk bisnis Anda",
     "plans": [
@@ -203,7 +203,7 @@
           "Admin dashboard",
           "Deployment ke cloud"
         ],
-        "cta": "Pilih Paket",
+        "cta": "Pesan via WhatsApp",
         "popular": false
       },
       {
@@ -219,11 +219,11 @@
           "Analytics & monitoring",
           "3 bulan support gratis"
         ],
-        "cta": "Pilih Paket",
+        "cta": "Pesan via WhatsApp",
         "popular": true
       }
     ],
-    "themeColor": "#3b82f6",
-    "lightBg": "#eff6ff"
+    "themeColor": "#172033",
+    "lightBg": "#f1f5f9"
   }
 ]

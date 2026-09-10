@@ -25,7 +25,16 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNavClick = (href: string) => {
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [menuOpen]);
+
+  const handleNavClick = () => {
     setMenuOpen(false);
   };
 
@@ -33,14 +42,14 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-[#2c3e50] shadow-lg py-3"
-          : "bg-[#2c3e50]/95 backdrop-blur-sm py-4"
+          ? "bg-[#172033] shadow-lg py-3"
+          : "bg-[#172033]/95 backdrop-blur-sm py-4"
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center font-bold text-[#2c3e50] text-lg group-hover:scale-110 transition-transform">
+          <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center font-bold text-[#172033] text-lg group-hover:scale-110 transition-transform">
             <Image
               src="/logo.png"
               alt="Daydev Logo"
@@ -52,7 +61,7 @@ export default function Header() {
             />
           </div>
           <span className="text-white font-bold text-xl tracking-tight">
-            day<span className="text-[#f39c12]">dev</span>
+            day<span className="text-[#ea7b3c]">dev</span>
           </span>
         </Link>
 
@@ -62,11 +71,11 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              onClick={() => handleNavClick(link.href)}
+              onClick={handleNavClick}
               className={`transition-colors font-medium text-sm ${
                 pathname === link.href
-                  ? "text-[#f39c12]"
-                  : "text-gray-300 hover:text-[#f39c12]"
+                  ? "text-[#ea7b3c]"
+                  : "text-gray-300 hover:text-[#ea7b3c]"
               }`}
             >
               {link.label}
@@ -76,7 +85,7 @@ export default function Header() {
             href="https://wa.me/6285175284253"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#f39c12] text-[#2c3e50] px-5 py-2 rounded-full font-semibold text-sm hover:bg-yellow-400 transition-colors"
+            className="bg-[#ea7b3c] text-[#172033] px-5 py-2 min-h-[40px] inline-flex items-center rounded-full font-semibold text-sm hover:brightness-110 transition-all"
           >
             Konsultasi Gratis
           </a>
@@ -84,9 +93,10 @@ export default function Header() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-white p-2"
+          className="md:hidden text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
+          aria-expanded={menuOpen}
         >
           {menuOpen ? (
             <svg
@@ -122,16 +132,16 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-[#2c3e50] border-t border-white/10 px-4 pb-4">
+        <div className="md:hidden bg-[#172033] border-t border-white/10 px-4 pb-4">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              onClick={() => handleNavClick(link.href)}
-              className={`block py-3 transition-colors font-medium border-b border-white/5 ${
+              onClick={handleNavClick}
+              className={`block py-3 min-h-[44px] flex items-center transition-colors font-medium border-b border-white/5 ${
                 pathname === link.href
-                  ? "text-[#f39c12]"
-                  : "text-gray-300 hover:text-[#f39c12]"
+                  ? "text-[#ea7b3c]"
+                  : "text-gray-300 hover:text-[#ea7b3c]"
               }`}
             >
               {link.label}
@@ -141,7 +151,7 @@ export default function Header() {
             href="https://wa.me/6285175284253"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 block bg-[#f39c12] text-[#2c3e50] px-5 py-3 rounded-full font-semibold text-center hover:bg-yellow-400 transition-colors"
+            className="mt-4 flex min-h-[48px] items-center justify-center bg-[#ea7b3c] text-[#172033] px-5 py-3 rounded-full font-semibold text-center hover:brightness-110 transition-all"
           >
             Konsultasi Gratis
           </a>

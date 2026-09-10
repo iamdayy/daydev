@@ -1,12 +1,13 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { Eye, HeartHandshake, Target } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Tentang Kami - Daydev Studio",
   description:
-    "Daydev studio adalah perusahaan pengembangan software yang terpercaya dan profesional. Kami membantu startup, UMKM, dan mahasiswa mengubah ide menjadi aplikasi real.",
+    "Daydev Studio adalah tim pengembang software yang membantu startup, UMKM, dan mahasiswa mengubah ide menjadi aplikasi.",
   keywords: [
     "tentang daydev",
     "perusahaan software",
@@ -41,7 +42,7 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-3 gap-12 mb-16">
             <div className="text-center">
-              <div className="text-5xl mb-4">🎯</div>
+              <Target className="size-12 mx-auto mb-4 text-[#0f766e]" aria-hidden="true" />
               <h3 className="text-xl font-bold text-slate-900 mb-3">Misi Kami</h3>
               <p className="text-slate-600">
                 Menyediakan solusi teknologi berkualitas tinggi yang terjangkau dan mudah
@@ -50,7 +51,7 @@ export default function AboutPage() {
             </div>
 
             <div className="text-center">
-              <div className="text-5xl mb-4">🌟</div>
+              <Eye className="size-12 mx-auto mb-4 text-[#0f766e]" aria-hidden="true" />
               <h3 className="text-xl font-bold text-slate-900 mb-3">Visi Kami</h3>
               <p className="text-slate-600">
                 Menjadi partner terpercaya dalam transformasi digital dan membantu bisnis
@@ -59,7 +60,7 @@ export default function AboutPage() {
             </div>
 
             <div className="text-center">
-              <div className="text-5xl mb-4">💪</div>
+              <HeartHandshake className="size-12 mx-auto mb-4 text-[#0f766e]" aria-hidden="true" />
               <h3 className="text-xl font-bold text-slate-900 mb-3">Nilai Kami</h3>
               <p className="text-slate-600">
                 Integritas, inovasi, dan hasil berkualitas. Kami percaya pada transparansi
@@ -87,9 +88,10 @@ export default function AboutPage() {
               end-to-end yang comprehensive dan terpercaya.
             </p>
             <p>
-              Sejak didirikan, kami telah membantu ratusan klien mewujudkan ide mereka
-              menjadi produk digital yang sukses di pasar. Dari undangan digital yang
-              meriah, bot telegram yang menghemat waktu, website yang meningkatkan penjualan,
+              Sejak didirikan, kami telah membantu klien dari startup, UMKM, dan
+              kalangan mahasiswa mewujudkan ide mereka menjadi produk digital
+              yang dipakai. Dari undangan digital yang meriah, bot telegram
+              yang menghemat waktu, website yang meningkatkan penjualan,
               hingga aplikasi mobile dan MVP startup yang competitive.
             </p>
             <p>

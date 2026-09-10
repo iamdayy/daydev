@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://daydev.studio"),
   title: "Daydev – Dari Ide Menjadi Aplikasi",
   description:
-    "Solusi pengembangan aplikasi Web & Mobile terpercaya untuk Startup, UMKM, dan Mahasiswa. Konsultasi gratis, harga terjangkau, hasil profesional.",
+    "Jasa pembuatan aplikasi Web & Mobile untuk Startup, UMKM, dan Mahasiswa. Konsultasi gratis, harga mulai Rp 99 ribu.",
   keywords: [
     "pengembangan aplikasi",
     "web development",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Daydev - Dari Ide Menjadi Aplikasi",
     description:
-      "Solusi pengembangan aplikasi Web & Mobile terpercaya untuk Startup, UMKM, dan Mahasiswa.",
+      "Jasa pembuatan aplikasi Web & Mobile untuk Startup, UMKM, dan Mahasiswa.",
     url: "https://daydev.studio",
     siteName: "Daydev",
     locale: "id_ID",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Daydev - Dari Ide Menjadi Aplikasi",
     description:
-      "Solusi pengembangan aplikasi Web & Mobile terpercaya untuk Startup, UMKM, dan Mahasiswa.",
+      "Jasa pembuatan aplikasi Web & Mobile untuk Startup, UMKM, dan Mahasiswa.",
     images: ["/logo.png"],
   },
 };
@@ -68,7 +68,7 @@ const organizationSchema = {
   url: "https://daydev.studio",
   logo: "https://daydev.studio/logo.png",
   description:
-    "Studio pengembangan aplikasi web dan mobile terpercaya. Kami mengubah ide menjadi solusi digital yang profesional untuk startup, UMKM, dan mahasiswa di Indonesia.",
+    "Studio pengembangan aplikasi web dan mobile. Kami mengubah ide menjadi solusi digital untuk startup, UMKM, dan mahasiswa di Indonesia.",
   areaServed: {
     "@type": "Country",
     name: "Indonesia",
@@ -94,7 +94,7 @@ const localBusinessSchema = {
   "@type": "LocalBusiness",
   name: "Daydev Studio",
   description:
-    "Solusi pengembangan aplikasi Web & Mobile terpercaya untuk Startup, UMKM, dan Mahasiswa.",
+    "Jasa pembuatan aplikasi Web & Mobile untuk Startup, UMKM, dan Mahasiswa.",
   url: "https://daydev.studio",
   logo: "https://daydev.studio/logo.png",
   image: "https://daydev.studio/logo.png",
@@ -108,11 +108,6 @@ const localBusinessSchema = {
   },
   telephone: "+62 851-7528-4253",
   priceRange: "$$",
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "5",
-    reviewCount: "3",
-  },
 };
 
 // Professional Service Schema (existing, expanded)
@@ -151,12 +146,12 @@ const professionalServiceSchema = {
     },
     {
       "@type": "Offer",
-      itemOffered: {
-        "@type": "Service",
-        name: "Jasa Pembuatan Aplikasi Mobile",
-        description:
-          "Pengembangan aplikasi iOS dan Android native dengan fitur-fitur canggih dan user experience terbaik.",
-      },
+        itemOffered: {
+          "@type": "Service",
+          name: "Jasa Pembuatan Aplikasi Mobile",
+          description:
+            "Pengembangan aplikasi iOS dan Android dengan desain responsif untuk mobile dan desktop.",
+        },
     },
     {
       "@type": "Offer",
@@ -178,12 +173,12 @@ const professionalServiceSchema = {
     },
     {
       "@type": "Offer",
-      itemOffered: {
-        "@type": "Service",
-        name: "Undangan Digital",
-        description:
-          "Pembuatan undangan digital yang menarik, interaktif, dan profesional untuk acara spesial Anda.",
-      },
+        itemOffered: {
+          "@type": "Service",
+          name: "Undangan Digital",
+          description:
+            "Pembuatan undangan digital yang menarik dan interaktif dengan RSVP real-time untuk acara spesial Anda.",
+        },
     },
   ],
 };

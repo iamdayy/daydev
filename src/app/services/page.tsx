@@ -4,7 +4,16 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { services } from "@/data/services";
+import { serviceIcons } from "@/lib/service-icons";
+import { Globe } from "lucide-react";
 import Link from "next/link";
+
+const roiLabel: Record<string, string> = {
+  "Web Development": "Sangat tinggi",
+  "Mobile Development": "Sangat tinggi",
+  "Bot Telegram": "Tinggi",
+  "Undangan Digital": "Sedang",
+};
 
 export default function ServicesPage() {
   return (
@@ -28,7 +37,9 @@ export default function ServicesPage() {
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.map((service) => (
+            {services.map((service) => {
+              const Icon = serviceIcons[service.icon] ?? Globe;
+              return (
               <Link
                 key={service.id}
                 href={`/services/${service.slug}`}
@@ -40,13 +51,12 @@ export default function ServicesPage() {
                     backgroundColor: service.lightBg,
                   }}
                 >
-                  <div className="text-5xl mb-4">{service.icon}</div>
+                  <Icon className="size-12 mb-4" style={{ color: service.color }} aria-hidden="true" />
                   <h2 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-slate-700 transition-colors">
                     {service.title}
                   </h2>
                   <p className="text-slate-700 mb-4">{service.description}</p>
 
-                  {/* Benefits Preview */}
                   <div className="mb-6">
                     <h3 className="font-semibold text-slate-800 mb-2">
                       Keuntungan:
@@ -54,14 +64,13 @@ export default function ServicesPage() {
                     <ul className="text-sm text-slate-600 space-y-1">
                       {service.benefits.slice(0, 3).map((benefit, idx) => (
                         <li key={idx} className="flex items-start">
-                          <span className="mr-2">✓</span>
+                          <span className="mr-2" aria-hidden="true">✓</span>
                           <span>{benefit}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  {/* Target Audience */}
                   <div className="flex flex-wrap gap-2 mb-6">
                     {service.targetAudience.map((audience, idx) => (
                       <span
@@ -73,13 +82,13 @@ export default function ServicesPage() {
                     ))}
                   </div>
 
-                  {/* CTA */}
-                  <button className="inline-block px-6 py-2 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition-colors group-hover:shadow-lg">
-                    Pelajari Lebih Lanjut →
-                  </button>
+                  <span className="inline-block px-6 py-2 min-h-[44px] leading-8 bg-slate-900 text-white rounded-lg font-semibold group-hover:shadow-lg">
+                    Baca Detail Layanan
+                  </span>
                 </div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -120,8 +129,8 @@ export default function ServicesPage() {
                   <td className="py-4 px-4 text-center text-slate-600">
                     Sedang-Tinggi
                   </td>
-                  <td className="py-4 px-4 text-center text-green-600">
-                    ★★★★★
+                  <td className="py-4 px-4 text-center text-green-700">
+                    {roiLabel["Web Development"]}
                   </td>
                 </tr>
                 <tr className="border-b border-slate-200">
@@ -134,8 +143,8 @@ export default function ServicesPage() {
                   <td className="py-4 px-4 text-center text-slate-600">
                     Tinggi
                   </td>
-                  <td className="py-4 px-4 text-center text-green-600">
-                    ★★★★★
+                  <td className="py-4 px-4 text-center text-green-700">
+                    {roiLabel["Mobile Development"]}
                   </td>
                 </tr>
                 <tr className="border-b border-slate-200">
@@ -148,8 +157,8 @@ export default function ServicesPage() {
                   <td className="py-4 px-4 text-center text-slate-600">
                     Rendah-Sedang
                   </td>
-                  <td className="py-4 px-4 text-center text-green-600">
-                    ★★★★
+                  <td className="py-4 px-4 text-center text-green-700">
+                    {roiLabel["Bot Telegram"]}
                   </td>
                 </tr>
                 <tr>
@@ -162,8 +171,8 @@ export default function ServicesPage() {
                   <td className="py-4 px-4 text-center text-slate-600">
                     Rendah
                   </td>
-                  <td className="py-4 px-4 text-center text-green-600">
-                    ★★★
+                  <td className="py-4 px-4 text-center text-green-700">
+                    {roiLabel["Undangan Digital"]}
                   </td>
                 </tr>
               </tbody>

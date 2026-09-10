@@ -84,13 +84,13 @@ Pertimbangkan:
 
 ## Tips & Best Practices
 
-✅ **Wajib**
+**Wajib**
 - Mobile responsive (mayoritas buka dari WhatsApp/mobile)
 - Location pin & jam yang jelas
 - RSVP button yang obvious
 - Kontak yang mudah dihubungi
 
-❌ **Hindari**
+**Hindari**
 - Design terlalu rumit (loading lama)
 - Design hanya bagus di desktop
 - Typo atau salah data
@@ -108,7 +108,7 @@ Pertimbangkan:
 
 Undangan digital adalah pilihan smart untuk acara modern. Tidak hanya hemat biaya, tapi juga profesional dan memorable bagi tamu.
 
-Mau bikin undangan digital tapi tidak tahu caranya? Kami siap membantu! 😊
+Mau bikin undangan digital tapi tidak tahu caranya? Kami siap membantu, hubungi kami via WhatsApp.
     `,
     author: "Tim Daydev",
     category: "Tutorial",
@@ -235,7 +235,7 @@ Ingat: SEO itu jangka panjang, bukan instant. Tapi worth it!
 
 UMKM tidak perlu budget marketing besar untuk dapat traffic Google. Dengan optimasi SEO yang konsisten + content berkualitas, bisa dapat traffic organik gratis.
 
-Mulai sekarang juga! 🚀
+Mulai sekarang juga!
     `,
     author: "Tim Daydev",
     category: "SEO",
@@ -337,7 +337,7 @@ Web development terus evolve dengan teknologi dan trend baru. Mari kita bahas te
 
 ## Best Practices 2024
 
-✅ **Do**
+**Do**
 - Use TypeScript
 - Write tests (unit + integration)
 - Optimize Web Vitals
@@ -345,7 +345,7 @@ Web development terus evolve dengan teknologi dan trend baru. Mari kita bahas te
 - API versioning
 - Security best practices (OWASP)
 
-❌ **Don't**
+**Don't**
 - Skip security
 - Ignore performance
 - Monolithic architecture
@@ -404,7 +404,7 @@ Web development 2024 lebih accessible tapi juga more complex. Fokus pada fundame
 
 Jangan chase setiap trend, tapi stay updated dengan yang relevant untuk project Anda.
 
-Happy coding! 💻
+Happy coding!
     `,
     author: "Tim Daydev",
     category: "Technology",

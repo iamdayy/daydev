@@ -35,7 +35,7 @@ const caseStudies = [
     description:
       "Undangan digital interaktif untuk client dengan fitur RSVP online, gallery foto, dan notifikasi WhatsApp otomatis.",
     image: invitationImage,
-    result: "500+ tamu checkin via RSVP",
+    result: "RSVP online dengan notifikasi WhatsApp",
     technologies: ["React", "Node.js", "WhatsApp API"],
     link: "https://invitation-interactive-storyboard.daydev.studio",
   },
@@ -72,6 +72,16 @@ const caseStudies = [
     technologies: ["Nuxt 3", "Bun", "MongoDB", "Python"],
     link: "https://himatika-itsnupekalongan.com",
   },
+  {
+    id: 5,
+    title: "Barok Bengkel",
+    category: "Web Development",
+    description:
+      "POS bengkel dengan kustomisasi dan integrasi WA Gateway Service.",
+    image: "BB",
+    technologies: [],
+    link: "#",
+  },
 ];
 
 export default function PortfolioPage() {
@@ -80,7 +90,7 @@ export default function PortfolioPage() {
       <Header />
       
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-24 flex-grow w-full">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Portfolio</p>
+        <p className="text-sm font-semibold uppercase tracking-wide text-primary">Portfolio</p>
         <h1 className="mt-4 max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-6xl">
           Beberapa cara kami membantu ide menjadi produk digital.
         </h1>
@@ -120,8 +130,8 @@ export default function PortfolioPage() {
                 </div>
                 
                 {project.link && project.link !== "#" && (
-                  <Link href={project.link} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center text-sm font-semibold text-primary hover:underline">
-                    Lihat Demo →
+                  <Link href={project.link} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex min-h-[44px] items-center text-sm font-semibold text-primary hover:underline">
+                    Buka Demo Live
                   </Link>
                 )}
               </div>
@@ -132,8 +142,8 @@ export default function PortfolioPage() {
         <div className="mt-16 rounded-3xl bg-secondary p-8 sm:p-10">
           <h2 className="text-2xl font-bold">Punya project yang ingin dibangun?</h2>
           <p className="mt-3 text-muted-foreground">Mari bahas kebutuhan dan langkah terbaiknya bersama.</p>
-          <Link href="/contact" className="mt-6 inline-flex rounded-full bg-primary px-5 py-3 font-semibold text-primary-foreground">
-            Mulai diskusi
+          <Link href="https://wa.me/6285175284253?text=Halo%20Daydev%2C%20saya%20ingin%20diskusi%20proyek." target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex min-h-[48px] items-center rounded-full bg-primary px-5 py-3 font-semibold text-primary-foreground">
+            Mulai Diskusi via WhatsApp
           </Link>
         </div>
       </div>

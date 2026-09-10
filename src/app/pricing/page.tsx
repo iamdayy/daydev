@@ -206,9 +206,9 @@ export default function PricingPage() {
             href="https://wa.me/6285175284253"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-colors"
+            className="inline-block px-8 py-4 min-h-[52px] bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-colors"
           >
-            Hubungi Kami Sekarang
+            Chat WhatsApp Sekarang
           </a>
         </div>
       </section>

@@ -27,9 +27,9 @@ export const services: ServiceInfo[] = [
     description: "Desain dan pengembangan website profesional untuk bisnis Anda",
     longDescription:
       "Kami menyediakan solusi website yang modern, responsif, dan SEO-friendly. Dari desain UI/UX hingga development, kami handle semuanya dengan standar internasional.",
-    icon: "🌐",
-    color: "#3b82f6",
-    lightBg: "#eff6ff",
+    icon: "Globe",
+    color: "#0f766e",
+    lightBg: "#f0fdfa",
     benefits: [
       "Desain modern dan responsif",
       "SEO-optimized",
@@ -57,9 +57,9 @@ export const services: ServiceInfo[] = [
       "Aplikasi iOS dan Android native dengan fitur lengkap dan user experience terbaik",
     longDescription:
       "Kami mengembangkan aplikasi mobile native untuk iOS dan Android dengan performance optimal. Tim kami berpengalaman dalam menghadirkan aplikasi yang user-friendly dan scalable.",
-    icon: "📱",
-    color: "#f59e0b",
-    lightBg: "#fffbeb",
+    icon: "Smartphone",
+    color: "#c2410c",
+    lightBg: "#fff7ed",
     benefits: [
       "Native performance",
       "Offline functionality",
@@ -87,9 +87,9 @@ export const services: ServiceInfo[] = [
       "Automasi cerdas untuk bisnis dan kebutuhan pribadi melalui Telegram",
     longDescription:
       "Bot Telegram dapat mengotomatisasi berbagai proses bisnis Anda, dari customer service hingga manajemen inventory. Kami develop bot yang intelligent dan scalable.",
-    icon: "🤖",
-    color: "#f59e0b",
-    lightBg: "#fffbeb",
+    icon: "Bot",
+    color: "#0e7490",
+    lightBg: "#ecfeff",
     benefits: [
       "Automasi proses bisnis",
       "24/7 instant response",
@@ -117,9 +117,9 @@ export const services: ServiceInfo[] = [
       "Platform untuk membuat undangan digital yang cantik, interaktif, dan profesional",
     longDescription:
       "Undangan digital modern dengan fitur RSVP terintegrasi, galeri foto, dan notifikasi WhatsApp. Sempurna untuk pernikahan, acara corporate, dan celebration lainnya.",
-    icon: "💌",
-    color: "#ec4899",
-    lightBg: "#fdf2f8",
+    icon: "Mail",
+    color: "#9a3412",
+    lightBg: "#fff7ed",
     benefits: [
       "Desain cantik dan interaktif",
       "RSVP tracking otomatis",

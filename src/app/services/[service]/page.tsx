@@ -2,10 +2,33 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { getAllServiceSlugs, getServiceBySlug } from "@/data/services";
+import { serviceIcons } from "@/lib/service-icons";
+import { Bot, Globe, Smartphone } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React, { Usable } from "react";
+
+const relatedServices = [
+  {
+    href: "/services/web-development",
+    icon: Globe,
+    title: "Web Development",
+    desc: "Website profesional yang responsive dan cepat",
+  },
+  {
+    href: "/services/mobile-development",
+    icon: Smartphone,
+    title: "Mobile Development",
+    desc: "Aplikasi iOS dan Android dengan performa optimal",
+  },
+  {
+    href: "/services/telegram-bot",
+    icon: Bot,
+    title: "Bot Telegram",
+    desc: "Automasi cerdas untuk bisnis Anda",
+  },
+];
 
 interface Props {
   params: Usable<{
@@ -20,8 +43,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const serviceParams = ((await params) as any).service;
-  const service = getServiceBySlug(serviceParams);
+  const resolved = (await params) as { service: string };
+  const service = getServiceBySlug(resolved.service);
 
   if (!service) {
     return {
@@ -53,6 +76,8 @@ export default function ServiceDetailPage({ params }: Props) {
     notFound();
   }
 
+  const ServiceIcon = serviceIcons[service.icon] ?? Globe;
+
   return (
     <main>
       <Header />
@@ -66,7 +91,7 @@ export default function ServiceDetailPage({ params }: Props) {
       >
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-6 mb-6">
-            <div className="text-6xl">{service.icon}</div>
+            <ServiceIcon className="size-16 shrink-0" style={{ color: service.color }} aria-hidden="true" />
             <div>
               <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-2">
                 {service.title}
@@ -274,38 +299,22 @@ export default function ServiceDetailPage({ params }: Props) {
           </h2>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <Link
-              href="/services/web-development"
-              className="p-6 bg-white rounded-lg border-2 border-slate-200 hover:border-slate-400 transition-all"
-            >
-              <div className="text-4xl mb-4">🌐</div>
-              <h3 className="font-bold text-slate-900">Web Development</h3>
-              <p className="text-slate-600 text-sm mt-2">
-                Website profesional yang responsive dan cepat
-              </p>
-            </Link>
-
-            <Link
-              href="/services/mobile-development"
-              className="p-6 bg-white rounded-lg border-2 border-slate-200 hover:border-slate-400 transition-all"
-            >
-              <div className="text-4xl mb-4">📱</div>
-              <h3 className="font-bold text-slate-900">Mobile Development</h3>
-              <p className="text-slate-600 text-sm mt-2">
-                Aplikasi iOS dan Android dengan performa optimal
-              </p>
-            </Link>
-
-            <Link
-              href="/services/telegram-bot"
-              className="p-6 bg-white rounded-lg border-2 border-slate-200 hover:border-slate-400 transition-all"
-            >
-              <div className="text-4xl mb-4">🤖</div>
-              <h3 className="font-bold text-slate-900">Bot Telegram</h3>
-              <p className="text-slate-600 text-sm mt-2">
-                Automasi cerdas untuk bisnis Anda
-              </p>
-            </Link>
+            {relatedServices.map((related) => {
+              const Icon = related.icon;
+              return (
+                <Link
+                  key={related.href}
+                  href={related.href}
+                  className="p-6 bg-white rounded-lg border-2 border-slate-200 hover:border-slate-400 transition-all"
+                >
+                  <Icon className="size-10 mb-4 text-slate-700" aria-hidden="true" />
+                  <h3 className="font-bold text-slate-900">{related.title}</h3>
+                  <p className="text-slate-600 text-sm mt-2">
+                    {related.desc}
+                  </p>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

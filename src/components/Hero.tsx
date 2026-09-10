@@ -2,8 +2,20 @@
 
 import invitationImage from "@/../public/image/portfolio/invitation.png";
 import { whatsapp } from "@/models/whatsapp";
+import { Bot, Globe, Mail, Smartphone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const Hero3D = dynamic(() => import("./Hero3D"), { ssr: false });
+
+// Sel modular ala Sublevel berisi layanan real Daydev. Alasan: bukti layanan sekilas tanpa 3D penuh.
+const serviceCells = [
+  { href: "/services/web-development", icon: Globe, title: "Web", desc: "Website modern" },
+  { href: "/services/mobile-development", icon: Smartphone, title: "Mobile", desc: "iOS dan Android" },
+  { href: "/services/telegram-bot", icon: Bot, title: "Bot", desc: "Automasi 24/7" },
+  { href: "/services/undangan-digital", icon: Mail, title: "Undangan", desc: "Online interaktif" },
+];
 
 export default function Hero() {
   const handleConsultation = () => {
@@ -21,8 +33,10 @@ export default function Hero() {
       className="hero-gradient relative overflow-hidden pt-28 pb-20"
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div className="absolute inset-0 opacity-90">
+          <Hero3D />
+        </div>
         <div className="absolute -top-32 -right-32 w-96 h-96 bg-[#0f766e]/20 rounded-full blur-3xl" />
-        <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-[#ea7b3c]/10 rounded-full blur-3xl" />
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 w-full relative">
@@ -70,6 +84,32 @@ export default function Hero() {
                 Jelajahi Layanan
               </button>
             </div>
+
+            <ul className="mt-8 grid grid-cols-2 gap-3 max-w-xl mx-auto lg:mx-0" aria-label="Layanan Daydev">
+              {serviceCells.map((cell) => {
+                const Icon = cell.icon;
+                return (
+                  <li key={cell.href}>
+                    <Link
+                      href={cell.href}
+                      className="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/5 px-4 py-3 min-h-[64px] hover:border-[#ea7b3c]/60 hover:bg-white/10 transition-colors"
+                    >
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#172033] text-[#ea7b3c]">
+                        <Icon className="size-5" aria-hidden="true" />
+                      </span>
+                      <span className="min-w-0 text-left">
+                        <span className="block truncate text-sm font-bold text-white">{cell.title}</span>
+                        <span className="block truncate text-xs text-gray-300">{cell.desc}</span>
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <p className="mt-4 text-xs text-gray-300">
+              Status: Menerima proyek baru. Balas via WhatsApp pada jam kerja.
+            </p>
           </div>
 
           <figure className="flex flex-col items-center lg:items-end gap-4">

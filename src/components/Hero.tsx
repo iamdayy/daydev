@@ -5,9 +5,6 @@ import { whatsapp } from "@/models/whatsapp";
 import { Bot, Globe, Mail, Smartphone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-
-const Hero3D = dynamic(() => import("./Hero3D"), { ssr: false });
 
 // Sel modular ala Sublevel berisi layanan real Daydev. Alasan: bukti layanan sekilas tanpa 3D penuh.
 const serviceCells = [
@@ -30,12 +27,11 @@ export default function Hero() {
   return (
     <section
       id="beranda"
-      className="hero-gradient relative overflow-hidden pt-28 pb-20"
+      className="relative overflow-hidden pt-28 pb-20"
     >
+      {/* Scrim arah: opak di zona teks, tipis di zona visual. Alasan: 3D global terlihat tapi teks putih tetap kontras (R-25). */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <div className="absolute inset-0 opacity-90">
-          <Hero3D />
-        </div>
+        <div className="absolute inset-0 bg-linear-to-b from-[#172033] via-[#172033]/95 to-[#172033]/30 lg:bg-linear-to-r lg:from-[#172033] lg:via-[#172033]/95 lg:to-[#172033]/30" />
         <div className="absolute -top-32 -right-32 w-96 h-96 bg-[#0f766e]/20 rounded-full blur-3xl" />
       </div>
 
@@ -130,7 +126,8 @@ export default function Hero() {
                 priority
               />
             </div>
-            <figcaption className="text-center text-sm text-gray-300 lg:text-right">
+            {/* Pil scrim di caption. Alasan: caption duduk di zona 3D tipis, pil opak jaga kontras tanpa blur baru. */}
+            <figcaption className="text-center text-sm text-gray-300 lg:text-right bg-[#172033]/95 rounded-2xl px-4 py-2">
               Contoh kerja nyata: undangan digital interaktif.{" "}
               <Link href="/portfolio" className="font-semibold text-[#ea7b3c] hover:underline">
                 Buka studi kasus

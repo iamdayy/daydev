@@ -32,7 +32,8 @@
 
 * { border-color: var(--border); }
 html { scroll-behavior: smooth; scroll-padding-top: 80px; background: var(--background); }
-body { background: var(--background); color: var(--foreground); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+/* Body transparan, warna dasar di html. Alasan: anak z-index negatif (canvas 3D global) dilukis DI BAWAH background body yang opak, jadi canvas tidak pernah terlihat bila body opak. */
+body { background: transparent; color: var(--foreground); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
 
 :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 

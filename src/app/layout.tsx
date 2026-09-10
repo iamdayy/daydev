@@ -1,4 +1,5 @@
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import GlobalBackgroundLoader from "@/components/three/GlobalBackgroundLoader";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -209,6 +210,7 @@ export default function RootLayout({
         ))}
       </head>
       <body className="antialiased">
+        <GlobalBackgroundLoader />
         {children}
       </body>
     </html>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import ecowarnImage from "@/../public/image/portfolio/ecowarn.jpeg";
@@ -99,12 +100,22 @@ export default function PortfolioPage() {
           {caseStudies.map((project) => (
             <article key={project.id} className="group rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg overflow-hidden flex flex-col">
               <div className="relative h-48 bg-secondary flex items-center justify-center text-6xl overflow-hidden shrink-0">
-                <iframe
-                  src={project.link}
-                  title={`Visual portfolio ${project.title}`}
-                  className="h-full w-full border-0"
-                  loading="lazy"
-                />
+                {typeof project.image === "string" ? (
+                  <iframe
+                    src={project.link}
+                    title={`Visual portfolio ${project.title}`}
+                    className="h-full w-full border-0"
+                    loading="lazy"
+                  />
+                ) : (
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                )}
               </div>
               <div className="p-6 flex flex-col flex-grow">
                 <span className="inline-block px-3 py-1 bg-secondary text-primary rounded-full text-xs font-semibold self-start mb-4">

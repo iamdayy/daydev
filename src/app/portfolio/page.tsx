@@ -1,14 +1,12 @@
-import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
+import Link from "next/link";
 
-import invitationImage from "@/../public/image/portfolio/invitation.png"
-import siskuiImage from "@/../public/image/portfolio/sisku.png"
-import ecowarnImage from "@/../public/image/portfolio/ecowarn.jpeg"
-import himatikaImage from "@/../public/image/portfolio/himatika.png"
+import ecowarnImage from "@/../public/image/portfolio/ecowarn.jpeg";
+import himatikaImage from "@/../public/image/portfolio/himatika.png";
+import siskuiImage from "@/../public/image/portfolio/sisku.png";
 
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 export const metadata: Metadata = {
@@ -28,17 +26,6 @@ export const metadata: Metadata = {
 };
 
 const caseStudies = [
-  {
-    id: 1,
-    title: "Undangan Digital Pernikahan - Planet Production",
-    category: "Undangan Digital",
-    description:
-      "Undangan digital interaktif untuk client dengan fitur RSVP online, gallery foto, dan notifikasi WhatsApp otomatis.",
-    image: invitationImage,
-    result: "RSVP online dengan notifikasi WhatsApp",
-    technologies: ["React", "Node.js", "WhatsApp API"],
-    link: "https://invitation-interactive-storyboard.daydev.studio",
-  },
   {
     id: 2,
     title: "Sistem Informasi Sekolah (SIS) - Integrated System",
@@ -72,16 +59,26 @@ const caseStudies = [
     technologies: ["Nuxt 3", "Bun", "MongoDB", "Python"],
     link: "https://himatika-itsnupekalongan.com",
   },
+  // {
+  //   id: 5,
+  //   title: "Barok Bengkel",
+  //   category: "Web Development",
+  //   description:
+  //     "POS bengkel dengan kustomisasi dan integrasi WA Gateway Service.",
+  //   image: "BB",
+  //   technologies: ["Laravel", "WhatsApp API", "MySQL", "Payment Gateway"],
+  //   link: "#",
+  // },
   {
-    id: 5,
-    title: "Barok Bengkel",
+    id: 6,
+    title: "Mola Batik - Pattern-Aware Nesting Optimization",
     category: "Web Development",
     description:
-      "POS bengkel dengan kustomisasi dan integrasi WA Gateway Service.",
-    image: "BB",
-    technologies: [],
-    link: "#",
-  },
+      "Aplikasi web untuk optimasi penempatan pola batik pada kain dengan algoritma nesting berbasis AI.",
+    image: "MB",
+    technologies: ["Python", "Next.js", "SIFT", "Geometry Processing"],
+    link: "https://mola-batik.daydev.studio",
+  }
 ];
 
 export default function PortfolioPage() {
@@ -102,17 +99,12 @@ export default function PortfolioPage() {
           {caseStudies.map((project) => (
             <article key={project.id} className="group rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg overflow-hidden flex flex-col">
               <div className="relative h-48 bg-secondary flex items-center justify-center text-6xl overflow-hidden shrink-0">
-                {typeof project.image === "string" ? (
-                  <span>{project.image}</span>
-                ) : (
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                )}
+                <iframe
+                  src={project.link}
+                  title={`Visual portfolio ${project.title}`}
+                  className="h-full w-full border-0"
+                  loading="lazy"
+                />
               </div>
               <div className="p-6 flex flex-col flex-grow">
                 <span className="inline-block px-3 py-1 bg-secondary text-primary rounded-full text-xs font-semibold self-start mb-4">

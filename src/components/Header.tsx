@@ -11,7 +11,6 @@ const navLinks = [
   { label: "Harga", href: "/pricing" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Blog", href: "/blog" },
-  { label: "Tentang", href: "/about" },
 ];
 
 export default function Header() {

@@ -3,7 +3,10 @@ import Header from "@/components/Header";
 import PriceCalculator from "@/components/PriceCalculator";
 import Pricing from "@/components/Pricing";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { whatsapp } from "@/models/whatsapp";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Harga & Paket - Daydev Studio",
@@ -21,195 +24,123 @@ export const metadata: Metadata = {
   },
 };
 
+const faqs = [
+  {
+    question: "Apakah ada paket cicilan?",
+    answer:
+      "Ya, tersedia opsi cicilan dengan skema down payment dan progress payment atau cicilan berjenjang. Hubungi kami untuk diskusi detail.",
+  },
+  {
+    question: "Berapa banyak revisi yang termasuk dalam paket?",
+    answer:
+      "Jumlah revisi tergantung paket. Paket basic umumnya termasuk 2 revisi, paket pro termasuk revisi tanpa batas. Revisi tambahan di luar paket dapat dibiayai terpisah.",
+  },
+  {
+    question: "Apakah harga termasuk maintenance dan support jangka panjang?",
+    answer:
+      "Harga yang ditampilkan adalah untuk pengembangan project. Maintenance dan support jangka panjang dapat ditambahkan sebagai paket terpisah (hosting, support, backup berkala).",
+  },
+  {
+    question: "Apakah ada diskon untuk project besar atau kontrak jangka panjang?",
+    answer:
+      "Ya, kami menawarkan diskon khusus untuk project besar, kontrak jangka panjang, atau beberapa project sekaligus. Hubungi tim kami untuk penawaran custom.",
+  },
+  {
+    question: "Apa saja yang sudah termasuk dalam setiap paket?",
+    answer:
+      "Setiap paket mencakup konsultasi awal, development, testing, deployment, dokumentasi, dan support untuk jangka waktu tertentu. Detail lengkap ada di setiap kategori layanan.",
+  },
+];
+
+const planComparison = [
+  { feature: "Development", basic: "✓", pro: "✓", premium: "✓" },
+  { feature: "Design", basic: "Template", pro: "Custom", premium: "Premium custom" },
+  { feature: "Revisi", basic: "2x", pro: "Tanpa batas", premium: "Tanpa batas" },
+  { feature: "Hosting (gratis)", basic: "3 bulan", pro: "6 bulan", premium: "12 bulan" },
+  { feature: "Support", basic: "Email", pro: "Chat 24/7", premium: "Dedicated team" },
+  { feature: "Training", basic: "–", pro: "✓", premium: "✓" },
+];
+
 export default function PricingPage() {
   return (
-    <main>
+    <main className="flex min-h-screen flex-col bg-background text-foreground">
       <Header />
 
-      {/* Hero Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-slate-50 to-slate-100">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-            Paket & Harga
+      <section className="border-b border-border bg-card">
+        <div className="mx-auto w-full max-w-6xl px-4 pb-16 pt-12 sm:px-6 lg:pb-24 lg:pt-20">
+          <p className="text-sm font-semibold uppercase tracking-wide text-primary">Harga &amp; paket</p>
+          <h1 className="mt-4 max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-6xl">
+            Harga yang jelas, tanpa biaya tersembunyi.
           </h1>
-          <p className="text-xl text-slate-600">
-            Pilih paket yang sesuai dengan kebutuhan dan budget Anda. Semua paket dilengkapi
-            dengan konsultasi gratis dan dukungan teknis.
+          <p className="mt-6 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">
+            Pilih paket sesuai kebutuhan dan budget. Semua paket sudah mencakup konsultasi awal dan dukungan teknis.
           </p>
         </div>
       </section>
 
-      {/* Pricing Component */}
       <Pricing />
 
-      {/* Price Calculator */}
-      <section className="py-20 px-4 bg-slate-50">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Kalkulator Harga Custom
-          </h2>
-          <PriceCalculator />
-        </div>
-      </section>
+      <PriceCalculator />
 
-      {/* FAQ Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">
-            Pertanyaan Tentang Harga
-          </h2>
-
-          <div className="space-y-6">
-            <details className="bg-slate-50 p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
-              <summary className="font-bold text-slate-900 flex justify-between items-center">
-                Apakah ada paket cicilan?
-                <span className="text-2xl group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="text-slate-600 mt-4">
-                Ya, kami menyediakan opsi cicilan dengan skema down payment + progress
-                payment atau cicilan berjenjang. Silahkan hubungi kami untuk diskusi detail
-                tentang opsi cicilan yang tersedia.
-              </p>
-            </details>
-
-            <details className="bg-slate-50 p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
-              <summary className="font-bold text-slate-900 flex justify-between items-center">
-                Berapa banyak revisi yang termasuk dalam paket?
-                <span className="text-2xl group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="text-slate-600 mt-4">
-                Jumlah revisi tergantung paket yang Anda pilih. Paket Basic biasanya
-                termasuk 2 revisi, Pro termasuk unlimited revisi. Revisi tambahan diluar
-                paket dapat dibiayai secara terpisah.
-              </p>
-            </details>
-
-            <details className="bg-slate-50 p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
-              <summary className="font-bold text-slate-900 flex justify-between items-center">
-                Apakah harga termasuk maintenance/support jangka panjang?
-                <span className="text-2xl group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="text-slate-600 mt-4">
-                Harga yang ditampilkan adalah untuk pengembangan project. Maintenance dan
-                support jangka panjang dapat ditambahkan dengan paket terpisah (hosting,
-                support 24/7, regular backup, dll).
-              </p>
-            </details>
-
-            <details className="bg-slate-50 p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
-              <summary className="font-bold text-slate-900 flex justify-between items-center">
-                Apakah ada diskon untuk project besar atau kontrak jangka panjang?
-                <span className="text-2xl group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="text-slate-600 mt-4">
-                Ya, kami menawarkan diskon khusus untuk project besar, kontrak jangka
-                panjang, atau multiple projects. Hubungi tim kami untuk mendiskusikan
-                penawaran custom.
-              </p>
-            </details>
-
-            <details className="bg-slate-50 p-6 rounded-lg border-2 border-slate-200 cursor-pointer group">
-              <summary className="font-bold text-slate-900 flex justify-between items-center">
-                Apa yang sudah termasuk dalam setiap paket?
-                <span className="text-2xl group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="text-slate-600 mt-4">
-                Setiap paket termasuk: konsultasi awal, development, testing, deployment,
-                dokumentasi, training, dan support kurun waktu tertentu. Detail lengkap
-                bisa dilihat di setiap kategori layanan.
-              </p>
-            </details>
+      <section className="bg-background">
+        <div className="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:py-24">
+          <h2 className="text-center text-3xl font-bold tracking-tight text-foreground">Pertanyaan tentang harga</h2>
+          <div className="mt-10 space-y-4">
+            {faqs.map((faq) => (
+              <details key={faq.question} className="group rounded-2xl border border-border bg-card p-6">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-bold text-foreground [&::-webkit-details-marker]:hidden">
+                  {faq.question}
+                  <ChevronDown className="size-5 shrink-0 text-primary transition-transform group-open:rotate-180" aria-hidden="true" />
+                </summary>
+                <p className="mt-4 leading-7 text-muted-foreground">{faq.answer}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Comparison Table */}
-      <section className="py-20 px-4 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">
-            Perbandingan Paket
-          </h2>
-
-          <div className="overflow-x-auto">
+      <section className="border-t border-border bg-muted/30">
+        <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
+          <h2 className="text-center text-3xl font-bold tracking-tight text-foreground">Perbandingan paket</h2>
+          <div className="mt-10 overflow-x-auto rounded-2xl border border-border bg-card">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-slate-900 text-white">
-                  <th className="text-left py-4 px-4 font-bold">Fitur</th>
-                  <th className="text-center py-4 px-4 font-bold">Basic</th>
-                  <th className="text-center py-4 px-4 font-bold">Pro</th>
-                  <th className="text-center py-4 px-4 font-bold">Premium</th>
+                <tr className="border-b border-border bg-[#172033] text-left text-white">
+                  <th className="px-6 py-4 font-bold">Fitur</th>
+                  <th className="px-6 py-4 text-center font-bold">Basic</th>
+                  <th className="px-6 py-4 text-center font-bold">Pro</th>
+                  <th className="px-6 py-4 text-center font-bold">Premium</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-slate-200">
-                  <td className="py-4 px-4 font-semibold">Development</td>
-                  <td className="text-center py-4 px-4">✓</td>
-                  <td className="text-center py-4 px-4">✓</td>
-                  <td className="text-center py-4 px-4">✓</td>
-                </tr>
-                <tr className="border-b border-slate-200">
-                  <td className="py-4 px-4 font-semibold">Design</td>
-                  <td className="text-center py-4 px-4">Template</td>
-                  <td className="text-center py-4 px-4">Custom</td>
-                  <td className="text-center py-4 px-4">Premium Custom</td>
-                </tr>
-                <tr className="border-b border-slate-200">
-                  <td className="py-4 px-4 font-semibold">Revisi</td>
-                  <td className="text-center py-4 px-4">2x</td>
-                  <td className="text-center py-4 px-4">Unlimited</td>
-                  <td className="text-center py-4 px-4">Unlimited</td>
-                </tr>
-                <tr className="border-b border-slate-200">
-                  <td className="py-4 px-4 font-semibold">Hosting (Gratis)</td>
-                  <td className="text-center py-4 px-4">3 bulan</td>
-                  <td className="text-center py-4 px-4">6 bulan</td>
-                  <td className="text-center py-4 px-4">12 bulan</td>
-                </tr>
-                <tr className="border-b border-slate-200">
-                  <td className="py-4 px-4 font-semibold">Support</td>
-                  <td className="text-center py-4 px-4">Email</td>
-                  <td className="text-center py-4 px-4">Chat 24/7</td>
-                  <td className="text-center py-4 px-4">Dedicated Team</td>
-                </tr>
-                <tr>
-                  <td className="py-4 px-4 font-semibold">Training</td>
-                  <td className="text-center py-4 px-4">-</td>
-                  <td className="text-center py-4 px-4">✓</td>
-                  <td className="text-center py-4 px-4">✓✓</td>
-                </tr>
+                {planComparison.map((row, idx) => (
+                  <tr key={row.feature} className={idx !== planComparison.length - 1 ? "border-b border-border" : undefined}>
+                    <td className="px-6 py-4 font-semibold text-foreground">{row.feature}</td>
+                    <td className="px-6 py-4 text-center text-muted-foreground">{row.basic}</td>
+                    <td className="px-6 py-4 text-center text-muted-foreground">{row.pro}</td>
+                    <td className="px-6 py-4 text-center text-muted-foreground">{row.premium}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-slate-900 to-slate-800 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Belum Menemukan Paket yang Tepat?
-          </h2>
-          <p className="text-lg text-slate-300 mb-8">
-            Hubungi kami untuk membuat paket custom yang sesuai dengan kebutuhan spesifik Anda.
-          </p>
-          <a
-            href="https://wa.me/6285175284253"
+      <section className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 lg:py-20">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-3xl bg-secondary p-8 sm:p-10 lg:flex-row lg:items-center">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-primary">Butuh paket custom?</p>
+            <h2 className="mt-2 max-w-xl text-2xl font-bold tracking-tight sm:text-3xl">Belum menemukan paket yang tepat?</h2>
+          </div>
+          <Link
+            href={`https://wa.me/${whatsapp.phoneNumber}?text=${encodeURIComponent(whatsapp.defaultMessage)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-8 py-4 min-h-[52px] bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-colors"
+            className="inline-flex shrink-0 min-h-[48px] items-center gap-2 rounded-full bg-primary px-5 py-3 font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
           >
-            Chat WhatsApp Sekarang
-          </a>
+            Diskusikan via WhatsApp <ArrowUpRight className="size-4" aria-hidden="true" />
+          </Link>
         </div>
       </section>
 

@@ -72,7 +72,7 @@ export default function TargetMarket() {
   const ref = useScrollAnimation();
 
   return (
-    <section id="layanan" className="py-20 bg-gray-50" ref={ref}>
+    <section id="layanan" className="py-24 bg-background" ref={ref}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <div className="fade-in inline-block bg-[#b45309]/10 text-[#b45309] text-sm font-semibold px-4 py-2 rounded-full mb-4 border border-[#b45309]/25">

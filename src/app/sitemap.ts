@@ -4,10 +4,10 @@ import type { MetadataRoute } from "next";
 
 export const dynamic = "force-static";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://daydev.studio";
   const serviceSlugs = getAllServiceSlugs();
-  const blogArticles = getAllArticles();
+  const blogArticles = await getAllArticles();
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
@@ -34,12 +34,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
     },
     {
       url: `${baseUrl}/blog`,

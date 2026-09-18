@@ -36,7 +36,9 @@ const servicePreview = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const featured = await getFeaturedArticles();
+
   return (
     <main>
       <Header />
@@ -44,40 +46,37 @@ export default function Home() {
       <TargetMarket />
       <FeaturedProjects />
 
-      <section className="py-16 px-4 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Layanan Kami</h2>
+      <section className="bg-background px-4 py-24 sm:px-6">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div className="max-w-2xl">
+              <p className="mb-4 text-sm font-bold uppercase tracking-wide text-primary">Layanan</p>
+              <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-5xl">Bisa dibuat bersama Daydev.</h2>
+            </div>
+            <Link href="/services" className="inline-flex items-center gap-2 font-semibold text-primary transition-transform hover:translate-x-1">Buka katalog layanan <ArrowUpRight className="size-4" /></Link>
+          </div>
 
-          <div className="grid md:grid-cols-4 gap-6 mb-8">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {servicePreview.map((service) => {
               const Icon = service.icon;
               return (
                 <Link
                   key={service.href}
                   href={service.href}
-                  className="group p-6 bg-white rounded-lg border-2 border-slate-200 hover:border-[#0f766e] transition-all hover:shadow-lg"
+                  className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
                 >
-                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-[#172033] text-[#ea7b3c] group-hover:scale-110 transition-transform">
+                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#172033] text-[#ea7b3c] transition-transform group-hover:scale-110">
                     <Icon className="size-6" aria-hidden="true" />
                   </div>
-                  <h3 className="font-bold text-slate-900 group-hover:text-[#0f766e]">
+                  <h3 className="font-bold text-foreground group-hover:text-primary">
                     {service.title}
                   </h3>
-                  <p className="text-sm text-slate-600 mt-2">
+                  <p className="mt-2 text-sm text-muted-foreground">
                     {service.desc}
                   </p>
                 </Link>
               );
             })}
-          </div>
-
-          <div className="text-center">
-            <Link
-              href="/services"
-              className="inline-block px-6 py-3 min-h-[48px] bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition-colors"
-            >
-              Buka Katalog Layanan
-            </Link>
           </div>
         </div>
       </section>
@@ -96,7 +95,7 @@ export default function Home() {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-2">
-            {getFeaturedArticles().slice(0, 2).map((article, i) => (
+            {featured.slice(0, 2).map((article, i) => (
               <article key={article.id} className="group overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <div className={`relative flex h-52 items-end overflow-hidden p-6 ${i === 0 ? "bg-gradient-to-br from-primary/90 via-primary to-accent" : "bg-[#172033]"}`}>
                   {i === 0 && (

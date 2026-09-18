@@ -1,10 +1,9 @@
 "use client";
 
-import invitationImage from "@/../public/image/portfolio/invitation.png";
 import { whatsapp } from "@/models/whatsapp";
 import { Bot, Globe, Mail, Smartphone } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import HeroComputer from "./three/HeroComputerLoader";
 
 // Sel modular ala Sublevel berisi layanan real Daydev. Alasan: bukti layanan sekilas tanpa 3D penuh.
 const serviceCells = [
@@ -108,32 +107,8 @@ export default function Hero() {
             </p>
           </div>
 
-          <figure className="flex flex-col items-center lg:items-end gap-4">
-            <div className="w-full max-w-md overflow-hidden rounded-2xl border border-white/15 bg-[#172033] shadow-xl">
-              <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
-                <span className="w-2.5 h-2.5 rounded-full bg-white/20" aria-hidden="true" />
-                <span className="w-2.5 h-2.5 rounded-full bg-white/20" aria-hidden="true" />
-                <span className="w-2.5 h-2.5 rounded-full bg-white/20" aria-hidden="true" />
-                <span className="ml-2 truncate text-xs text-gray-400">
-                  invitation-interactive-storyboard.daydev.studio
-                </span>
-              </div>
-              <Image
-                src={invitationImage}
-                alt="Contoh undangan digital interaktif buatan Daydev"
-                className="h-auto w-full object-cover"
-                sizes="(max-width: 1024px) 100vw, 448px"
-                priority
-              />
-            </div>
-            {/* Pil scrim di caption. Alasan: caption duduk di zona 3D tipis, pil opak jaga kontras tanpa blur baru. */}
-            <figcaption className="text-center text-sm text-gray-300 lg:text-right bg-[#172033]/95 rounded-2xl px-4 py-2">
-              Contoh kerja nyata: undangan digital interaktif.{" "}
-              <Link href="/portfolio" className="font-semibold text-[#ea7b3c] hover:underline">
-                Buka studi kasus
-              </Link>
-            </figcaption>
-          </figure>
+          {/* Monitor 3D: galeri proyek nyata Daydev, klik layar membuka demo (lihat HeroComputer). */}
+          <HeroComputer />
         </div>
       </div>
     </section>

@@ -14,7 +14,7 @@ export function getCameraTarget(pathname: string): CameraTarget {
   if (pathname.startsWith("/pricing")) {
     return { position: [0, 1.0, 4.4], lookAt: [0, 0.1, 0] };
   }
-  if (pathname.startsWith("/about") || pathname.startsWith("/blog")) {
+  if (pathname.startsWith("/blog")) {
     return { position: [0, 0.2, 5.6], lookAt: [0, 0, 0] };
   }
   return { position: [0, 0.4, 5.2], lookAt: [0, 0, 0] };

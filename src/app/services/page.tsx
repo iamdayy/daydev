@@ -1,203 +1,133 @@
-"use client";
-
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { services } from "@/data/services";
+import { whatsapp } from "@/models/whatsapp";
 import { serviceIcons } from "@/lib/service-icons";
-import { Globe } from "lucide-react";
+import { ArrowUpRight, Check, Globe } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 
-const roiLabel: Record<string, string> = {
-  "Web Development": "Sangat tinggi",
-  "Mobile Development": "Sangat tinggi",
-  "Bot Telegram": "Tinggi",
-  "Undangan Digital": "Sedang",
+export const metadata: Metadata = {
+  title: "Layanan - Daydev Studio",
+  description:
+    "Jasa pengembangan website, aplikasi mobile, bot Telegram, dan undangan digital untuk startup, UMKM, dan mahasiswa.",
+  alternates: {
+    canonical: "https://daydev.studio/services",
+  },
 };
+
+const comparison = [
+  { name: "Web Development", timeline: "2–8 minggu", complexity: "Sedang–Tinggi" },
+  { name: "Mobile Development", timeline: "4–12 minggu", complexity: "Tinggi" },
+  { name: "Bot Telegram", timeline: "1–4 minggu", complexity: "Rendah–Sedang" },
+  { name: "Undangan Digital", timeline: "3–7 hari", complexity: "Rendah" },
+];
 
 export default function ServicesPage() {
   return (
-    <main>
+    <main className="flex min-h-screen flex-col bg-background text-foreground">
       <Header />
 
-      {/* Hero Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-slate-50 to-slate-100">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-            Layanan Kami
+      <section className="border-b border-border bg-card">
+        <div className="mx-auto w-full max-w-6xl px-4 pb-16 pt-12 sm:px-6 lg:pb-24 lg:pt-20">
+          <p className="text-sm font-semibold uppercase tracking-wide text-primary">Layanan</p>
+          <h1 className="mt-4 max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-6xl">
+            Solusi dari ide menjadi produk yang dipakai.
           </h1>
-          <p className="text-xl text-slate-600 mb-8">
-            Solusi lengkap pengembangan aplikasi dan teknologi digital untuk
-            mengubah ide Anda menjadi kenyataan.
+          <p className="mt-6 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">
+            Kami membantu startup, UMKM, dan mahasiswa membangun website, aplikasi mobile, bot Telegram, hingga undangan digital.
           </p>
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.map((service) => {
-              const Icon = serviceIcons[service.icon] ?? Globe;
-              return (
+      <section className="mx-auto w-full max-w-6xl flex-1 px-4 py-16 sm:px-6 lg:py-24">
+        <div className="grid gap-6 md:grid-cols-2">
+          {services.map((service) => {
+            const Icon = serviceIcons[service.icon] ?? Globe;
+            return (
               <Link
                 key={service.id}
                 href={`/services/${service.slug}`}
-                className="group"
+                className="group flex flex-col rounded-3xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
               >
-                <div
-                  className="p-8 rounded-lg border-2 border-slate-200 hover:border-slate-400 transition-all duration-300 h-full"
-                  style={{
-                    backgroundColor: service.lightBg,
-                  }}
-                >
-                  <Icon className="size-12 mb-4" style={{ color: service.color }} aria-hidden="true" />
-                  <h2 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-slate-700 transition-colors">
-                    {service.title}
-                  </h2>
-                  <p className="text-slate-700 mb-4">{service.description}</p>
-
-                  <div className="mb-6">
-                    <h3 className="font-semibold text-slate-800 mb-2">
-                      Keuntungan:
-                    </h3>
-                    <ul className="text-sm text-slate-600 space-y-1">
-                      {service.benefits.slice(0, 3).map((benefit, idx) => (
-                        <li key={idx} className="flex items-start">
-                          <span className="mr-2" aria-hidden="true">✓</span>
-                          <span>{benefit}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {service.targetAudience.map((audience, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 bg-white bg-opacity-60 rounded-full text-sm text-slate-700 font-medium"
-                      >
-                        {audience}
-                      </span>
-                    ))}
-                  </div>
-
-                  <span className="inline-block px-6 py-2 min-h-[44px] leading-8 bg-slate-900 text-white rounded-lg font-semibold group-hover:shadow-lg">
-                    Baca Detail Layanan
-                  </span>
+                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-muted">
+                  <Icon className="size-6 text-primary" aria-hidden="true" />
                 </div>
+                <h2 className="text-2xl font-bold text-foreground">{service.title}</h2>
+                <p className="mt-2 leading-7 text-muted-foreground">{service.description}</p>
+
+                <ul className="mt-5 space-y-2.5">
+                  {service.benefits.slice(0, 3).map((benefit) => (
+                    <li key={benefit} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                      <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+                      <span>{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {service.targetAudience.map((audience) => (
+                    <span key={audience} className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-foreground">
+                      {audience}
+                    </span>
+                  ))}
+                </div>
+
+                <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-primary">
+                  Baca detail layanan <ArrowUpRight className="size-4" aria-hidden="true" />
+                </span>
               </Link>
-              );
-            })}
-          </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* Comparison Section */}
-      <section className="py-20 px-4 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
-            Pilih Layanan yang Sesuai dengan Kebutuhan Anda
+      <section className="border-t border-border bg-muted/30">
+        <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
+          <p className="text-sm font-semibold uppercase tracking-wide text-primary">Perbandingan</p>
+          <h2 className="mt-2 max-w-2xl text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+            Pilih layanan yang sesuai kebutuhan Anda.
           </h2>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm md:text-base">
+          <div className="mt-10 overflow-x-auto rounded-2xl border border-border bg-card">
+            <table className="w-full text-sm">
               <thead>
-                <tr className="border-b-2 border-slate-300">
-                  <th className="text-left py-4 px-4 font-bold text-slate-900">
-                    Layanan
-                  </th>
-                  <th className="text-center py-4 px-4 font-bold text-slate-900">
-                    Timeline
-                  </th>
-                  <th className="text-center py-4 px-4 font-bold text-slate-900">
-                    Kompleksitas
-                  </th>
-                  <th className="text-center py-4 px-4 font-bold text-slate-900">
-                    ROI
-                  </th>
+                <tr className="border-b border-border text-left">
+                  <th className="px-6 py-4 font-bold text-foreground">Layanan</th>
+                  <th className="px-6 py-4 text-center font-bold text-foreground">Timeline</th>
+                  <th className="px-6 py-4 text-center font-bold text-foreground">Kompleksitas</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-slate-200">
-                  <td className="py-4 px-4 font-semibold text-slate-900">
-                    Web Development
-                  </td>
-                  <td className="py-4 px-4 text-center text-slate-600">
-                    2-8 minggu
-                  </td>
-                  <td className="py-4 px-4 text-center text-slate-600">
-                    Sedang-Tinggi
-                  </td>
-                  <td className="py-4 px-4 text-center text-green-700">
-                    {roiLabel["Web Development"]}
-                  </td>
-                </tr>
-                <tr className="border-b border-slate-200">
-                  <td className="py-4 px-4 font-semibold text-slate-900">
-                    Mobile Development
-                  </td>
-                  <td className="py-4 px-4 text-center text-slate-600">
-                    4-12 minggu
-                  </td>
-                  <td className="py-4 px-4 text-center text-slate-600">
-                    Tinggi
-                  </td>
-                  <td className="py-4 px-4 text-center text-green-700">
-                    {roiLabel["Mobile Development"]}
-                  </td>
-                </tr>
-                <tr className="border-b border-slate-200">
-                  <td className="py-4 px-4 font-semibold text-slate-900">
-                    Bot Telegram
-                  </td>
-                  <td className="py-4 px-4 text-center text-slate-600">
-                    1-4 minggu
-                  </td>
-                  <td className="py-4 px-4 text-center text-slate-600">
-                    Rendah-Sedang
-                  </td>
-                  <td className="py-4 px-4 text-center text-green-700">
-                    {roiLabel["Bot Telegram"]}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="py-4 px-4 font-semibold text-slate-900">
-                    Undangan Digital
-                  </td>
-                  <td className="py-4 px-4 text-center text-slate-600">
-                    3-7 hari
-                  </td>
-                  <td className="py-4 px-4 text-center text-slate-600">
-                    Rendah
-                  </td>
-                  <td className="py-4 px-4 text-center text-green-700">
-                    {roiLabel["Undangan Digital"]}
-                  </td>
-                </tr>
+                {comparison.map((row, idx) => (
+                  <tr key={row.name} className={idx !== comparison.length - 1 ? "border-b border-border" : undefined}>
+                    <td className="px-6 py-4 font-semibold text-foreground">{row.name}</td>
+                    <td className="px-6 py-4 text-center text-muted-foreground">{row.timeline}</td>
+                    <td className="px-6 py-4 text-center text-muted-foreground">{row.complexity}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-slate-900 to-slate-800 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Siap untuk Memulai Proyek Anda?
-          </h2>
-          <p className="text-lg text-slate-300 mb-8">
-            Hubungi kami sekarang untuk konsultasi gratis dan diskusi detail
-            tentang kebutuhan Anda.
-          </p>
+      <section className="bg-[#172033]">
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-4 py-16 text-center sm:px-6 lg:flex-row lg:justify-between lg:text-left lg:py-20">
+          <div>
+            <h2 className="text-2xl font-bold text-white sm:text-3xl">Siap memulai proyek Anda?</h2>
+            <p className="mt-3 max-w-xl leading-7 text-gray-300">
+              Konsultasi gratis untuk menyusun langkah paling masuk akal, tanpa komitmen.
+            </p>
+          </div>
           <a
-            href="https://wa.me/6285175284253"
+            href={`https://wa.me/${whatsapp.phoneNumber}?text=${encodeURIComponent(whatsapp.defaultMessage)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-8 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-colors"
+            className="inline-flex shrink-0 min-h-[48px] items-center gap-2 rounded-full bg-primary px-5 py-3 font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
           >
-            Konsultasi Gratis via WhatsApp
+            Konsultasi via WhatsApp <ArrowUpRight className="size-4" aria-hidden="true" />
           </a>
         </div>
       </section>

@@ -1,12 +1,12 @@
 import { getAllArticles, getArticleBySlug, getArticlesByTag } from "@/data/blog";
 import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
 import Link from "next/link";
-import React, { Usable } from "react";
+interface Props {
+  params: Promise<{ slug: string }>;
+}
 
-interface Props { params: Usable<{ slug: string }> }
-
-export function generateStaticParams() {
-  return getAllArticles().map((article) => ({ slug: article.slug }));
+export async function generateStaticParams() {
+  return (await getAllArticles()).map((article) => ({ slug: article.slug }));
 }
 
 function formatDate(date: string) {
@@ -25,13 +25,13 @@ function renderContent(content: string) {
   });
 }
 
-export default function BlogDetailPage({ params }: Props) {
-  const { slug } = React.use(params);
-  const article = getArticleBySlug(slug);
+export default async function BlogDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
 
   if (!article) return <main className="min-h-screen bg-background px-4 py-24 text-center"><h1 className="text-3xl font-bold">Artikel tidak ditemukan</h1><p className="mt-3 text-muted-foreground">Artikel yang Anda cari tidak tersedia.</p><Link href="/blog" className="mt-8 inline-flex items-center gap-2 font-semibold text-primary"><ArrowLeft className="size-4" aria-hidden="true" />Kembali ke blog</Link></main>;
 
-  const relatedArticles = getArticlesByTag(article.tags[0]).filter((item) => item.id !== article.id).slice(0, 3);
+  const relatedArticles = article.tags[0] ? (await getArticlesByTag(article.tags[0])).filter((item) => item.id !== article.id).slice(0, 3) : [];
 
   return (
     <main className="min-h-screen bg-background text-foreground">

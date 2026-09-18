@@ -50,7 +50,7 @@ export default function Testimonials() {
           __html: JSON.stringify(reviewSchema),
         }}
       />
-      <section id="testimoni" className="py-20 bg-gray-50" ref={ref}>
+      <section id="testimoni" className="py-24 bg-muted/40" ref={ref}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <div className="fade-in inline-block bg-[#b45309]/10 text-[#b45309] text-sm font-semibold px-4 py-2 rounded-full mb-4 border border-[#b45309]/25">

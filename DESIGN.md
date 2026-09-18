@@ -37,8 +37,23 @@ dan bukan dokumen pemerintahan.
 
 - Kartu dengan header warna segmen + sudut `rounded-2xl` + hover terangkat
   4px. Alasan: satu gestur kartu yang diulang di semua section.
-- Bingkai browser dengan URL demo asli di hero.
-  Alasan: bukti kerja nyata, bukan ilustrasi kostum.
+- Monitor 3D di hero menampilkan tayangan layar proyek asli, rotasi otomatis,
+  klik layar membuka demo (dengan kontrol manual untuk keyboard).
+  Alasan: bukti kerja nyata sebagai objek interaktif, bukan kostum ilustrasi.
+  Menggantikan bingkai browser statis atas permintaan klien.
+  Detail "sentuhan halus": rangka bersudut bulat (RoundedBox), pantulan studio
+  dari Environment lokal, crossfade ease (smoothstep), entrance sekali saat muat.
+  Alasan: objek terasa satu produk premium, bukan tumpukan kotak; tidak ada
+  loop dekoratif abadi (MOTION 1 tetap).
+
+## CMS blog (R-34)
+
+- Blog dikelola lewat Keystatic (file-based, gratis): admin di `/keystatic`,
+  konten disimpan sebagai file di `content/posts/` dan dibaca saat prerender.
+- Jika folder belum terisi, halaman blog memakai artikel statis di
+  `src/data/blog-static.ts` sebagai fallback.
+- Alasan: konten tanpa layanan/hosting eksternal, alur edit non-teknis untuk
+  klien, dan tidak mengubah struktur data `BlogArticle` yang sudah dipakai.
 
 ## Aturan pakai (dose caps)
 

@@ -92,7 +92,6 @@ export default function Footer() {
             <h4 className="font-semibold text-white mb-5">Perusahaan</h4>
             <ul className="space-y-3">
               {[
-                { label: "Tentang Kami", href: "/about" },
                 { label: "Portfolio", href: "/portfolio" },
                 { label: "Harga", href: "/pricing" },
                 { label: "Blog", href: "/blog" },

@@ -72,21 +72,25 @@ export const portfolioRoutes = new Elysia({ tags: ["portfolio"] })
     return { portfolio: rows.map(serialize) };
   })
   .post("/admin/portfolio", async ({ body }) => {
+    const portfolio = body as typeof portfolioBody.static;
+    if (!portfolio.title || !portfolio.category || !portfolio.description) {
+      throw new HttpError(422, "title, category, dan description wajib diisi.");
+    }
     const row = await db
       .insert(portfolioItems)
       .values({
-        title: body.title,
-        category: body.category,
-        segment: body.segment ?? null,
-        description: body.description,
-        resultHighlight: body.resultHighlight ?? null,
-        coverImageUrl: body.coverImageUrl ?? "",
-        galleryImageUrls: body.galleryImageUrls ?? [],
-        demoUrl: body.demoUrl ?? null,
-        techStack: body.techStack ?? [],
-        clientName: body.clientName ?? null,
-        displayOrder: body.displayOrder ?? 0,
-        isPublished: body.isPublished ?? false,
+        title: portfolio.title,
+        category: portfolio.category,
+        segment: portfolio.segment ?? null,
+        description: portfolio.description,
+        resultHighlight: portfolio.resultHighlight ?? null,
+        coverImageUrl: portfolio.coverImageUrl ?? "",
+        galleryImageUrls: portfolio.galleryImageUrls ?? [],
+        demoUrl: portfolio.demoUrl ?? null,
+        techStack: portfolio.techStack ?? [],
+        clientName: portfolio.clientName ?? null,
+        displayOrder: portfolio.displayOrder ?? 0,
+        isPublished: portfolio.isPublished ?? false,
       })
       .returning();
     return { item: serialize(row[0]) };
@@ -94,6 +98,10 @@ export const portfolioRoutes = new Elysia({ tags: ["portfolio"] })
   .put(
     "/admin/portfolio/:id",
     async ({ params, body }) => {
+      const portfolio = body as typeof portfolioBody.static;
+      if (!portfolio.title || !portfolio.category || !portfolio.description) {
+        throw new HttpError(422, "title, category, dan description wajib diisi.");
+      }
       const existing = await db.query.portfolioItems.findFirst({
         where: eq(portfolioItems.id, params.id),
       });
@@ -101,18 +109,18 @@ export const portfolioRoutes = new Elysia({ tags: ["portfolio"] })
       const row = await db
         .update(portfolioItems)
         .set({
-          title: body.title,
-          category: body.category,
-          segment: body.segment ?? null,
-          description: body.description,
-          resultHighlight: body.resultHighlight ?? null,
-          coverImageUrl: body.coverImageUrl ?? "",
-          galleryImageUrls: body.galleryImageUrls ?? existing.galleryImageUrls ?? [],
-          demoUrl: body.demoUrl ?? null,
-          techStack: body.techStack ?? existing.techStack ?? [],
-          clientName: body.clientName ?? null,
-          displayOrder: body.displayOrder ?? existing.displayOrder,
-          isPublished: body.isPublished ?? existing.isPublished,
+          title: portfolio.title,
+          category: portfolio.category,
+          segment: portfolio.segment ?? null,
+          description: portfolio.description,
+          resultHighlight: portfolio.resultHighlight ?? null,
+          coverImageUrl: portfolio.coverImageUrl ?? "",
+          galleryImageUrls: portfolio.galleryImageUrls ?? existing.galleryImageUrls ?? [],
+          demoUrl: portfolio.demoUrl ?? null,
+          techStack: portfolio.techStack ?? existing.techStack ?? [],
+          clientName: portfolio.clientName ?? null,
+          displayOrder: portfolio.displayOrder ?? existing.displayOrder,
+          isPublished: portfolio.isPublished ?? existing.isPublished,
         })
         .where(eq(portfolioItems.id, params.id))
         .returning();

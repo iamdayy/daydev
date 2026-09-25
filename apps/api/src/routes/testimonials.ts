@@ -56,17 +56,21 @@ export const testimonialRoutes = new Elysia({ tags: ["testimonials"] })
     return { testimonials: rows.map(serialize) };
   })
   .post("/admin/testimonials", async ({ body }) => {
+    const testimonial = body as typeof testimonialBody.static;
+    if (!testimonial.clientName || !testimonial.quote) {
+      throw new HttpError(422, "Nama klien dan kutipan testimoni harus diisi.");
+    }
     const row = await db
       .insert(testimonials)
       .values({
-        clientName: body.clientName,
-        clientRole: body.clientRole ?? null,
-        segment: body.segment ?? null,
-        quote: body.quote,
-        rating: body.rating ?? 5,
-        avatarUrl: body.avatarUrl ?? null,
-        displayOrder: body.displayOrder ?? 0,
-        isPublished: body.isPublished ?? false,
+        clientName: testimonial.clientName,
+        clientRole: testimonial.clientRole ?? null,
+        segment: testimonial.segment ?? null,
+        quote: testimonial.quote,
+        rating: testimonial.rating ?? 5,
+        avatarUrl: testimonial.avatarUrl ?? null,
+        displayOrder: testimonial.displayOrder ?? 0,
+        isPublished: testimonial.isPublished ?? false,
       })
       .returning();
     return { testimonial: row[0] };
@@ -74,6 +78,10 @@ export const testimonialRoutes = new Elysia({ tags: ["testimonials"] })
   .put(
     "/admin/testimonials/:id",
     async ({ params, body }) => {
+      const testimonial = body as typeof testimonialBody.static;
+      if (!testimonial.clientName || !testimonial.quote) {
+        throw new HttpError(422, "Nama klien dan kutipan testimoni harus diisi.");
+      }
       const existing = await db.query.testimonials.findFirst({
         where: eq(testimonials.id, params.id),
       });
@@ -81,14 +89,14 @@ export const testimonialRoutes = new Elysia({ tags: ["testimonials"] })
       const row = await db
         .update(testimonials)
         .set({
-          clientName: body.clientName,
-          clientRole: body.clientRole ?? null,
-          segment: body.segment ?? null,
-          quote: body.quote,
-          rating: body.rating ?? existing.rating,
-          avatarUrl: body.avatarUrl ?? null,
-          displayOrder: body.displayOrder ?? existing.displayOrder,
-          isPublished: body.isPublished ?? existing.isPublished,
+          clientName: testimonial.clientName,
+          clientRole: testimonial.clientRole ?? null,
+          segment: testimonial.segment ?? null,
+          quote: testimonial.quote,
+          rating: testimonial.rating ?? existing.rating,
+          avatarUrl: testimonial.avatarUrl ?? null,
+          displayOrder: testimonial.displayOrder ?? existing.displayOrder,
+          isPublished: testimonial.isPublished ?? existing.isPublished,
         })
         .where(eq(testimonials.id, params.id))
         .returning();

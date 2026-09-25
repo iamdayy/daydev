@@ -66,6 +66,10 @@ export const blogRoutes = new Elysia({ tags: ["blog"] })
     return { posts: rows.map(serialize) };
   })
   .post("/admin/blog", async ({ body }) => {
+    const blog = body as typeof blogBody.static;
+    if (!blog.title || !blog.excerpt || !blog.content) {
+      throw new HttpError(422, "title, excerpt, dan content wajib diisi.");
+    }
     const slug = resolveSlug(body.slug, body.title);
     const exists = await db.query.blogPosts.findFirst({
       where: eq(blogPosts.slug, slug),
@@ -75,16 +79,16 @@ export const blogRoutes = new Elysia({ tags: ["blog"] })
       .insert(blogPosts)
       .values({
         slug,
-        title: body.title,
-        excerpt: body.excerpt,
-        content: body.content,
-        coverImageUrl: body.coverImageUrl ?? null,
-        author: body.author ?? "Tim Daydev",
-        readingMinutes: body.readingMinutes ?? 5,
-        publishedAt: body.publishedAt
-          ? new Date(body.publishedAt)
+        title: blog.title,
+        excerpt: blog.excerpt,
+        content: blog.content,
+        coverImageUrl: blog.coverImageUrl ?? null,
+        author: blog.author ?? "Tim Daydev",
+        readingMinutes: blog.readingMinutes ?? 5,
+        publishedAt: blog.publishedAt
+          ? new Date(blog.publishedAt)
           : new Date(),
-        isPublished: body.isPublished ?? false,
+        isPublished: blog.isPublished ?? false,
       })
       .returning();
     return { post: row[0] };
@@ -92,6 +96,10 @@ export const blogRoutes = new Elysia({ tags: ["blog"] })
   .put(
     "/admin/blog/:id",
     async ({ params, body }) => {
+      const blog = body as typeof blogBody.static;
+      if (!blog.title || !blog.excerpt || !blog.content) {
+        throw new HttpError(422, "title, excerpt, dan content wajib diisi.");
+      }
       const existing = await db.query.blogPosts.findFirst({
         where: eq(blogPosts.id, params.id),
       });
@@ -106,16 +114,16 @@ export const blogRoutes = new Elysia({ tags: ["blog"] })
         .update(blogPosts)
         .set({
           slug,
-          title: body.title,
-          excerpt: body.excerpt,
-          content: body.content,
-          coverImageUrl: body.coverImageUrl ?? existing.coverImageUrl,
-          author: body.author ?? existing.author,
-          readingMinutes: body.readingMinutes ?? existing.readingMinutes,
-          publishedAt: body.publishedAt
-            ? new Date(body.publishedAt)
+          title: blog.title,
+          excerpt: blog.excerpt,
+          content: blog.content,
+          coverImageUrl: blog.coverImageUrl ?? existing.coverImageUrl,
+          author: blog.author ?? existing.author,
+          readingMinutes: blog.readingMinutes ?? existing.readingMinutes,
+          publishedAt: blog.publishedAt
+            ? new Date(blog.publishedAt)
             : existing.publishedAt,
-          isPublished: body.isPublished ?? existing.isPublished,
+          isPublished: blog.isPublished ?? existing.isPublished,
         })
         .where(eq(blogPosts.id, params.id))
         .returning();

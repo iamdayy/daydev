@@ -43,15 +43,19 @@ export const teamRoutes = new Elysia({ tags: ["team"] })
     return { team: rows.map(serialize) };
   })
   .post("/admin/team", async ({ body }) => {
+    const team = body as typeof teamBody.static;
+    if (!team.name || !team.role) {
+      throw new HttpError(422, "Nama dan peran anggota tim harus diisi.");
+    }
     const row = await db
       .insert(teamMembers)
       .values({
-        name: body.name,
-        role: body.role,
-        photoUrl: body.photoUrl ?? null,
-        linkedinUrl: body.linkedinUrl ?? null,
-        displayOrder: body.displayOrder ?? 0,
-        isPublished: body.isPublished ?? false,
+        name: team.name,
+        role: team.role,
+        photoUrl: team.photoUrl ?? null,
+        linkedinUrl: team.linkedinUrl ?? null,
+        displayOrder: team.displayOrder ?? 0,
+        isPublished: team.isPublished ?? false,
       })
       .returning();
     return { member: row[0] };
@@ -59,6 +63,10 @@ export const teamRoutes = new Elysia({ tags: ["team"] })
   .put(
     "/admin/team/:id",
     async ({ params, body }) => {
+      const team = body as typeof teamBody.static;
+      if (!team.name || !team.role) {
+        throw new HttpError(422, "Nama dan peran anggota tim harus diisi.");
+      }
       const existing = await db.query.teamMembers.findFirst({
         where: eq(teamMembers.id, params.id),
       });
@@ -66,12 +74,12 @@ export const teamRoutes = new Elysia({ tags: ["team"] })
       const row = await db
         .update(teamMembers)
         .set({
-          name: body.name,
-          role: body.role,
-          photoUrl: body.photoUrl ?? null,
-          linkedinUrl: body.linkedinUrl ?? null,
-          displayOrder: body.displayOrder ?? existing.displayOrder,
-          isPublished: body.isPublished ?? existing.isPublished,
+          name: team.name,
+          role: team.role,
+          photoUrl: team.photoUrl ?? null,
+          linkedinUrl: team.linkedinUrl ?? null,
+          displayOrder: team.displayOrder ?? existing.displayOrder,
+          isPublished: team.isPublished ?? existing.isPublished,
         })
         .where(eq(teamMembers.id, params.id))
         .returning();

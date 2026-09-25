@@ -22,6 +22,29 @@ function serialize(row: typeof pricingPackages.$inferSelect) : PricingPackage | 
   return newRow as unknown as PricingPackage | PricingCategory;
 }
 
+const pricingCategoryBody = t.Object({
+        segment: t.Union([
+          t.Literal("undangan-digital"),
+          t.Literal("bot-telegram"),
+          t.Literal("mahasiswa"),
+          t.Literal("umkm"),
+          t.Literal("startup"),
+        ]),
+        label: t.String({ minLength: 3, maxLength: 80 }),
+        startingPriceLabel: t.String({ minLength: 3, maxLength: 120 }),
+        displayOrder: t.Optional(t.Integer({ default: 0 })),
+      })
+
+const pricingPackageBody = t.Object({
+        categoryId: t.String(),
+        name: t.String({ minLength: 2, maxLength: 120 }),
+        price: t.Integer({ minimum: 0, maximum: 1_000_000_000 }),
+        features: t.Optional(t.Array(t.String({ maxLength: 200 }))),
+        isRecommended: t.Optional(t.Boolean({ default: false })),
+        demoUrl: t.Optional(t.Nullable(t.String({ maxLength: 500 }))),
+        displayOrder: t.Optional(t.Integer({ default: 0 })),
+      })
+
 export const pricingRoutes = new Elysia({ tags: ["pricing"] })
   .get("/pricing", async () => {
     const categories = await db
@@ -58,13 +81,17 @@ export const pricingRoutes = new Elysia({ tags: ["pricing"] })
   .post(
     "/admin/pricing/categories",
     async ({ body }) => {
+      const category = body as typeof pricingCategoryBody.static;
+      if (!category.segment || !category.label || !category.startingPriceLabel) {
+        throw new HttpError(422, "segment, label, dan startingPriceLabel wajib diisi.");
+      }
       const row = await db
         .insert(pricingCategories)
         .values({
-          segment: body.segment,
-          label: body.label,
-          startingPriceLabel: body.startingPriceLabel,
-          displayOrder: body.displayOrder ?? 0,
+          segment: category.segment,
+          label: category.label,
+          startingPriceLabel: category.startingPriceLabel,
+          displayOrder: category.displayOrder ?? 0,
         })
         .onConflictDoNothing()
         .returning();
@@ -74,29 +101,22 @@ export const pricingRoutes = new Elysia({ tags: ["pricing"] })
       return { category: row[0] };
     },
     {
-      body: t.Object({
-        segment: t.Union([
-          t.Literal("undangan-digital"),
-          t.Literal("bot-telegram"),
-          t.Literal("mahasiswa"),
-          t.Literal("umkm"),
-          t.Literal("startup"),
-        ]),
-        label: t.String({ minLength: 3, maxLength: 80 }),
-        startingPriceLabel: t.String({ minLength: 3, maxLength: 120 }),
-        displayOrder: t.Optional(t.Integer({ default: 0 })),
-      }),
+      body: pricingCategoryBody,
     },
   )
   .put(
     "/admin/pricing/categories/:id",
     async ({ params, body }) => {
+      const category = body as typeof pricingCategoryBody.static;
+      if (!category.segment || !category.label || !category.startingPriceLabel) {
+        throw new HttpError(422, "segment, label, dan startingPriceLabel wajib diisi.");
+      }
       const row = await db
         .update(pricingCategories)
         .set({
-          label: body.label,
-          startingPriceLabel: body.startingPriceLabel,
-          displayOrder: body.displayOrder ?? 0,
+          label: category.label,
+          startingPriceLabel: category.startingPriceLabel,
+          displayOrder: category.displayOrder ?? 0,
         })
         .where(eq(pricingCategories.id, params.id))
         .returning();
@@ -128,45 +148,45 @@ export const pricingRoutes = new Elysia({ tags: ["pricing"] })
   .post(
     "/admin/pricing/packages",
     async ({ body }) => {
+      const pkg = body as typeof pricingPackageBody.static;
+      if (!pkg.categoryId || !pkg.name || pkg.price === undefined) {
+        throw new HttpError(422, "categoryId, name, dan price wajib diisi.");
+      }
       const row = await db
         .insert(pricingPackages)
         .values({
-          categoryId: body.categoryId,
-          name: body.name,
-          price: body.price,
-          features: body.features ?? [],
-          isRecommended: body.isRecommended ?? false,
-          demoUrl: body.demoUrl ?? null,
-          displayOrder: body.displayOrder ?? 0,
+          categoryId: pkg.categoryId,
+          name: pkg.name,
+          price: pkg.price,
+          features: pkg.features ?? [],
+          isRecommended: pkg.isRecommended ?? false,
+          demoUrl: pkg.demoUrl ?? null,
+          displayOrder: pkg.displayOrder ?? 0,
         })
         .returning();
       return { package: row[0] };
     },
     {
-      body: t.Object({
-        categoryId: t.String(),
-        name: t.String({ minLength: 2, maxLength: 120 }),
-        price: t.Integer({ minimum: 0, maximum: 1_000_000_000 }),
-        features: t.Optional(t.Array(t.String({ maxLength: 200 }))),
-        isRecommended: t.Optional(t.Boolean({ default: false })),
-        demoUrl: t.Optional(t.Nullable(t.String({ maxLength: 500 }))),
-        displayOrder: t.Optional(t.Integer({ default: 0 })),
-      }),
+      body: pricingPackageBody,
     },
   )
   .put(
     "/admin/pricing/packages/:id",
     async ({ params, body }) => {
+      const pkg = body as typeof pricingPackageBody.static;
+      if (!pkg.categoryId || !pkg.name || pkg.price === undefined) {
+        throw new HttpError(422, "categoryId, name, dan price wajib diisi.");
+      }
       const row = await db
         .update(pricingPackages)
         .set({
-          categoryId: body.categoryId,
-          name: body.name,
-          price: body.price,
-          features: body.features ?? [],
-          isRecommended: body.isRecommended ?? false,
-          demoUrl: body.demoUrl ?? null,
-          displayOrder: body.displayOrder ?? 0,
+          categoryId: pkg.categoryId,
+          name: pkg.name,
+          price: pkg.price,
+          features: pkg.features ?? [],
+          isRecommended: pkg.isRecommended ?? false,
+          demoUrl: pkg.demoUrl ?? null,
+          displayOrder: pkg.displayOrder ?? 0,
         })
         .where(eq(pricingPackages.id, params.id))
         .returning();
@@ -175,15 +195,7 @@ export const pricingRoutes = new Elysia({ tags: ["pricing"] })
     },
     {
       params: t.Object({ id: t.String() }),
-      body: t.Object({
-        categoryId: t.String(),
-        name: t.String({ minLength: 2, maxLength: 120 }),
-        price: t.Integer({ minimum: 0, maximum: 1_000_000_000 }),
-        features: t.Optional(t.Array(t.String({ maxLength: 200 }))),
-        isRecommended: t.Optional(t.Boolean({ default: false })),
-        demoUrl: t.Optional(t.Nullable(t.String({ maxLength: 500 }))),
-        displayOrder: t.Optional(t.Integer({ default: 0 })),
-      }),
+      body: pricingPackageBody,
     },
   )
   .delete(

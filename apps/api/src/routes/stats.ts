@@ -1,9 +1,13 @@
-import { Elysia, t } from "elysia";
 import { asc, eq } from "drizzle-orm";
+import { Elysia, t } from "elysia";
 import { db } from "../db/client";
 import { siteStats } from "../db/schema";
 import { adminGuard } from "../lib/auth";
 import { HttpError } from "../lib/http-error";
+
+const statsBody = t.Object({
+  value: t.String({ minLength: 1, maxLength: 80 }),
+});
 
 export const statsRoutes = new Elysia({ tags: ["stats"] })
   .get("/stats", async () => {
@@ -25,7 +29,8 @@ export const statsRoutes = new Elysia({ tags: ["stats"] })
   .put(
     "/admin/stats/:key",
     async ({ params, body }) => {
-      const value = String(body.value ?? "").trim();
+      const stats = body as typeof statsBody.static;
+      const value = String(stats.value ?? "").trim();
       const key = params.key.trim();
       if (!key || !value) throw new HttpError(422, "key dan value wajib diisi.");
       await db
@@ -42,8 +47,6 @@ export const statsRoutes = new Elysia({ tags: ["stats"] })
     },
     {
       params: t.Object({ key: t.String({ minLength: 1, maxLength: 80 }) }),
-      body: t.Object({
-        value: t.String({ minLength: 1, maxLength: 80 }),
-      }),
+      body: statsBody,
     },
   );

@@ -3,9 +3,10 @@ import { eq } from "drizzle-orm";
 import { randomUUID } from "node:crypto";
 import { db } from "../db/client";
 import { adminUsers, sessions } from "../db/schema";
-import { adminAuth, requireAdmin, signAuthToken, verifyPassword } from "../lib/auth";
+import { adminAuth, requireAdmin, signAuthToken } from "../lib/auth";
 import { env } from "../lib/env";
 import { HttpError } from "../lib/http-error";
+import { sha256Hex, verifyPassword } from "../lib/hashes";
 import { checkRateLimit, resetRateLimit } from "../lib/rate-limit";
 import type { App } from "../lib/types";
 import { errorResponses, jsonResponse, responses } from "../lib/zhelpers";
@@ -80,7 +81,7 @@ export const authRoutes = (app: App): void => {
         .insert(sessions)
         .values({
           adminUserId: user.id,
-          tokenHash: Bun.CryptoHasher.hash("sha256", token, "hex"),
+          tokenHash: sha256Hex(token),
           expiresAt,
         })
         .returning();
@@ -146,10 +147,10 @@ export const authRoutes = (app: App): void => {
   );
 };
 
-// bcrypt hash dari string dummy; hanya untuk equalize timing saat email
+// Scrypt hash dari string dummy; hanya untuk equalize timing saat email
 // tidak terdaftar. Tidak dipakai sebagai kredensial.
 const DUMMY_HASH =
-  "$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy";
+  "scrypt:16384:8:1:zecbQZbiV0ZC4GRpgODsuA:6pXuz77YxWfyH7HGqtObvweU6WioxMnzNJSV7_2N1M6Ljd-_C0-_c1Gy8AkRacWiOxCR-nRYlIPj7y8lACdi7A";
 
 async function verifyDummyPassword(_plain: string): Promise<void> {
   await verifyPassword(_plain, DUMMY_HASH);

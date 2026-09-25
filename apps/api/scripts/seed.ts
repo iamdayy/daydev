@@ -27,7 +27,7 @@ import {
   pricingPackages,
   testimonials,
 } from "../src/db/schema";
-import { hashPassword } from "../src/lib/auth";
+import { hashPassword } from "../src/lib/hashes";
 
 // --- data sumber dari legacy -------------------------------------------------
 import { blogArticles } from "../../../legacy/src/data/blog-static.ts";

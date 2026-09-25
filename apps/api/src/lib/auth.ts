@@ -8,18 +8,6 @@ import { env } from "./env";
 import { UnauthorizedError } from "./http-error";
 import type { Admin, Env } from "./types";
 
-// ---------------------------------------------------------------------------
-// Password (Bun bawaan: bcrypt, tanpa dependency eksternal)
-// ---------------------------------------------------------------------------
-
-export function hashPassword(plain: string): Promise<string> {
-  return Bun.password.hash(plain, { algorithm: "bcrypt", cost: 10 });
-}
-
-export function verifyPassword(plain: string, hash: string): Promise<boolean> {
-  return Bun.password.verify(plain, hash);
-}
-
 export async function deleteExpiredSessions(userId: string): Promise<void> {
   await db
     .delete(sessions)

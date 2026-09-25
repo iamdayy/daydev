@@ -1,0 +1,34 @@
+---
+import Base from "../../layouts/Base.astro";
+import BlogBrowser from "../../components/BlogBrowser";
+import { getBlogPosts } from "../../lib/api";
+
+const posts = await getBlogPosts();
+
+const published = posts
+  .filter((p) => p.is_published)
+  .sort(
+    (a, b) =>
+      new Date(b.published_at).getTime() - new Date(a.published_at).getTime(),
+  )
+  .map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    excerpt: p.excerpt,
+    author: p.author,
+    reading_minutes: p.reading_minutes,
+    published_at: p.published_at,
+  }));
+
+const featured = published[0];
+---
+
+<Base
+  title="Blog & Insight - Daydev Studio"
+  description="Panduan praktis, perspektif produk, dan strategi teknologi untuk membangun website serta aplikasi yang benar-benar dipakai."
+  canonicalPath="/blog"
+>
+  <main class="min-h-screen bg-background text-foreground">
+    <BlogBrowser client:load articles={published} featured={featured} />
+  </main>
+</Base>

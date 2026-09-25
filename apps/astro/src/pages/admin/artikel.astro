@@ -1,0 +1,16 @@
+---
+import Admin from "../../layouts/Admin.astro";
+import BlogManager from "../../components/admin/BlogManager";
+import { getBlogPosts } from "../../lib/api";
+
+export const prerender = false;
+
+const posts = await getBlogPosts().catch(() => []);
+---
+
+<Admin
+  title="Artikel"
+  description="Kelola konten blog. Konten ditulis dalam format markdown; ringkasan dan jumlah menit baca ditampilkan otomatis di situs."
+>
+  <BlogManager client:load initial={posts} />
+</Admin>

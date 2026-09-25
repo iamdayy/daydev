@@ -1,0 +1,208 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getAllServiceSlugs, getServiceBySlug, services } from "../../lib/services";
+import { waLink } from "@daydev/shared-types";
+import { ArrowUpRight, Bot, ChevronDown, Globe, Mail, Smartphone } from "lucide-react";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return getAllServiceSlugs().map((slug) => ({ params: { service: slug } }));
+}
+
+const { service: slug } = Astro.params;
+const service = getServiceBySlug(slug!);
+
+if (!service) {
+  return Astro.redirect("/404");
+}
+
+const serviceIcons: Record<string, typeof Globe> = {
+  Globe,
+  Smartphone,
+  Bot,
+  Mail,
+};
+
+const ServiceIcon = serviceIcons[service.icon] ?? Globe;
+const related = services.filter((item) => item.slug !== service.slug);
+
+const faqs = [
+  {
+    question: "Berapa lama waktu pengerjaan?",
+    answer: `Waktu pengerjaan tergantung kompleksitas project. Estimasi untuk ${service.title.toLowerCase()} bisa dilihat di halaman layanan. Kami memberikan timeline detail setelah konsultasi awal.`,
+  },
+  {
+    question: "Apakah ada paket yang tersedia?",
+    answer:
+      "Ya, kami menyediakan berbagai paket sesuai kebutuhan dan budget, dari basic hingga lengkap. Silakan lihat halaman harga untuk detail paket.",
+  },
+  {
+    question: "Apakah ada dukungan setelah project selesai?",
+    answer:
+      "Ya, kami menyediakan dukungan teknis dan maintenance setelah project selesai. Detail dukungan bervariasi tergantung paket yang dipilih.",
+  },
+  {
+    question: "Bagaimana proses pembayaran?",
+    answer:
+      "Kami menerima transfer bank dan e-wallet. Untuk proyek besar, pembayaran mengikuti skema down payment dan progress payment sesuai milestone yang disepakati.",
+  },
+];
+---
+
+<Base
+  title={`${service.title} - Daydev Studio`}
+  description={service.metaDescription}
+  canonicalPath={`/services/${service.slug}`}
+>
+  <main class="flex min-h-screen flex-col bg-background text-foreground">
+    <section class="border-b border-border" style={{ backgroundColor: service.lightBg }}>
+      <div class="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 lg:py-20">
+        <nav class="mb-8 text-sm text-muted-foreground" aria-label="Breadcrumb">
+          <a href="/" class="transition-colors hover:text-foreground">Beranda</a>
+          <span class="mx-2" aria-hidden="true">/</span>
+          <a href="/services" class="transition-colors hover:text-foreground">Layanan</a>
+          <span class="mx-2" aria-hidden="true">/</span>
+          <span class="font-semibold text-foreground">{service.title}</span>
+        </nav>
+        <div class="flex flex-col gap-6 sm:flex-row sm:items-center">
+          <div class="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-card shadow-sm">
+            <ServiceIcon className="size-8" style={{ color: service.color }} aria-hidden="true" />
+          </div>
+          <div>
+            <h1 class="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+              {service.title}
+            </h1>
+            <p class="mt-3 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">
+              {service.description}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:py-20">
+      <h2 class="text-3xl font-bold tracking-tight text-foreground">Tentang {service.title}</h2>
+      <p class="mt-6 text-lg leading-8 text-muted-foreground">{service.longDescription}</p>
+
+      <div class="mt-12 rounded-2xl border border-border bg-card p-8">
+        <h3 class="text-lg font-bold text-foreground">Ideal untuk:</h3>
+        <div class="mt-4 flex flex-wrap gap-2">
+          {
+            service.targetAudience.map((audience) => (
+              <span class="rounded-full bg-muted px-4 py-1.5 text-sm font-medium text-foreground">
+                {audience}
+              </span>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="border-y border-border bg-muted/30">
+      <div class="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:py-20">
+        <h2 class="text-center text-3xl font-bold tracking-tight text-foreground">
+          Keuntungan {service.title}
+        </h2>
+        <div class="mt-10 grid gap-5 md:grid-cols-2">
+          {
+            service.benefits.map((benefit) => (
+              <div class="flex items-start gap-4 rounded-2xl border border-border bg-card p-6">
+                <span
+                  class="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
+                  style={{ backgroundColor: service.color }}
+                  aria-hidden="true"
+                >
+                  ✓
+                </span>
+                <p class="font-semibold leading-7 text-foreground">{benefit}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:py-20">
+      <h2 class="text-center text-3xl font-bold tracking-tight text-foreground">Fitur utama</h2>
+      <div class="mt-10 grid gap-4 md:grid-cols-2">
+        {
+          service.features.map((feature) => (
+            <div class="flex items-start gap-3">
+              <span class="mt-1.5 size-2 shrink-0 rounded-full" style={{ backgroundColor: service.color }} aria-hidden="true" />
+              <p class="font-medium leading-7 text-muted-foreground">{feature}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="border-y border-border bg-muted/30">
+      <div class="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:py-20">
+        <h2 class="text-center text-3xl font-bold tracking-tight text-foreground">Pertanyaan umum</h2>
+        <div class="mt-10 space-y-4">
+          {
+            faqs.map((faq) => (
+              <details class="group rounded-2xl border border-border bg-card p-6">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-bold text-foreground [&::-webkit-details-marker]:hidden">
+                  {faq.question}
+                  <ChevronDown className="size-5 shrink-0 text-primary transition-transform group-open:rotate-180" aria-hidden="true" />
+                </summary>
+                <p class="mt-4 leading-7 text-muted-foreground">{faq.answer}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-[#172033]">
+      <div class="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-4 py-16 text-center sm:px-6 lg:flex-row lg:justify-between lg:py-20 lg:text-left">
+        <div>
+          <h2 class="text-2xl font-bold text-white sm:text-3xl">Tertarik dengan {service.title}?</h2>
+          <p class="mt-3 max-w-xl leading-7 text-gray-300">
+            Hubungi kami untuk konsultasi gratis dan dapatkan penawaran yang sesuai
+            kebutuhan.
+          </p>
+        </div>
+        <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+          <a
+            href={waLink("Halo Daydev, saya ingin konsultasi gratis mengenai pengembangan aplikasi.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
+          >
+            Chat via WhatsApp <ArrowUpRight className="size-4" aria-hidden="true" />
+          </a>
+          <a
+            href="/pricing"
+            class="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-[#ea7b3c] px-5 py-3 font-semibold text-[#172033] transition-transform hover:scale-[1.02]"
+          >
+            Lihat paket harga <ArrowUpRight className="size-4" aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto w-full max-w-6xl px-4 pb-20 pt-16 sm:px-6 lg:pt-24">
+      <h2 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Layanan lainnya</h2>
+      <div class="mt-8 grid gap-5 md:grid-cols-3">
+        {
+          related.map((item) => {
+            const Icon = serviceIcons[item.icon] ?? Globe;
+            return (
+              <a
+                href={`/services/${item.slug}`}
+                class="group rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+              >
+                <Icon className="size-8 text-primary" aria-hidden="true" />
+                <h3 class="mt-4 font-bold text-foreground">{item.title}</h3>
+                <p class="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p>
+              </a>
+            );
+          })
+        }
+      </div>
+    </section>
+  </main>
+</Base>

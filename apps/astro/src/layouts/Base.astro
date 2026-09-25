@@ -1,0 +1,122 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import WhatsAppButton from "../components/WhatsAppButton";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+}
+
+const {
+  title = "Daydev – Dari Ide Menjadi Aplikasi",
+  description = "Jasa pembuatan aplikasi Web & Mobile untuk Startup, UMKM, dan Mahasiswa. Konsultasi gratis, harga mulai Rp 99 ribu.",
+  canonicalPath = "/",
+} = Astro.props;
+
+const siteUrl = "https://daydev.studio";
+const canonical = `${siteUrl}${canonicalPath === "/" ? "" : canonicalPath}`;
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Daydev",
+  url: siteUrl,
+  logo: `${siteUrl}/logo.png`,
+  description:
+    "Studio pengembangan aplikasi web dan mobile. Kami mengubah ide menjadi solusi digital untuk startup, UMKM, dan mahasiswa di Indonesia.",
+  areaServed: { "@type": "Country", name: "Indonesia" },
+  sameAs: ["https://instagram.com/daydev__", "https://wa.me/6285175284253"],
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      telephone: "+62 851-7528-4253",
+      areaServed: "ID",
+      availableLanguage: ["id"],
+    },
+  ],
+};
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Daydev Studio",
+  description:
+    "Jasa pembuatan aplikasi Web & Mobile untuk Startup, UMKM, dan Mahasiswa.",
+  url: siteUrl,
+  logo: `${siteUrl}/logo.png`,
+  serviceArea: { "@type": "Country", name: "Indonesia" },
+  address: { "@type": "PostalAddress", addressCountry: "ID" },
+  telephone: "+62 851-7528-4253",
+  priceRange: "$$",
+};
+---
+
+<!doctype html>
+<html lang="id" class="bg-background">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Daydev" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${siteUrl}/logo.png`} />
+    <meta property="og:locale" content="id_ID" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteUrl}/logo.png`} />
+    <meta name="theme-color" content="#172033" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(organizationSchema)}
+    />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(localBusinessSchema)}
+    />
+  </head>
+  <body class="antialiased">
+    <Header />
+    <slot />
+    <Footer />
+    <WhatsAppButton client:idle />
+    <!-- Reveal on scroll: elemen .fade-in* hanya terlihat setelah memasuki viewport -->
+    <script is:inline>
+      const revealEls = document.querySelectorAll(
+        ".fade-in, .fade-in-left, .fade-in-right",
+      );
+      if (revealEls.length && "IntersectionObserver" in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+        );
+        revealEls.forEach((el) => io.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add("visible"));
+      }
+    </script>
+  </body>
+</html>

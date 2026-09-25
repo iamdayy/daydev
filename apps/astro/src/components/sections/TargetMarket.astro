@@ -1,0 +1,166 @@
+---
+import { waLink } from "@daydev/shared-types";
+import { GraduationCap, Rocket, Store } from "lucide-react";
+
+const segments = [
+  {
+    icon: Rocket,
+    title: "Startup",
+    tagline: "Akselerasi MVP & Validasi Ide",
+    description:
+      "Bangun Minimum Viable Product dengan cepat dan efisien. Kami membantu Anda memvalidasi ide bisnis sebelum terlanjur berinvestasi besar, sehingga Anda bisa fokus pada pertumbuhan.",
+    features: [
+      "MVP dalam waktu singkat",
+      "Arsitektur yang skalabel",
+      "Integrasi API & Third-party",
+      "Dashboard analitik",
+      "Iterasi cepat sesuai feedback",
+    ],
+    color: "from-[#0f766e] to-[#172033]",
+    hoverBg: "linear-gradient(135deg, #0f766e, #172033)",
+    bgAccent: "bg-teal-50",
+    borderColor: "border-teal-200",
+    textColor: "text-[#0f766e]",
+    badge: "bg-teal-100 text-[#0f766e]",
+    featured: false,
+  },
+  {
+    icon: Store,
+    title: "UMKM",
+    tagline: "Efisiensi & Digitalisasi Bisnis",
+    description:
+      "Tingkatkan daya saing bisnis Anda dengan solusi digital yang tepat sasaran. Dari sistem kasir, manajemen stok, hingga toko online yang siap bersaing di era digital.",
+    features: [
+      "Sistem manajemen toko & stok",
+      "Toko online (e-commerce)",
+      "Laporan keuangan otomatis",
+      "Integrasi payment gateway",
+      "Notifikasi WhatsApp otomatis",
+    ],
+    color: "from-[#ea7b3c] to-[#9a3412]",
+    hoverBg: "linear-gradient(135deg, #ea7b3c, #9a3412)",
+    bgAccent: "bg-orange-50",
+    borderColor: "border-orange-200",
+    textColor: "text-[#c2410c]",
+    badge: "bg-orange-100 text-[#c2410c]",
+    featured: true,
+  },
+  {
+    icon: GraduationCap,
+    title: "Mahasiswa",
+    tagline: "Pendampingan Skripsi & Tugas Akhir (Sampai Paham)",
+    description:
+      "Jangan stres menghadapi skripsi atau tugas akhir! Kami mendampingi Anda dari awal hingga sidang, mulai dari pembuatan sistem, bimbingan teknis, hingga dokumentasi.",
+    features: [
+      "Pembuatan sistem skripsi",
+      "Bimbingan & konsultasi teknis",
+      "Dokumentasi laporan lengkap",
+      "Revisi tanpa batas",
+      "Support sampai lulus",
+    ],
+    color: "from-[#334155] to-[#172033]",
+    hoverBg: "linear-gradient(135deg, #334155, #172033)",
+    bgAccent: "bg-slate-100",
+    borderColor: "border-slate-200",
+    textColor: "text-slate-700",
+    badge: "bg-slate-200 text-slate-700",
+    featured: false,
+  },
+];
+---
+
+<style>
+  .hover-grad {
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .hover-grad:hover {
+    background: var(--hover-bg);
+    color: #fff;
+    border-color: transparent;
+  }
+</style>
+
+<section id="layanan" class="bg-background py-24">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="mb-16 text-center">
+      <span class="fade-in mb-4 inline-block rounded-full border border-[#b45309]/25 bg-[#b45309]/10 px-4 py-2 text-sm font-semibold text-[#b45309]"
+        >Siapa yang Kami Layani?</span
+      >
+      <h2 class="fade-in text-3xl font-bold text-[#172033] sm:text-4xl lg:text-5xl">
+        Solusi untuk Setiap <span class="text-[#b45309]">Kebutuhan</span>
+      </h2>
+      <p class="fade-in mx-auto mt-4 max-w-2xl text-lg text-slate-600">
+        Kami memahami bahwa setiap klien memiliki kebutuhan unik. Karena itu,
+        kami menyediakan layanan yang disesuaikan secara spesifik.
+      </p>
+    </div>
+
+    <div class="stagger-children grid grid-cols-1 gap-8 md:grid-cols-3">
+      {
+        segments.map((seg) => {
+          const Icon = seg.icon;
+          return (
+            <div
+              class={`fade-in card-hover overflow-hidden rounded-2xl border bg-white shadow-sm ${
+                seg.borderColor
+              } ${seg.featured ? "ring-2 ring-[#ea7b3c] ring-offset-2" : ""}`}
+            >
+              {
+                seg.featured && (
+                  <div class="bg-[#ea7b3c] py-1.5 text-center text-xs font-bold uppercase tracking-wider text-[#172033]">
+                    Paling Populer
+                  </div>
+                )
+              }
+              <div class={`bg-linear-to-br ${seg.color} p-6 text-white`}>
+                <Icon className="mb-3 size-9" aria-hidden="true" />
+                <h3 class="mb-1 text-2xl font-bold">{seg.title}</h3>
+                <p class="text-sm font-medium text-white/80">{seg.tagline}</p>
+              </div>
+
+              <div class={`p-6 ${seg.bgAccent}`}>
+                <p class="mb-5 leading-relaxed text-slate-600 text-sm">
+                  {seg.description}
+                </p>
+                <ul class="space-y-2.5">
+                  {
+                    seg.features.map((feature) => (
+                      <li class="flex items-start gap-2.5 text-sm text-slate-700">
+                        <span
+                          class={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full text-xs font-bold ${seg.badge}`}
+                          aria-hidden="true"
+                        >
+                          ✓
+                        </span>
+                        {feature}
+                      </li>
+                    ))
+                  }
+                </ul>
+              </div>
+
+              <div class="bg-white px-6 pb-6 pt-6">
+                <a
+                  href={waLink(`Halo Daydev, saya dari segmen ${seg.title} dan ingin konsultasi gratis.`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class={`hover-grad flex min-h-[48px] w-full items-center justify-center rounded-xl border-2 px-4 py-3 text-center text-sm font-semibold ${
+                    seg.featured
+                      ? "border-[#ea7b3c] bg-[#ea7b3c] text-[#172033] shadow-md hover:brightness-110 hover:bg-[#ea7b3c]"
+                      : `${seg.borderColor} ${seg.textColor}`
+                  }`}
+                  style={seg.featured ? undefined : { "--hover-bg": seg.hoverBg } as Record<string, string>}
+                >
+                  Konsultasi via WhatsApp
+                </a>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

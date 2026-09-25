@@ -1,0 +1,135 @@
+---
+import Base from "../../layouts/Base.astro";
+import { waLink } from "@daydev/shared-types";
+import { comparison, services } from "../../lib/services";
+import { ArrowUpRight, Bot, Check, Globe, Mail, Smartphone } from "lucide-react";
+
+export const prerender = true;
+
+const serviceIcons: Record<string, typeof Globe> = {
+  Globe,
+  Smartphone,
+  Bot,
+  Mail,
+};
+---
+
+<Base
+  title="Layanan - Daydev Studio"
+  description="Jasa pengembangan website, aplikasi mobile, bot Telegram, dan undangan digital untuk startup, UMKM, dan mahasiswa."
+  canonicalPath="/services"
+>
+  <main class="flex min-h-screen flex-col bg-background text-foreground">
+    <section class="border-b border-border bg-card">
+      <div class="mx-auto w-full max-w-6xl px-4 pb-16 pt-12 sm:px-6 lg:pb-24 lg:pt-20">
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary">Layanan</p>
+        <h1 class="mt-4 max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-6xl">
+          Solusi dari ide menjadi produk yang dipakai.
+        </h1>
+        <p class="mt-6 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">
+          Kami membantu startup, UMKM, dan mahasiswa membangun website, aplikasi
+          mobile, bot Telegram, hingga undangan digital.
+        </p>
+      </div>
+    </section>
+
+    <section class="mx-auto w-full max-w-6xl flex-1 px-4 py-16 sm:px-6 lg:py-24">
+      <div class="grid gap-6 md:grid-cols-2">
+        {
+          services.map((service) => {
+            const Icon = serviceIcons[service.icon] ?? Globe;
+            return (
+              <a
+                href={`/services/${service.slug}`}
+                class="group flex flex-col rounded-3xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+              >
+                <div class="mb-5 inline-flex size-12 items-center justify-center rounded-xl bg-muted">
+                  <Icon className="size-6 text-primary" aria-hidden="true" />
+                </div>
+                <h2 class="text-2xl font-bold text-foreground">{service.title}</h2>
+                <p class="mt-2 leading-7 text-muted-foreground">{service.description}</p>
+
+                <ul class="mt-5 space-y-2.5">
+                  {
+                    service.benefits.slice(0, 3).map((benefit) => (
+                      <li class="flex items-start gap-2.5 text-sm text-muted-foreground">
+                        <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+                        <span>{benefit}</span>
+                      </li>
+                    ))
+                  }
+                </ul>
+
+                <div class="mt-6 flex flex-wrap gap-2">
+                  {
+                    service.targetAudience.map((audience) => (
+                      <span class="rounded-full bg-muted px-3 py-1 text-xs font-medium text-foreground">
+                        {audience}
+                      </span>
+                    ))
+                  }
+                </div>
+
+                <span class="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-primary">
+                  Baca detail layanan <ArrowUpRight className="size-4" aria-hidden="true" />
+                </span>
+              </a>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class="border-t border-border bg-muted/30">
+      <div class="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:py-24">
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary">Perbandingan</p>
+        <h2 class="mt-2 max-w-2xl text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+          Pilih layanan yang sesuai kebutuhan Anda.
+        </h2>
+
+        <div class="mt-10 overflow-x-auto rounded-2xl border border-border bg-card">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-border text-left">
+                <th class="px-6 py-4 font-bold text-foreground">Layanan</th>
+                <th class="px-6 py-4 text-center font-bold text-foreground">Timeline</th>
+                <th class="px-6 py-4 text-center font-bold text-foreground">Kompleksitas</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                comparison.map((row, idx) => (
+                  <tr class={idx !== comparison.length - 1 ? "border-b border-border" : undefined}>
+                    <td class="px-6 py-4 font-semibold text-foreground">{row.name}</td>
+                    <td class="px-6 py-4 text-center text-muted-foreground">{row.timeline}</td>
+                    <td class="px-6 py-4 text-center text-muted-foreground">{row.complexity}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-[#172033]">
+      <div class="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-4 py-16 text-center sm:px-6 lg:flex-row lg:justify-between lg:py-20 lg:text-left">
+        <div>
+          <h2 class="text-2xl font-bold text-white sm:text-3xl">Siap memulai proyek Anda?</h2>
+          <p class="mt-3 max-w-xl leading-7 text-gray-300">
+            Konsultasi gratis untuk menyusun langkah paling masuk akal, tanpa
+            komitmen.
+          </p>
+        </div>
+        <a
+          href={waLink("Halo Daydev, saya ingin konsultasi gratis mengenai pengembangan aplikasi.")}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex min-h-[48px] shrink-0 items-center gap-2 rounded-full bg-primary px-5 py-3 font-semibold text-primary-foreground transition-transform hover:scale-[1.02]"
+        >
+          Konsultasi via WhatsApp <ArrowUpRight className="size-4" aria-hidden="true" />
+        </a>
+      </div>
+    </section>
+  </main>
+</Base>

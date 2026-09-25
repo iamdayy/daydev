@@ -1,0 +1,16 @@
+---
+import Admin from "../../layouts/Admin.astro";
+import TestimonialManager from "../../components/admin/TestimonialManager";
+import { getTestimonials } from "../../lib/api";
+
+export const prerender = false;
+
+const testimonials = await getTestimonials().catch(() => []);
+---
+
+<Admin
+  title="Testimoni"
+  description="Kurasi ulasan klien. Rating & segmen ditampilkan di beranda, dan struktur review dipasang untuk schema.org."
+>
+  <TestimonialManager client:load initial={testimonials} />
+</Admin>

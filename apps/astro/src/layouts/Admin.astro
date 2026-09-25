@@ -1,0 +1,79 @@
+---
+import { actions } from "astro:actions";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Kelola konten Daydev studio: statistik, portofolio, artikel, dan testimoni.",
+} = Astro.props;
+
+const nav = [
+  { href: "/admin", label: "Dashboard" },
+  { href: "/admin/statistik", label: "Statistik" },
+  { href: "/admin/portofolio", label: "Portofolio" },
+  { href: "/admin/artikel", label: "Artikel" },
+  { href: "/admin/testimoni", label: "Testimoni" },
+];
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} - Admin Daydev</title>
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  </head>
+  <body class="min-h-screen bg-muted/50 text-foreground antialiased">
+    <header class="sticky top-0 z-20 border-b border-border bg-[#172033] text-white">
+      <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+        <a href="/admin" class="text-lg font-bold tracking-tight">
+          Daydev <span class="text-[#ea7b3c]">Admin</span>
+        </a>
+        <nav class="flex items-center gap-1 overflow-x-auto" aria-label="Navigasi admin">
+          {
+            nav.map((item) => (
+              <a
+                href={item.href}
+                class={`whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  Astro.url.pathname === item.href
+                    ? "bg-white/10 text-white"
+                    : "text-gray-300 hover:bg-white/5 hover:text-white"
+                }`}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+        <form
+          action={actions.logout}
+          method="POST"
+          class="shrink-0"
+          enctype="multipart/form-data"
+        >
+          <button
+            type="submit"
+            class="rounded-lg border border-white/20 px-3 py-2 text-sm font-medium text-gray-200 transition-colors hover:border-[#ea7b3c] hover:text-[#ea7b3c]"
+          >
+            Keluar
+          </button>
+        </form>
+      </div>
+    </header>
+
+    <main class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
+        {description && <p class="mt-2 max-w-2xl text-muted-foreground">{description}</p>}
+      </div>
+      <slot />
+    </main>
+  </body>
+</html>

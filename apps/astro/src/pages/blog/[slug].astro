@@ -1,0 +1,97 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getBlogPost } from "../../lib/api";
+import { renderMarkdown } from "../../lib/markdown";
+import { waLink } from "@daydev/shared-types";
+import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
+
+const { slug } = Astro.params;
+const post = await getBlogPost(slug!);
+
+if (!post) {
+  return new Response("Artikel tidak ditemukan", {
+    status: 404,
+    statusText: "Artikel tidak ditemukan",
+  });
+}
+
+const html = renderMarkdown(post.content);
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+---
+
+<Base
+  title={`${post.title} - Daydev Studio`}
+  description={post.excerpt}
+  canonicalPath={`/blog/${post.slug}`}
+>
+  <main class="min-h-screen bg-background text-foreground">
+    <header class="border-b border-border bg-card">
+      <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:py-16">
+        <a href="/blog" class="inline-flex items-center gap-2 text-sm font-semibold text-primary">
+          <ArrowLeft className="size-4" aria-hidden="true" />Kembali ke blog
+        </a>
+        <div class="mt-10 flex flex-wrap items-center gap-3 text-sm font-semibold text-primary">
+          <span class="flex items-center gap-1 text-muted-foreground">
+            <Clock3 className="size-4" aria-hidden="true" />
+            {post.reading_minutes} menit membaca
+          </span>
+        </div>
+        <h1 class="mt-6 text-balance text-4xl font-bold tracking-tight sm:text-6xl">
+          {post.title}
+        </h1>
+        <p class="mt-6 text-pretty text-lg leading-8 text-muted-foreground">
+          {post.excerpt}
+        </p>
+        <div class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
+          <span>Oleh {post.author}</span>
+          <span>{formatDate(post.published_at)}</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="mx-auto grid max-w-6xl gap-12 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,680px)_260px] lg:py-16">
+      <article>
+        <div class="prose-blog" set:html={html} />
+        <div class="mt-14 rounded-3xl bg-secondary p-7 sm:p-9">
+          <p class="text-sm font-semibold uppercase tracking-wide text-primary">
+            Siap mulai?
+          </p>
+          <h2 class="mt-3 text-2xl font-bold tracking-tight">
+            Butuh partner untuk membangun solusi digital?
+          </h2>
+          <p class="mt-3 leading-7 text-muted-foreground">
+            Ceritakan tantangan Anda. Kami bantu menyusun langkah yang paling
+            masuk akal untuk bisnis.
+          </p>
+          <a
+            href={waLink("Halo Daydev, saya ingin diskusi proyek.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-6 inline-flex min-h-[48px] items-center gap-2 rounded-full bg-primary px-5 py-3 font-semibold text-primary-foreground"
+          >
+            Diskusikan proyek via WhatsApp{" "}
+            <ArrowUpRight className="size-4" aria-hidden="true" />
+          </a>
+        </div>
+      </article>
+      <aside class="lg:sticky lg:top-8 lg:self-start">
+        <div class="rounded-2xl border border-border bg-card p-5">
+          <p class="text-xs font-semibold uppercase tracking-wide text-primary">
+            Tentang penulis
+          </p>
+          <p class="mt-4 text-lg font-bold">{post.author}</p>
+          <p class="mt-2 text-sm leading-6 text-muted-foreground">
+            Tim developer Daydev yang membagikan pengalaman membangun produk
+            digital.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </main>
+</Base>

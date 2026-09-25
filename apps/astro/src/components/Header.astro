@@ -1,0 +1,123 @@
+---
+const navLinks = [
+  { label: "Beranda", href: "/" },
+  { label: "Layanan", href: "/services" },
+  { label: "Harga", href: "/pricing" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "Blog", href: "/blog" },
+];
+
+const pathname = Astro.url.pathname;
+const waLink = "https://wa.me/6285175284253";
+---
+
+<header id="site-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#172033]/95 backdrop-blur-sm py-4">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 group" aria-label="Daydev Studio - Beranda">
+      <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center font-bold text-[#172033] text-lg group-hover:scale-110 transition-transform overflow-hidden">
+        <img src="/logo.png" alt="Daydev Logo" width="20" height="20" class="object-contain" />
+      </div>
+      <span class="text-white font-bold text-xl tracking-tight">
+        day<span class="text-[#ea7b3c]">dev</span>
+      </span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8" aria-label="Navigasi utama">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class:list={[
+              "transition-colors font-medium text-sm",
+              pathname === link.href
+                ? "text-[#ea7b3c]"
+                : "text-gray-300 hover:text-[#ea7b3c]",
+            ]}
+            aria-current={pathname === link.href ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        href={waLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-[#ea7b3c] text-[#172033] px-5 py-2 min-h-[40px] inline-flex items-center rounded-full font-semibold text-sm hover:brightness-110 transition-all"
+      >
+        Konsultasi Gratis
+      </a>
+    </nav>
+
+    <button
+      id="menu-toggle"
+      class="md:hidden text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+      aria-label="Buka menu"
+      aria-expanded="false"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" data-icon="open">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+      <svg class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" data-icon="close">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="md:hidden bg-[#172033] border-t border-white/10 px-4 pb-4 hidden" hidden>
+    {
+      navLinks.map((link) => (
+        <a
+          href={link.href}
+          class:list={[
+            "block py-3 min-h-[44px] flex items-center transition-colors font-medium border-b border-white/5",
+            pathname === link.href ? "text-[#ea7b3c]" : "text-gray-300 hover:text-[#ea7b3c]",
+          ]}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+    <a
+      href={waLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-4 flex min-h-[48px] items-center justify-center bg-[#ea7b3c] text-[#172033] px-5 py-3 rounded-full font-semibold text-center hover:brightness-110 transition-all"
+    >
+      Konsultasi Gratis
+    </a>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById("site-header") as HTMLElement | null;
+  const toggle = document.getElementById("menu-toggle") as HTMLButtonElement | null;
+  const menu = document.getElementById("mobile-menu") as HTMLElement | null;
+  const openIcon = toggle?.querySelector('[data-icon="open"]');
+  const closeIcon = toggle?.querySelector('[data-icon="close"]');
+
+  const onScroll = () => {
+    if (!header) return;
+    const scrolled = window.scrollY > 20;
+    header.classList.toggle("shadow-lg", scrolled);
+    header.classList.toggle("py-3", scrolled);
+    header.classList.toggle("py-4", !scrolled);
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  const setOpen = (openState: boolean) => {
+    if (!menu || !toggle) return;
+    menu.hidden = !openState;
+    menu.classList.toggle("hidden", !openState);
+    toggle.setAttribute("aria-expanded", String(openState));
+    toggle.setAttribute("aria-label", openState ? "Tutup menu" : "Buka menu");
+    openIcon?.classList.toggle("hidden", openState);
+    closeIcon?.classList.toggle("hidden", !openState);
+  };
+
+  toggle?.addEventListener("click", () => setOpen(menu?.hidden === true));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setOpen(false);
+  });
+</script>

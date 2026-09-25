@@ -1,0 +1,42 @@
+{
+  "name": "@daydev/astro",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --port 5000",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.0.0",
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/vercel": "^9.0.5",
+    "@daydev/shared-types": "*",
+    "@react-three/drei": "^10.0.2",
+    "@react-three/fiber": "^9.0.0",
+    "astro": "^5.1.0",
+    "lucide-react": "^0.468.0",
+    "marked": "^15.0.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sanitize-html": "^2.13.1",
+    "three": "^0.171.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@tailwindcss/vite": "^4.0.0",
+    "@testing-library/react": "^16.1.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/sanitize-html": "^2.13.0",
+    "@types/three": "^0.171.0",
+    "@vitest/coverage-v8": "^2.1.8",
+    "jsdom": "^26.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

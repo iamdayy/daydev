@@ -1,0 +1,112 @@
+---
+import {
+  PORTFOLIO_CATEGORY_LABELS,
+  type PortfolioItem,
+} from "@daydev/shared-types";
+import { ArrowUpRight, CircleCheck } from "lucide-react";
+
+interface Props {
+  projects: PortfolioItem[];
+}
+
+const { projects: items } = Astro.props;
+
+const published = items
+  .filter((p) => p.is_published)
+  .sort((a, b) => a.display_order - b.display_order)
+  .slice(0, 3);
+
+const gradients = [
+  "from-[#0f766e] via-[#16a394] to-[#b9e6dc]",
+  "from-[#c2410c] via-[#ea7b3c] to-[#ffd1b5]",
+  "from-[#4338ca] via-[#6366f1] to-[#c7d2fe]",
+];
+---
+
+<section class="bg-muted/40 px-4 py-24 sm:px-6" id="proyek">
+  <div class="mx-auto max-w-6xl">
+    <div
+      class="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end"
+    >
+      <div class="max-w-2xl">
+        <p class="mb-4 text-sm font-bold uppercase tracking-wide text-primary">
+          Bukti, bukan janji
+        </p>
+        <h2
+          class="text-balance font-sans text-3xl font-bold tracking-tight text-foreground sm:text-5xl"
+        >
+          Proyek yang membuat bisnis bergerak maju.
+        </h2>
+      </div>
+      <a
+        href="/portfolio"
+        class="inline-flex items-center gap-2 font-semibold text-primary transition-transform hover:translate-x-1"
+        >Lihat semua proyek <ArrowUpRight
+          className="size-4"
+          aria-hidden="true"
+        /></a
+      >
+    </div>
+
+    {
+      published.length === 0 ? (
+        <p class="text-center text-muted-foreground">
+          Studi kasus sedang disusun. Tanyakan portofolio lengkap kami via
+          WhatsApp.
+        </p>
+      ) : (
+        <div class="grid gap-6 lg:grid-cols-3">
+          {published.map((project, idx) => {
+            const hasImage = Boolean(project.cover_image_url);
+            return (
+              <article class="group overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <div
+                  class={`relative flex h-56 items-end overflow-hidden p-6 ${
+                    hasImage
+                      ? "bg-muted"
+                      : `bg-gradient-to-br ${gradients[idx % gradients.length]}`
+                  }`}
+                >
+                  {hasImage ? (
+                    <img
+                      src={project.cover_image_url}
+                      alt={`Visual proyek ${project.title}`}
+                      loading="lazy"
+                      class="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <>
+                      <div class="absolute right-8 top-8 h-32 w-24 rotate-6 rounded-xl border border-white/40 bg-white/25 shadow-xl transition-transform duration-500 group-hover:rotate-12 group-hover:scale-105" />
+                      <div class="absolute right-16 top-14 h-32 w-24 -rotate-6 rounded-xl border border-white/30 bg-white/15" />
+                    </>
+                  )}
+                  <span class="relative rounded-full bg-white/90 px-3 py-1.5 text-xs font-bold text-foreground shadow-sm">
+                    Case study
+                  </span>
+                </div>
+                <div class="flex flex-col gap-4 p-6">
+                  <span class="w-fit rounded-full bg-muted px-3 py-1 text-xs font-semibold text-primary">
+                    {PORTFOLIO_CATEGORY_LABELS[project.category] ??
+                      project.category}
+                  </span>
+                  <h3 class="text-2xl font-bold text-foreground">
+                    {project.title}
+                  </h3>
+                  <p class="leading-6 text-muted-foreground">
+                    {project.description}
+                  </p>
+                  {project.result_highlight && (
+                    <div class="mt-2 flex items-center gap-2 border-t border-border pt-4 text-sm font-semibold text-primary">
+                      <CircleCheck className="size-4" aria-hidden="true" />{" "}
+                      {project.result_highlight}
+                    </div>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )
+    }
+  </div>
+</section>

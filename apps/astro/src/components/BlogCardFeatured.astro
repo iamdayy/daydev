@@ -1,0 +1,79 @@
+---
+import type { BlogPost } from "@daydev/shared-types";
+import { ArrowUpRight, CalendarDays, Clock3 } from "lucide-react";
+
+interface Props {
+  article: BlogPost;
+  href: string;
+  index: number;
+}
+
+const { article, href, index } = Astro.props;
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+---
+
+<article class="group overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+  <div
+    class={`relative flex h-52 items-end overflow-hidden p-6 ${
+      index === 0
+        ? "bg-gradient-to-br from-[#0f766e]/90 via-[#0f766e] to-[#ea7b3c]"
+        : "bg-[#172033]"
+    }`}
+  >
+    {
+      index === 0 && (
+        <div
+          class="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage:
+              "linear-gradient(135deg, transparent 25%, currentColor 25%, currentColor 26%, transparent 26%, transparent 55%, currentColor 55%, currentColor 56%, transparent 56%)",
+            backgroundSize: "28px 28px",
+          }}
+          aria-hidden="true"
+        />
+      )
+    }
+    {
+      article.cover_image_url && (
+        <img
+          src={article.cover_image_url}
+          alt={`Ilustrasi artikel ${article.title}`}
+          loading="lazy"
+          class="absolute inset-0 size-full object-cover"
+        />
+      )
+    }
+    <span class="relative rounded-full bg-background/90 px-3 py-1.5 text-xs font-bold text-foreground shadow-sm">
+      Insight
+    </span>
+  </div>
+
+  <div class="flex flex-col gap-4 p-6 sm:p-8">
+    <div class="flex flex-wrap items-center gap-4 text-xs font-medium text-muted-foreground">
+      <span class="inline-flex items-center gap-1.5">
+        <CalendarDays className="size-3.5" aria-hidden="true" />
+        {formatDate(article.published_at)}
+      </span>
+      <span class="inline-flex items-center gap-1.5">
+        <Clock3 className="size-3.5" aria-hidden="true" />
+        {article.reading_minutes} menit baca
+      </span>
+    </div>
+    <h3 class="text-2xl font-bold leading-tight text-foreground transition-colors group-hover:text-primary sm:text-3xl">
+      <a href={href}>{article.title}</a>
+    </h3>
+    <p class="line-clamp-3 leading-7 text-muted-foreground">{article.excerpt}</p>
+    <div class="flex items-center justify-between border-t border-border pt-4 text-sm">
+      <span class="font-semibold text-foreground">{article.author}</span>
+      <a href={href} class="font-semibold text-primary">
+        Baca selengkapnya <ArrowUpRight className="ml-1 inline size-4" aria-hidden="true" />
+      </a>
+    </div>
+  </div>
+</article>

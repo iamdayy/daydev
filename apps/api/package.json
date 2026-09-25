@@ -1,0 +1,37 @@
+{
+  "name": "@daydev/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "start": "bun src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "test:unit": "bun test src/tests/unit",
+    "test:integration": "bun test src/tests/integration",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:migrate": "bun scripts/migrate.ts",
+    "db:seed": "bun scripts/seed.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.699.0",
+    "@aws-sdk/s3-request-presigner": "^3.699.0",
+    "@elysiajs/eden": "^1.2.2",
+    "@elysiajs/jwt": "^1.2.2",
+    "@elysiajs/swagger": "^1.2.2",
+    "@vercel/functions": "^2.2.4",
+    "drizzle-orm": "^0.43.1",
+    "elysia": "^1.2.19",
+    "pg": "^8.13.1",
+    "@daydev/shared-types": "*"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.14",
+    "@types/node": "^22.10.1",
+    "@types/pg": "^8.11.10",
+    "drizzle-kit": "^0.31.2",
+    "typescript": "^5.7.2"
+  }
+}

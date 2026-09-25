@@ -1,0 +1,16 @@
+---
+import Admin from "../../layouts/Admin.astro";
+import StatsManager from "../../components/admin/StatsManager";
+import { getStats } from "../../lib/api";
+
+export const prerender = false;
+
+const stats = await getStats().catch(() => []);
+---
+
+<Admin
+  title="Statistik"
+  description="Angka beranda disimpan di satu tempat sehingga konsisten di semua halaman. Baris kosong otomatis disembunyikan."
+>
+  <StatsManager client:load initial={stats} />
+</Admin>

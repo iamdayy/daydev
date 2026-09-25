@@ -1,0 +1,16 @@
+---
+import Admin from "../../layouts/Admin.astro";
+import PortfolioManager from "../../components/admin/PortfolioManager";
+import { getPortfolio } from "../../lib/api";
+
+export const prerender = false;
+
+const portfolio = await getPortfolio().catch(() => []);
+---
+
+<Admin
+  title="Portofolio"
+  description="Kelola proyek dan case studies. Setiap proyek yang terbit wajib memiliki gambar sampul agar tampil rapi di situs."
+>
+  <PortfolioManager client:load initial={portfolio} />
+</Admin>

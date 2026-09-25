@@ -1,6 +1,7 @@
 import type { Hook } from "@hono/zod-openapi";
 import type { Context } from "hono";
 import { z } from "zod";
+import type { ZodError } from "zod";
 import type { Env } from "./types";
 
 /** Bentuk respons error konsisten di seluruh API. */
@@ -45,8 +46,11 @@ export const defaultHook: Hook<any, Env, any, any> = (
   c: Context<Env>,
 ) => {
   if (!result.success) {
+    // Narrowing lewat intersection `{ target } & (...)` tidak konsisten di
+    // semua versi TS; pertegas lewat cast eksplisit.
+    const { error } = result as { success: false; error: ZodError };
     return c.json(
-      { error: "Validasi gagal.", issues: result.error.issues },
+      { error: "Validasi gagal.", issues: error.issues },
       422,
     );
   }

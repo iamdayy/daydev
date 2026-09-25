@@ -21,17 +21,28 @@ const LOGIN_MAX_ATTEMPTS = 8;
 const INVALID_CREDENTIALS = "Email atau password salah.";
 
 export const authRoutes = new Elysia({ prefix: "/auth", tags: ["auth"] })
-  .use(jwt({ name: "jwt", secret: env.jwtSecret, exp: "7d" }))
+  .use(
+    jwt({
+      name: "jwt",
+      secret: env.jwtSecret,
+      exp: "7d",
+      schema: t.Object({
+        email: t.String(),
+        sid: t.String(),
+      }),
+    }),
+  )
   .post(
     "/login",
     async ({ body, headers, jwt: signer }) => {
+      const login = body as typeof loginBody.static;
       const ip =
         headers["x-forwarded-for"]?.split(",")[0]?.trim() ??
         headers["x-real-ip"] ??
         "unknown";
       checkRateLimit(`login:${ip}`, LOGIN_MAX_ATTEMPTS, LOGIN_WINDOW_MS);
 
-      const email = body.email.toLowerCase().trim();
+      const email = login.email.toLowerCase().trim();
       const user = await db.query.adminUsers.findFirst({
         where: eq(adminUsers.email, email),
       });
@@ -39,11 +50,11 @@ export const authRoutes = new Elysia({ prefix: "/auth", tags: ["auth"] })
       if (!user) {
         // jalankan verifikasi terhadap hash dummy supaya timing tidak bocorkan
         // apakah email terdaftar.
-        await verifyDummyPassword(body.password);
+        await verifyDummyPassword(login.password);
         throw new HttpError(401, INVALID_CREDENTIALS);
       }
 
-      const valid = await verifyPassword(body.password, user.passwordHash);
+      const valid = await verifyPassword(login.password, user.passwordHash);
       if (!valid) {
         throw new HttpError(401, INVALID_CREDENTIALS);
       }

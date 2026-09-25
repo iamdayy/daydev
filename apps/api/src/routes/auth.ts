@@ -1,13 +1,13 @@
-import { Elysia, t } from "elysia";
 import { jwt } from "@elysiajs/jwt";
 import { eq } from "drizzle-orm";
+import { Elysia, t } from "elysia";
 import { randomUUID } from "node:crypto";
 import { db } from "../db/client";
 import { adminUsers, sessions } from "../db/schema";
 import { adminGuard, verifyPassword } from "../lib/auth";
-import { checkRateLimit, resetRateLimit } from "../lib/rate-limit";
 import { env } from "../lib/env";
 import { HttpError } from "../lib/http-error";
+import { checkRateLimit, resetRateLimit } from "../lib/rate-limit";
 
 const loginBody = t.Object({
   email: t.String({ format: "email", maxLength: 200 }),

@@ -1,7 +1,10 @@
 import { app } from "./app";
+import type { Hono } from "hono";
+import type { Env } from "./lib/types";
 
-// Vercel (Fluid compute / Bun runtime): default export berbentuk Request -> Response.
-const handler = app.fetch.bind(app);
+// Bind supaya `this` tidak hilang saat dipakai Vercel; type fetch diambil
+// dari kelas Hono agar selalu kompatibel dengan adapter Vercel/Bun.
+export const handler: Hono<Env>["fetch"] = app.fetch.bind(app);
 export default handler;
 
 // Dev/standalone: jalankan Bun HTTP server langsung (batas body 1 MB).

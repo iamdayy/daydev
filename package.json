@@ -6,7 +6,7 @@
     "apps/*",
     "shared-types"
   ],
-  "description": "Daydev Studio: Astro frontend + admin panel, ElysiaJS API, Neon Postgres, Cloudflare R2",
+  "description": "Daydev Studio: Astro frontend + admin panel, Hono API, Neon Postgres, Cloudflare R2",
   "packageManager": "bun@1.3.14",
   "scripts": {
     "dev": "turbo run dev",

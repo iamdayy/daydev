@@ -1,37 +1,86 @@
+import { createRoute, z } from "@hono/zod-openapi";
 import { asc, eq } from "drizzle-orm";
-import { Elysia, t } from "elysia";
 import { db } from "../db/client";
 import { siteStats } from "../db/schema";
-import { adminGuard } from "../lib/auth";
 import { HttpError } from "../lib/http-error";
+import type { App } from "../lib/types";
+import { responses } from "../lib/zhelpers";
 
-const statsBody = t.Object({
-  value: t.String({ minLength: 1, maxLength: 80 }),
+const statsBody = z.object({
+  value: z.string().min(1).max(80),
 });
 
-export const statsRoutes = new Elysia({ tags: ["stats"] })
-  .get("/stats", async () => {
-    const rows = await db
-      .select({
-        key: siteStats.key,
-        value: siteStats.value,
-        updated_at: siteStats.updatedAt,
-      })
-      .from(siteStats)
-      .orderBy(asc(siteStats.key));
-    return { stats: rows };
-  })
-  .use(adminGuard)
-  .get("/admin/stats", async () => {
-    const rows = await db.select().from(siteStats).orderBy(asc(siteStats.key));
-    return { stats: rows };
-  })
-  .put(
-    "/admin/stats/:key",
-    async ({ params, body }) => {
-      const stats = body as typeof statsBody.static;
+const statsKey = z.object({
+  key: z.string().min(1).max(80),
+});
+
+const publicStat = z.object({
+  key: z.string(),
+  value: z.string(),
+  updated_at: z.string(),
+});
+
+// Row mentah dari database (camelCase), dipakai endpoint admin.
+const rawRow = z.record(z.string(), z.unknown());
+
+export const statsRoutes = (app: App): void => {
+  app.openapi(
+    createRoute({
+      method: "get",
+      path: "/stats",
+      tags: ["stats"],
+      responses: responses(
+        z.object({ stats: z.array(publicStat) }),
+        "Daftar statistik situs.",
+      ),
+    }),
+    async (c) => {
+      const rows = await db
+        .select({
+          key: siteStats.key,
+          value: siteStats.value,
+          updated_at: siteStats.updatedAt,
+        })
+        .from(siteStats)
+        .orderBy(asc(siteStats.key));
+      return c.json({ stats: rows }, 200);
+    },
+  );
+
+  app.openapi(
+    createRoute({
+      method: "get",
+      path: "/admin/stats",
+      tags: ["stats"],
+      responses: responses(
+        z.object({ stats: z.array(rawRow) }),
+        "Daftar semua statistik.",
+      ),
+    }),
+    async (c) => {
+      const rows = await db.select().from(siteStats).orderBy(asc(siteStats.key));
+      return c.json({ stats: rows }, 200);
+    },
+  );
+
+  app.openapi(
+    createRoute({
+      method: "put",
+      path: "/admin/stats/{key}",
+      tags: ["stats"],
+      request: {
+        params: statsKey,
+        body: { content: { "application/json": { schema: statsBody } } },
+      },
+      responses: responses(
+        z.object({ stat: rawRow.nullable() }),
+        "Statistik yang disimpan.",
+      ),
+    }),
+    async (c) => {
+      const { key } = c.req.valid("param");
+      const stats = c.req.valid("json");
       const value = String(stats.value ?? "").trim();
-      const key = params.key.trim();
       if (!key || !value) throw new HttpError(422, "key dan value wajib diisi.");
       await db
         .insert(siteStats)
@@ -43,10 +92,7 @@ export const statsRoutes = new Elysia({ tags: ["stats"] })
       const row = await db.query.siteStats.findFirst({
         where: eq(siteStats.key, key),
       });
-      return { stat: row };
-    },
-    {
-      params: t.Object({ key: t.String({ minLength: 1, maxLength: 80 }) }),
-      body: statsBody,
+      return c.json({ stat: row ?? null }, 200);
     },
   );
+};

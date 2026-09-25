@@ -1,87 +1,88 @@
-import { Elysia } from "elysia";
-import { swagger } from "@elysiajs/swagger";
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { swaggerUI } from "@hono/swagger-ui";
+import type { ContentfulStatusCode } from "hono/utils/http-status";
+import { adminAuth } from "./lib/auth";
+import { HttpError, RateLimitError } from "./lib/http-error";
+import type { Env } from "./lib/types";
+import { defaultHook } from "./lib/zhelpers";
 import { authRoutes } from "./routes/auth";
+import { blogRoutes } from "./routes/blog";
+import { portfolioRoutes } from "./routes/portfolio";
+import { pricingRoutes } from "./routes/pricing";
 import { statsRoutes } from "./routes/stats";
 import { teamRoutes } from "./routes/team";
-import { portfolioRoutes } from "./routes/portfolio";
-import { blogRoutes } from "./routes/blog";
-import { pricingRoutes } from "./routes/pricing";
 import { testimonialRoutes } from "./routes/testimonials";
 import { uploadRoutes } from "./routes/uploads";
-import { HttpError, RateLimitError } from "./lib/http-error";
 
-export const app = new Elysia({
-  name: "daydev-api",
-  serve: {
-    maxRequestBodySize: 1024 * 1024, // 1 MB; upload file besar lewat presigned R2
-  },
-})
-  .use(
-    swagger({
-      path: "/swagger",
-      documentation: {
-        info: {
-          title: "Daydev Studio API",
-          version: "1.0.0",
-          description:
-            "API untuk situs daydev.studio: konten publik + CRUD admin (statistik, tim, portfolio, blog, pricing, testimoni) + presigned upload ke Cloudflare R2.",
-        },
-        tags: [
-          { name: "auth", description: "Autentikasi admin" },
-          { name: "stats", description: "Statistik situs (satu sumber data)" },
-          { name: "team", description: "Anggota tim" },
-          { name: "portfolio", description: "Portfolio / case studies" },
-          { name: "blog", description: "Artikel blog" },
-          { name: "pricing", description: "Paket harga" },
-          { name: "testimonials", description: "Testimoni klien" },
-          { name: "uploads", description: "Presigned upload ke R2" },
-          { name: "admin", description: "Endpoint admin (perlu JWT bearer)" },
-        ],
-      },
-    }),
-  )
-  .get("/", () => ({
+export const app = new OpenAPIHono<Env>({ defaultHook });
+
+// Semua endpoint /admin/* butuh bearer JWT + session aktif.
+app.use("/admin/*", adminAuth);
+
+app.get("/", (c) =>
+  c.json({
     name: "Daydev Studio API",
     docs: "/swagger",
     health: "/health",
-  }))
-  .get("/health", () => ({ status: "ok", time: new Date().toISOString() }))
-  .use(authRoutes)
-  .use(statsRoutes)
-  .use(teamRoutes)
-  .use(portfolioRoutes)
-  .use(blogRoutes)
-  .use(pricingRoutes)
-  .use(testimonialRoutes)
-  .use(uploadRoutes)
-  .onError(({ code, error, set }) => {
-    // error buatan sendiri dengan status eksplisit
-    if (error instanceof RateLimitError) {
-      set.status = error.status;
-      set.headers["retry-after"] = String(error.retryAfterSeconds);
-      return { error: error.message };
-    }
-    if (error instanceof HttpError) {
-      set.status = error.status;
-      return { error: error.message };
-    }
-    if (code === "VALIDATION") {
-      set.status = 422;
-      const issues = (error as unknown as { all?: unknown }).all;
-      return { error: "Validasi gagal.", issues };
-    }
-    if (code === "NOT_FOUND") {
-      set.status = 404;
-      return { error: "Endpoint tidak ditemukan." };
-    }
-    if (code === "PARSE") {
-      set.status = 400;
-      return { error: "Request body tidak valid." };
-    }
-    // sisa: error internal. Jangan bocorkan pesan mentah ke klien.
-    console.error("[api] unhandled error", error);
-    set.status = 500;
-    return { error: "Terjadi kesalahan internal." };
-  });
+  }),
+);
 
-export type App = typeof app;
+app.get("/health", (c) =>
+  c.json({ status: "ok", time: new Date().toISOString() }),
+);
+
+authRoutes(app);
+statsRoutes(app);
+teamRoutes(app);
+portfolioRoutes(app);
+blogRoutes(app);
+pricingRoutes(app);
+testimonialRoutes(app);
+uploadRoutes(app);
+
+app.doc("/swagger/openapi.json", {
+  openapi: "3.0.0",
+  info: {
+    title: "Daydev Studio API",
+    version: "1.0.0",
+    description:
+      "API untuk situs daydev.studio: konten publik + CRUD admin (statistik, tim, portfolio, blog, pricing, testimoni) + presigned upload ke Cloudflare R2.",
+  },
+  tags: [
+    { name: "auth", description: "Autentikasi admin" },
+    { name: "stats", description: "Statistik situs (satu sumber data)" },
+    { name: "team", description: "Anggota tim" },
+    { name: "portfolio", description: "Portfolio / case studies" },
+    { name: "blog", description: "Artikel blog" },
+    { name: "pricing", description: "Paket harga" },
+    { name: "testimonials", description: "Testimoni klien" },
+    { name: "uploads", description: "Presigned upload ke R2" },
+  ],
+});
+
+app.get("/swagger", swaggerUI({ url: "/swagger/openapi.json" }));
+
+app.notFound((c) => c.json({ error: "Endpoint tidak ditemukan." }, 404));
+
+app.onError((error, c) => {
+  if (error instanceof RateLimitError) {
+    c.header("retry-after", String(error.retryAfterSeconds));
+    return c.json(
+      { error: error.message },
+      error.status as ContentfulStatusCode,
+    );
+  }
+  if (error instanceof HttpError) {
+    return c.json(
+      { error: error.message },
+      error.status as ContentfulStatusCode,
+    );
+  }
+  // Body JSON tidak valid (dibongkar sendiri oleh handler bila perlu).
+  if (error instanceof SyntaxError) {
+    return c.json({ error: "Request body tidak valid." }, 400);
+  }
+  // Sisa: error internal. Jangan bocorkan pesan mentah ke klien.
+  console.error("[api] unhandled error", error);
+  return c.json({ error: "Terjadi kesalahan internal." }, 500);
+});

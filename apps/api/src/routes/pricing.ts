@@ -1,87 +1,163 @@
+import { createRoute, z } from "@hono/zod-openapi";
 import type { PricingCategory, PricingPackage } from "@daydev/shared-types";
 import { asc, eq } from "drizzle-orm";
-import { Elysia, t } from "elysia";
 import { db } from "../db/client";
 import { pricingCategories, pricingPackages } from "../db/schema";
-import { adminGuard } from "../lib/auth";
 import { HttpError } from "../lib/http-error";
+import type { App } from "../lib/types";
+import { responses } from "../lib/zhelpers";
 
-function sortPackages<T extends typeof pricingPackages.$inferSelect>(pkgs: T[]) {
+function sortPackages<T extends typeof pricingPackages.$inferSelect>(
+  pkgs: T[],
+) {
   return [...pkgs].sort(
     (a, b) => a.displayOrder - b.displayOrder || a.name.localeCompare(b.name, "id"),
   );
 }
 
 // Serialize row dari database (camelCase) ke bentuk yang dikirim ke API (snake_case)
-function serialize(row: typeof pricingPackages.$inferSelect) : PricingPackage | PricingCategory {
+function serialize(
+  row: typeof pricingPackages.$inferSelect,
+): PricingPackage | PricingCategory {
   let newRow: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(row)) {
-    const snakeKey = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+    const snakeKey = key.replace(/[A-Z]/g, (l) => `_${l.toLowerCase()}`);
     newRow[snakeKey] = value;
   }
   return newRow as unknown as PricingPackage | PricingCategory;
 }
 
-const pricingCategoryBody = t.Object({
-        segment: t.Union([
-          t.Literal("undangan-digital"),
-          t.Literal("bot-telegram"),
-          t.Literal("mahasiswa"),
-          t.Literal("umkm"),
-          t.Literal("startup"),
-        ]),
-        label: t.String({ minLength: 3, maxLength: 80 }),
-        startingPriceLabel: t.String({ minLength: 3, maxLength: 120 }),
-        displayOrder: t.Optional(t.Integer({ default: 0 })),
-      })
+const pricingSegment = z.enum([
+  "undangan-digital",
+  "bot-telegram",
+  "mahasiswa",
+  "umkm",
+  "startup",
+]);
 
-const pricingPackageBody = t.Object({
-        categoryId: t.String(),
-        name: t.String({ minLength: 2, maxLength: 120 }),
-        price: t.Integer({ minimum: 0, maximum: 1_000_000_000 }),
-        features: t.Optional(t.Array(t.String({ maxLength: 200 }))),
-        isRecommended: t.Optional(t.Boolean({ default: false })),
-        demoUrl: t.Optional(t.Nullable(t.String({ maxLength: 500 }))),
-        displayOrder: t.Optional(t.Integer({ default: 0 })),
-      })
+const pricingCategoryBody = z.object({
+  segment: pricingSegment,
+  label: z.string().min(3).max(80),
+  startingPriceLabel: z.string().min(3).max(120),
+  displayOrder: z.number().int().optional(),
+});
 
-export const pricingRoutes = new Elysia({ tags: ["pricing"] })
-  .get("/pricing", async () => {
-    const categories = await db
-      .select()
-      .from(pricingCategories)
-      .orderBy(asc(pricingCategories.displayOrder));
-    const packages = await db.select().from(pricingPackages);
+const pricingCategoryLabelBody = z.object({
+  label: z.string().min(3).max(80),
+  startingPriceLabel: z.string().min(3).max(120),
+  displayOrder: z.number().int().optional(),
+});
 
-    const result = categories.map((category) => ({
-      ...category,
-      packages: sortPackages(
-        packages.filter((p) => p.categoryId === category.id),
-      ).map(serialize),
-    }));
-    return { categories: result };
-  })
-  .use(adminGuard)
-  .get("/admin/pricing", async () => {
-    const categories = await db
-      .select()
-      .from(pricingCategories)
-      .orderBy(asc(pricingCategories.displayOrder));
-    const packages = await db.select().from(pricingPackages);
-    return {
-      categories: categories.map((category) => ({
+const pricingPackageBody = z.object({
+  categoryId: z.string().min(1),
+  name: z.string().min(2).max(120),
+  price: z.number().int().min(0).max(1_000_000_000),
+  features: z.array(z.string().max(200)).optional(),
+  isRecommended: z.boolean().optional(),
+  demoUrl: z.string().max(500).nullable().optional(),
+  displayOrder: z.number().int().optional(),
+});
+
+const idParams = z.object({
+  id: z.string().min(1),
+});
+
+const packageRow = z.object({
+  id: z.string(),
+  category_id: z.string(),
+  name: z.string(),
+  price: z.number(),
+  features: z.array(z.string()).nullable(),
+  is_recommended: z.boolean(),
+  demo_url: z.string().nullable(),
+  display_order: z.number(),
+});
+
+const categoryRow = z.object({
+  id: z.string(),
+  segment: pricingSegment,
+  label: z.string(),
+  startingPriceLabel: z.string(),
+  displayOrder: z.number(),
+  packages: z.array(packageRow),
+});
+
+const rawRow = z.record(z.string(), z.unknown());
+
+export const pricingRoutes = (app: App): void => {
+  app.openapi(
+    createRoute({
+      method: "get",
+      path: "/pricing",
+      tags: ["pricing"],
+      responses: responses(
+        z.object({ categories: z.array(categoryRow) }),
+        "Kategori harga beserta paketnya.",
+      ),
+    }),
+    async (c) => {
+      const categories = await db
+        .select()
+        .from(pricingCategories)
+        .orderBy(asc(pricingCategories.displayOrder));
+      const packages = await db.select().from(pricingPackages);
+      const result = categories.map((category) => ({
         ...category,
         packages: sortPackages(
           packages.filter((p) => p.categoryId === category.id),
         ).map(serialize),
-      })),
-    };
-  })
-  // ---- kategori ----
-  .post(
-    "/admin/pricing/categories",
-    async ({ body }) => {
-      const category = body as typeof pricingCategoryBody.static;
+      }));
+      return c.json({ categories: result }, 200);
+    },
+  );
+
+  app.openapi(
+    createRoute({
+      method: "get",
+      path: "/admin/pricing",
+      tags: ["pricing"],
+      responses: responses(
+        z.object({ categories: z.array(categoryRow) }),
+        "Semua kategori harga.",
+      ),
+    }),
+    async (c) => {
+      const categories = await db
+        .select()
+        .from(pricingCategories)
+        .orderBy(asc(pricingCategories.displayOrder));
+      const packages = await db.select().from(pricingPackages);
+      return c.json(
+        {
+          categories: categories.map((category) => ({
+            ...category,
+            packages: sortPackages(
+              packages.filter((p) => p.categoryId === category.id),
+            ).map(serialize),
+          })),
+        },
+        200,
+      );
+    },
+  );
+
+  app.openapi(
+    createRoute({
+      method: "post",
+      path: "/admin/pricing/categories",
+      tags: ["pricing"],
+      request: {
+        body: {
+          content: { "application/json": { schema: pricingCategoryBody } },
+        },
+      },
+      responses: responses(
+        z.object({ category: rawRow }),
+        "Kategori yang dibuat.",
+      ),
+    }),
+    async (c) => {
+      const category = c.req.valid("json");
       if (!category.segment || !category.label || !category.startingPriceLabel) {
         throw new HttpError(422, "segment, label, dan startingPriceLabel wajib diisi.");
       }
@@ -96,20 +172,33 @@ export const pricingRoutes = new Elysia({ tags: ["pricing"] })
         .onConflictDoNothing()
         .returning();
       if (!row.length) {
-        throw new HttpError(409, `Segmen "${body.segment}" sudah ada.`);
+        throw new HttpError(409, `Segmen "${category.segment}" sudah ada.`);
       }
-      return { category: row[0] };
+      return c.json({ category: row[0] }, 200);
     },
-    {
-      body: pricingCategoryBody,
-    },
-  )
-  .put(
-    "/admin/pricing/categories/:id",
-    async ({ params, body }) => {
-      const category = body as typeof pricingCategoryBody.static;
-      if (!category.segment || !category.label || !category.startingPriceLabel) {
-        throw new HttpError(422, "segment, label, dan startingPriceLabel wajib diisi.");
+  );
+
+  app.openapi(
+    createRoute({
+      method: "put",
+      path: "/admin/pricing/categories/{id}",
+      tags: ["pricing"],
+      request: {
+        params: idParams,
+        body: {
+          content: { "application/json": { schema: pricingCategoryLabelBody } },
+        },
+      },
+      responses: responses(
+        z.object({ category: rawRow }),
+        "Kategori yang diperbarui.",
+      ),
+    }),
+    async (c) => {
+      const { id } = c.req.valid("param");
+      const category = c.req.valid("json");
+      if (!category.label || !category.startingPriceLabel) {
+        throw new HttpError(422, "label dan startingPriceLabel wajib diisi.");
       }
       const row = await db
         .update(pricingCategories)
@@ -118,37 +207,49 @@ export const pricingRoutes = new Elysia({ tags: ["pricing"] })
           startingPriceLabel: category.startingPriceLabel,
           displayOrder: category.displayOrder ?? 0,
         })
-        .where(eq(pricingCategories.id, params.id))
+        .where(eq(pricingCategories.id, id))
         .returning();
       if (!row.length) throw new HttpError(404, "Kategori tidak ditemukan.");
-      return { category: row[0] };
+      return c.json({ category: row[0] }, 200);
     },
-    {
-      params: t.Object({ id: t.String() }),
-      body: t.Object({
-        label: t.String({ minLength: 3, maxLength: 80 }),
-        startingPriceLabel: t.String({ minLength: 3, maxLength: 120 }),
-        displayOrder: t.Optional(t.Integer({ default: 0 })),
-      }),
-    },
-  )
-  .delete(
-    "/admin/pricing/categories/:id",
-    async ({ params }) => {
+  );
+
+  app.openapi(
+    createRoute({
+      method: "delete",
+      path: "/admin/pricing/categories/{id}",
+      tags: ["pricing"],
+      request: { params: idParams },
+      responses: responses(z.object({ ok: z.boolean() }), "Berhasil dihapus."),
+    }),
+    async (c) => {
+      const { id } = c.req.valid("param");
       const row = await db
         .delete(pricingCategories)
-        .where(eq(pricingCategories.id, params.id))
-        .returning();;
+        .where(eq(pricingCategories.id, id))
+        .returning();
       if (!row.length) throw new HttpError(404, "Kategori tidak ditemukan.");
-      return { ok: true };
+      return c.json({ ok: true }, 200);
     },
-    { params: t.Object({ id: t.String() }) },
-  )
-  // ---- paket ----
-  .post(
-    "/admin/pricing/packages",
-    async ({ body }) => {
-      const pkg = body as typeof pricingPackageBody.static;
+  );
+
+  app.openapi(
+    createRoute({
+      method: "post",
+      path: "/admin/pricing/packages",
+      tags: ["pricing"],
+      request: {
+        body: {
+          content: { "application/json": { schema: pricingPackageBody } },
+        },
+      },
+      responses: responses(
+        z.object({ package: rawRow }),
+        "Paket yang dibuat.",
+      ),
+    }),
+    async (c) => {
+      const pkg = c.req.valid("json");
       if (!pkg.categoryId || !pkg.name || pkg.price === undefined) {
         throw new HttpError(422, "categoryId, name, dan price wajib diisi.");
       }
@@ -164,16 +265,29 @@ export const pricingRoutes = new Elysia({ tags: ["pricing"] })
           displayOrder: pkg.displayOrder ?? 0,
         })
         .returning();
-      return { package: row[0] };
+      return c.json({ package: row[0] }, 200);
     },
-    {
-      body: pricingPackageBody,
-    },
-  )
-  .put(
-    "/admin/pricing/packages/:id",
-    async ({ params, body }) => {
-      const pkg = body as typeof pricingPackageBody.static;
+  );
+
+  app.openapi(
+    createRoute({
+      method: "put",
+      path: "/admin/pricing/packages/{id}",
+      tags: ["pricing"],
+      request: {
+        params: idParams,
+        body: {
+          content: { "application/json": { schema: pricingPackageBody } },
+        },
+      },
+      responses: responses(
+        z.object({ package: rawRow }),
+        "Paket yang diperbarui.",
+      ),
+    }),
+    async (c) => {
+      const { id } = c.req.valid("param");
+      const pkg = c.req.valid("json");
       if (!pkg.categoryId || !pkg.name || pkg.price === undefined) {
         throw new HttpError(422, "categoryId, name, dan price wajib diisi.");
       }
@@ -188,25 +302,29 @@ export const pricingRoutes = new Elysia({ tags: ["pricing"] })
           demoUrl: pkg.demoUrl ?? null,
           displayOrder: pkg.displayOrder ?? 0,
         })
-        .where(eq(pricingPackages.id, params.id))
+        .where(eq(pricingPackages.id, id))
         .returning();
       if (!row.length) throw new HttpError(404, "Paket tidak ditemukan.");
-      return { package: row[0] };
+      return c.json({ package: row[0] }, 200);
     },
-    {
-      params: t.Object({ id: t.String() }),
-      body: pricingPackageBody,
-    },
-  )
-  .delete(
-    "/admin/pricing/packages/:id",
-    async ({ params }) => {
+  );
+
+  app.openapi(
+    createRoute({
+      method: "delete",
+      path: "/admin/pricing/packages/{id}",
+      tags: ["pricing"],
+      request: { params: idParams },
+      responses: responses(z.object({ ok: z.boolean() }), "Berhasil dihapus."),
+    }),
+    async (c) => {
+      const { id } = c.req.valid("param");
       const row = await db
         .delete(pricingPackages)
-        .where(eq(pricingPackages.id, params.id))
+        .where(eq(pricingPackages.id, id))
         .returning();
       if (!row.length) throw new HttpError(404, "Paket tidak ditemukan.");
-      return { ok: true };
+      return c.json({ ok: true }, 200);
     },
-    { params: t.Object({ id: t.String() }) },
   );
+};

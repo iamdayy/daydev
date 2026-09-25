@@ -1,22 +1,31 @@
+import { createRoute, z } from "@hono/zod-openapi";
 import type { BlogPost } from "@daydev/shared-types";
 import { desc, eq } from "drizzle-orm";
-import { Elysia, t } from "elysia";
 import { db } from "../db/client";
 import { blogPosts } from "../db/schema";
-import { adminGuard } from "../lib/auth";
 import { isValidSlug, slugify } from "../lib/format";
 import { HttpError } from "../lib/http-error";
+import type { App } from "../lib/types";
+import { responses } from "../lib/zhelpers";
 
-const blogBody = t.Object({
-  title: t.String({ minLength: 3, maxLength: 200 }),
-  excerpt: t.String({ minLength: 10, maxLength: 500 }),
-  content: t.String({ minLength: 20 }),
-  slug: t.Optional(t.String({ maxLength: 200 })),
-  coverImageUrl: t.Optional(t.Nullable(t.String({ maxLength: 1000 }))),
-  author: t.Optional(t.String({ minLength: 1, maxLength: 120 })),
-  readingMinutes: t.Optional(t.Integer({ minimum: 1, maximum: 120 })),
-  publishedAt: t.Optional(t.String({ format: "date-time" })),
-  isPublished: t.Optional(t.Boolean({ default: false })),
+const blogBody = z.object({
+  title: z.string().min(3).max(200),
+  excerpt: z.string().min(10).max(500),
+  content: z.string().min(20),
+  slug: z.string().max(200).optional(),
+  coverImageUrl: z.string().max(1000).nullable().optional(),
+  author: z.string().min(1).max(120).optional(),
+  readingMinutes: z.number().int().min(1).max(120).optional(),
+  publishedAt: z.string().datetime({ offset: true }).optional(),
+  isPublished: z.boolean().optional(),
+});
+
+const slugParams = z.object({
+  slug: z.string().min(1),
+});
+
+const idParams = z.object({
+  id: z.string().min(1),
 });
 
 function resolveSlug(slug: string | undefined, title: string): string {
@@ -31,83 +40,174 @@ function resolveSlug(slug: string | undefined, title: string): string {
 }
 
 // Serialize row dari database (camelCase) ke bentuk yang dikirim ke API (snake_case)
-function serialize(row: typeof blogPosts.$inferSelect) : BlogPost {
+function serialize(row: typeof blogPosts.$inferSelect): BlogPost {
   let newRow: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(row)) {
-    const snakeKey = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+    const snakeKey = key.replace(/[A-Z]/g, (l) => `_${l.toLowerCase()}`);
     newRow[snakeKey] = value;
   }
   return newRow as unknown as BlogPost;
 }
 
-export const blogRoutes = new Elysia({ tags: ["blog"] })
-  .get("/blog", async () => {
-    const rows = await db
-      .select()
-      .from(blogPosts)
-      .where(eq(blogPosts.isPublished, true))
-      .orderBy(desc(blogPosts.publishedAt));
-    return { posts: rows.map(serialize) };
-  })
-  .get("/blog/:slug", async ({ params }) => {
-    const row = await db.query.blogPosts.findFirst({
-      where: (t, { and, eq }) =>
-        and(eq(t.isPublished, true), eq(t.slug, params.slug)),
-    });
-    if (!row) throw new HttpError(404, "Artikel tidak ditemukan.");
+const blogRow = z.object({
+  id: z.string(),
+  slug: z.string(),
+  title: z.string(),
+  excerpt: z.string(),
+  content: z.string(),
+  cover_image_url: z.string().nullable(),
+  author: z.string(),
+  reading_minutes: z.number(),
+  published_at: z.string(),
+  is_published: z.boolean(),
+});
 
-    return { post: row };
-  }, {
-    params: t.Object({ slug: t.String() }),
-  })
-  .use(adminGuard)
-  .get("/admin/blog", async () => {
-    const rows = await db.select().from(blogPosts).orderBy(desc(blogPosts.publishedAt));
-    return { posts: rows.map(serialize) };
-  })
-  .post("/admin/blog", async ({ body }) => {
-    const blog = body as typeof blogBody.static;
-    if (!blog.title || !blog.excerpt || !blog.content) {
-      throw new HttpError(422, "title, excerpt, dan content wajib diisi.");
-    }
-    const slug = resolveSlug(body.slug, body.title);
-    const exists = await db.query.blogPosts.findFirst({
-      where: eq(blogPosts.slug, slug),
-    });
-    if (exists) throw new HttpError(409, `Slug "${slug}" sudah dipakai.`);
-    const row = await db
-      .insert(blogPosts)
-      .values({
-        slug,
-        title: blog.title,
-        excerpt: blog.excerpt,
-        content: blog.content,
-        coverImageUrl: blog.coverImageUrl ?? null,
-        author: blog.author ?? "Tim Daydev",
-        readingMinutes: blog.readingMinutes ?? 5,
-        publishedAt: blog.publishedAt
-          ? new Date(blog.publishedAt)
-          : new Date(),
-        isPublished: blog.isPublished ?? false,
-      })
-      .returning();
-    return { post: row[0] };
-  }, { body: blogBody })
-  .put(
-    "/admin/blog/:id",
-    async ({ params, body }) => {
-      const blog = body as typeof blogBody.static;
+const rawPost = z.object({
+  id: z.string(),
+  slug: z.string(),
+  title: z.string(),
+  excerpt: z.string(),
+  content: z.string(),
+  coverImageUrl: z.string().nullable(),
+  author: z.string(),
+  readingMinutes: z.number(),
+  publishedAt: z.unknown(),
+  isPublished: z.boolean(),
+});
+
+export const blogRoutes = (app: App): void => {
+  app.openapi(
+    createRoute({
+      method: "get",
+      path: "/blog",
+      tags: ["blog"],
+      responses: responses(
+        z.object({ posts: z.array(blogRow) }),
+        "Artikel yang dipublikasikan, terbaru dulu.",
+      ),
+    }),
+    async (c) => {
+      const rows = await db
+        .select()
+        .from(blogPosts)
+        .where(eq(blogPosts.isPublished, true))
+        .orderBy(desc(blogPosts.publishedAt));
+      return c.json({ posts: rows.map(serialize) }, 200);
+    },
+  );
+
+  app.openapi(
+    createRoute({
+      method: "get",
+      path: "/blog/{slug}",
+      tags: ["blog"],
+      request: { params: slugParams },
+      responses: responses(
+        z.object({ post: rawPost }),
+        "Artikel berdasarkan slug.",
+      ),
+    }),
+    async (c) => {
+      const { slug } = c.req.valid("param");
+      const row = await db.query.blogPosts.findFirst({
+        where: (t, { and, eq }) =>
+          and(eq(t.isPublished, true), eq(t.slug, slug)),
+      });
+      if (!row) throw new HttpError(404, "Artikel tidak ditemukan.");
+      return c.json({ post: row }, 200);
+    },
+  );
+
+  app.openapi(
+    createRoute({
+      method: "get",
+      path: "/admin/blog",
+      tags: ["blog"],
+      responses: responses(
+        z.object({ posts: z.array(blogRow) }),
+        "Semua artikel.",
+      ),
+    }),
+    async (c) => {
+      const rows = await db
+        .select()
+        .from(blogPosts)
+        .orderBy(desc(blogPosts.publishedAt));
+      return c.json({ posts: rows.map(serialize) }, 200);
+    },
+  );
+
+  app.openapi(
+    createRoute({
+      method: "post",
+      path: "/admin/blog",
+      tags: ["blog"],
+      request: {
+        body: { content: { "application/json": { schema: blogBody } } },
+      },
+      responses: responses(
+        z.object({ post: rawPost }),
+        "Artikel yang dibuat.",
+      ),
+    }),
+    async (c) => {
+      const blog = c.req.valid("json");
+      if (!blog.title || !blog.excerpt || !blog.content) {
+        throw new HttpError(422, "title, excerpt, dan content wajib diisi.");
+      }
+      const slug = resolveSlug(blog.slug, blog.title);
+      const exists = await db.query.blogPosts.findFirst({
+        where: eq(blogPosts.slug, slug),
+      });
+      if (exists) throw new HttpError(409, `Slug "${slug}" sudah dipakai.`);
+      const row = await db
+        .insert(blogPosts)
+        .values({
+          slug,
+          title: blog.title,
+          excerpt: blog.excerpt,
+          content: blog.content,
+          coverImageUrl: blog.coverImageUrl ?? null,
+          author: blog.author ?? "Tim Daydev",
+          readingMinutes: blog.readingMinutes ?? 5,
+          publishedAt: blog.publishedAt
+            ? new Date(blog.publishedAt)
+            : new Date(),
+          isPublished: blog.isPublished ?? false,
+        })
+        .returning();
+      return c.json({ post: row[0] }, 200);
+    },
+  );
+
+  app.openapi(
+    createRoute({
+      method: "put",
+      path: "/admin/blog/{id}",
+      tags: ["blog"],
+      request: {
+        params: idParams,
+        body: { content: { "application/json": { schema: blogBody } } },
+      },
+      responses: responses(
+        z.object({ post: rawPost }),
+        "Artikel yang diperbarui.",
+      ),
+    }),
+    async (c) => {
+      const { id } = c.req.valid("param");
+      const blog = c.req.valid("json");
       if (!blog.title || !blog.excerpt || !blog.content) {
         throw new HttpError(422, "title, excerpt, dan content wajib diisi.");
       }
       const existing = await db.query.blogPosts.findFirst({
-        where: eq(blogPosts.id, params.id),
+        where: eq(blogPosts.id, id),
       });
       if (!existing) throw new HttpError(404, "Artikel tidak ditemukan.");
-      const slug = resolveSlug(body.slug ?? existing.slug, body.title);
+      const slug = resolveSlug(blog.slug ?? existing.slug, blog.title);
       const conflict = await db.query.blogPosts.findFirst({
         where: (t, { and, ne }) =>
-          and(ne(t.id, params.id), eq(t.slug, slug)),
+          and(ne(t.id, id), eq(t.slug, slug)),
       });
       if (conflict) throw new HttpError(409, `Slug "${slug}" sudah dipakai.`);
       const row = await db
@@ -125,24 +225,28 @@ export const blogRoutes = new Elysia({ tags: ["blog"] })
             : existing.publishedAt,
           isPublished: blog.isPublished ?? existing.isPublished,
         })
-        .where(eq(blogPosts.id, params.id))
+        .where(eq(blogPosts.id, id))
         .returning();
-      return { post: row[0] };
+      return c.json({ post: row[0] }, 200);
     },
-    {
-      params: t.Object({ id: t.String() }),
-      body: blogBody,
-    },
-  )
-  .delete(
-    "/admin/blog/:id",
-    async ({ params }) => {
+  );
+
+  app.openapi(
+    createRoute({
+      method: "delete",
+      path: "/admin/blog/{id}",
+      tags: ["blog"],
+      request: { params: idParams },
+      responses: responses(z.object({ ok: z.boolean() }), "Berhasil dihapus."),
+    }),
+    async (c) => {
+      const { id } = c.req.valid("param");
       const row = await db
         .delete(blogPosts)
-        .where(eq(blogPosts.id, params.id))
+        .where(eq(blogPosts.id, id))
         .returning();
       if (!row.length) throw new HttpError(404, "Artikel tidak ditemukan.");
-      return { ok: true };
+      return c.json({ ok: true }, 200);
     },
-    { params: t.Object({ id: t.String() }) },
   );
+};

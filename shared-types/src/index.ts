@@ -2,12 +2,10 @@
  * @daydev/shared-types
  *
  * Domain types + brand constants yang dipakai bersama Astro frontend dan
- * Elysia API. Framework-agnostic, tanpa dependency runtime.
+ * Hono API. Framework-agnostic, tanpa dependency runtime.
  *
  * Apa yang di sini: tipe entitas (Bayangan dari schema API), konfigurasi
  * brand (WhatsApp, segmen), dan helper format.
- * Tipe Eden Treaty tidak di-re-export dari sini karena type App dihasilkan
- * oleh instance Elysia itu sendiri (dipakai langsung dari apps/api).
  */
 
 // ---------------------------------------------------------------------------

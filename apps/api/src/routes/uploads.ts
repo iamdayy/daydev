@@ -1,19 +1,34 @@
-import { Elysia, t } from "elysia";
-import { adminGuard } from "../lib/auth";
+import { createRoute, z } from "@hono/zod-openapi";
 import { UploadConfigError } from "../lib/http-error";
 import { createPresignedUpload } from "../lib/r2";
+import type { App } from "../lib/types";
+import { responses } from "../lib/zhelpers";
 
-const presignBody = t.Object({
-        filename: t.String({ minLength: 1, maxLength: 200 }),
-        contentType: t.String({ minLength: 1, maxLength: 100 }),
-      })
+const presignBody = z.object({
+  filename: z.string().min(1).max(200),
+  contentType: z.string().min(1).max(100),
+});
 
-export const uploadRoutes = new Elysia({ tags: ["uploads"] })
-  .use(adminGuard)
-  .post(
-    "/admin/uploads/presign",
-    async ({ body }) => {
-      const presign = body as typeof presignBody.static;
+const presignOk = z.object({
+  url: z.string(),
+  key: z.string(),
+  publicUrl: z.string(),
+  expiresIn: z.number(),
+});
+
+export const uploadRoutes = (app: App): void => {
+  app.openapi(
+    createRoute({
+      method: "post",
+      path: "/admin/uploads/presign",
+      tags: ["uploads"],
+      request: {
+        body: { content: { "application/json": { schema: presignBody } } },
+      },
+      responses: responses(presignOk, "Presigned PUT URL untuk upload langsung ke R2."),
+    }),
+    async (c) => {
+      const presign = c.req.valid("json");
       if (!presign.filename || !presign.contentType) {
         throw new UploadConfigError("filename dan contentType wajib diisi.");
       }
@@ -22,16 +37,13 @@ export const uploadRoutes = new Elysia({ tags: ["uploads"] })
           presign.filename,
           presign.contentType,
         );
-        return result;
+        return c.json(result, 200);
       } catch (error) {
         if (error instanceof UploadConfigError) {
-          // di-propagate sebagai HttpError 400 oleh onError global
           throw error;
         }
         throw new UploadConfigError("Gagal membuat presigned URL.");
       }
     },
-    {
-      body: presignBody,
-    },
   );
+};

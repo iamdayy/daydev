@@ -7,7 +7,8 @@
  * - team_members: KOSONG. Tim hanya tampil kalau ada data real.
  * - portfolio: hanya item yang punya bukti visual (screenshot) di-publish.
  *   Mola Batik (tanpa screenshot) ikut tersimpan tapi berstatus draft.
- * - blog/pricing/testimoni: dimigraskan dari konten legacy yang sudah ada.
+ * - blog/pricing/testimoni: seeding ditunda (data legacy sudah dihapus); tetap
+ *   kosong sampai ada sumber data baru. Hanya admin yang bisa diisi saat ini.
  *
  * Idempotent: bisa dijalankan ulang tanpa duplikasi.
  */
@@ -21,18 +22,9 @@ import { join } from "node:path";
 import { db } from "../src/db/client";
 import {
   adminUsers,
-  blogPosts,
   portfolioItems,
-  pricingCategories,
-  pricingPackages,
-  testimonials,
 } from "../src/db/schema";
 import { hashPassword } from "../src/lib/hashes";
-
-// --- data sumber dari legacy -------------------------------------------------
-import { blogArticles } from "../../../legacy/src/data/blog-static.ts";
-import pricingJson from "../../../legacy/src/data/pricing.json";
-import testimonialJson from "../../../legacy/src/data/testimonial.json";
 
 async function upsertPortfolio(): Promise<void> {
   const r2 = getR2Config();
@@ -127,141 +119,6 @@ async function upsertPortfolio(): Promise<void> {
       isPublished: item.isPublished ?? true,
     });
     console.log(`  + portfolio: ${item.title}`);
-  }
-}
-
-async function upsertBlog(): Promise<void> {
-  for (const article of blogArticles) {
-    const existing = await db.query.blogPosts.findFirst({
-      where: eq(blogPosts.slug, article.slug),
-    });
-    if (existing) {
-      console.log(`  - blog skip (slug sudah ada): ${article.slug}`);
-      continue;
-    }
-    await db.insert(blogPosts).values({
-      slug: article.slug,
-      title: article.title,
-      excerpt: article.excerpt,
-      content: article.content,
-      coverImageUrl: null,
-      author: article.author,
-      readingMinutes: article.readingTime,
-      publishedAt: new Date(article.publishedAt),
-      isPublished: true,
-    });
-    console.log(`  + blog: ${article.slug}`);
-  }
-}
-
-/**
- * Label "Mulai X" diturunkan dari harga paket termurah kategori, bukan salinan
- * dari legacy. Ini memperbaiki inkonsistensi versi lama ("Mulai 5 Jutaan" padahal
- * paket pertama Rp 3.499.000, dan "Mulai 3 Jutaan" padahal paket pertama
- * Rp 1.999.000) supaya label segmen selalu konsisten dengan harga nyata.
- */
-function startingLabel(minPrice: number): string {
-  if (minPrice >= 1_000_000) {
-    const juta = Math.round(minPrice / 1_000_000);
-    return `Mulai ${juta} Jutaan`;
-  }
-  if (minPrice >= 1_000) {
-    return `Mulai ${Math.round(minPrice / 1_000)} Ribu-an`;
-  }
-  return "Mulai Hemat";
-}
-
-async function upsertPricing(): Promise<void> {
-  const segments = [
-    { from: "Undangan Digital", segment: "undangan-digital" },
-    { from: "Bot Telegram", segment: "bot-telegram" },
-    { from: "Mahasiswa", segment: "mahasiswa" },
-    { from: "UMKM", segment: "umkm" },
-    { from: "Startup", segment: "startup" },
-  ];
-
-  for (const src of pricingJson) {
-    const seg = segments.find((s) => s.from === src.category);
-    if (!seg) {
-      console.warn(`  ! kategori pricing tidak dikenal: ${src.category}`);
-      continue;
-    }
-    const existing = await db.query.pricingCategories.findFirst({
-      where: (t, { and }) => and(eq(t.segment, seg.segment)),
-    });
-
-    let categoryId = existing?.id ?? "";
-    if (!existing) {
-      const minPrice = Math.min(
-        ...src.plans.map((p: { price: string }) => parsePrice(p.price)),
-      );
-      const row = await db
-        .insert(pricingCategories)
-        .values({
-          segment: seg.segment,
-          label: src.category,
-          startingPriceLabel: startingLabel(minPrice),
-          displayOrder: src.id,
-        })
-        .onConflictDoNothing()
-        .returning();
-      categoryId = row[0]?.id ?? "";
-      console.log(`  + pricing kategori: ${src.category}`);
-    }
-    for (const plan of src.plans) {
-      const pkgExisting = await db.query.pricingPackages.findFirst({
-        where: (t, { and }) => and(eq(t.categoryId, categoryId), eq(t.name, plan.name)),
-      });
-      if (pkgExisting) {
-        continue;
-      }
-      await db.insert(pricingPackages).values({
-        categoryId,
-        name: plan.name,
-        price: parsePrice(plan.price),
-        features: plan.features,
-        isRecommended: Boolean(plan.popular),
-        demoUrl: "demoLink" in plan ? plan.demoLink : null,
-        displayOrder: plan.id,
-      });
-      console.log(`  + pricing paket: ${src.category} / ${plan.name}`);
-    }
-  }
-}
-
-function parsePrice(price: string): number {
-  // "Rp 99.000" -> 99000
-  return Number(price.replace(/[^\d]/g, ""));
-}
-
-async function upsertTestimonials(): Promise<void> {
-  for (const t of testimonialJson) {
-    const existing = await db.query.testimonials.findFirst({
-      where: (cols, { and }) => and(eq(cols.clientName, t.name)),
-    });
-    if (existing) {
-      console.log(`  - testimoni skip: ${t.name}`);
-      continue;
-    }
-    const segment =
-      t.segment === "Startup"
-        ? "startup"
-        : t.segment === "UMKM"
-          ? "umkm"
-          : t.segment === "Mahasiswa"
-            ? "mahasiswa"
-            : null;
-    await db.insert(testimonials).values({
-      clientName: t.name,
-      clientRole: t.role,
-      segment,
-      quote: t.text,
-      rating: t.stars,
-      avatarUrl: null,
-      displayOrder: t.id,
-      isPublished: true,
-    });
-    console.log(`  + testimoni: ${t.name}`);
   }
 }
 
@@ -384,10 +241,10 @@ async function main() {
     process.exit(1);
   }
   console.log("Seeding database...");
-  await upsertPortfolio();
-  await upsertBlog();
-  await upsertPricing();
-  await upsertTestimonials();
+  // await upsertPortfolio();
+  // await upsertBlog();
+  // await upsertPricing();
+  // await upsertTestimonials();
   await upsertAdmin();
   console.log("Seed selesai.");
 }

@@ -1,15 +1,16 @@
 ---
 import Admin from "../../layouts/Admin.astro";
-import { getBlogPosts, getPortfolio, getStats, getTestimonials } from "../../lib/api";
+import { getBlogPosts, getPortfolio, getStats, getTestimonials, loadData } from "../../lib/api";
+import DataNotice from "../../components/DataNotice.astro";
 import { BarChart3, FileText, FolderGit2, MessageSquareQuote } from "lucide-react";
 
 export const prerender = false;
 
 const [stats, portfolio, posts, testimonials] = await Promise.all([
-  getStats().catch(() => []),
-  getPortfolio().catch(() => []),
-  getBlogPosts().catch(() => []),
-  getTestimonials().catch(() => []),
+  loadData(getStats()),
+  loadData(getPortfolio()),
+  loadData(getBlogPosts()),
+  loadData(getTestimonials()),
 ]);
 
 const cards = [
@@ -18,33 +19,34 @@ const cards = [
     icon: BarChart3,
     title: "Statistik",
     desc: "Kelola angka yang tampil di beranda (kosong = tidak tampil).",
-    count: stats.length,
+    count: stats.data?.length,
   },
   {
     href: "/admin/portofolio",
     icon: FolderGit2,
     title: "Portofolio",
     desc: "Tambah & terbitkan proyek lengkap dengan gambar sampul.",
-    count: portfolio.length,
+    count: portfolio.data?.length,
   },
   {
     href: "/admin/artikel",
     icon: FileText,
     title: "Artikel",
     desc: "Kelola konten blog dalam format markdown.",
-    count: posts.length,
+    count: posts.data?.length,
   },
   {
     href: "/admin/testimoni",
     icon: MessageSquareQuote,
     title: "Testimoni",
     desc: "Kurasi ulasan klien yang tampil di situs.",
-    count: testimonials.length,
+    count: testimonials.data?.length,
   },
 ];
 ---
 
 <Admin title="Dashboard" description="Ringkasan konten situs dan pintasan pengelolaan.">
+  {cards.some((card) => card.count === undefined) && <div class="mb-6"><DataNotice title="Sebagian ringkasan belum dapat dimuat" message="Jumlah konten yang gagal dimuat ditandai sebagai tidak tersedia." /></div>}
   <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
     {
       cards.map((card) => {
@@ -59,7 +61,7 @@ const cards = [
                 <Icon className="size-5" aria-hidden="true" />
               </div>
               <span class="rounded-full bg-muted px-2.5 py-1 text-sm font-bold text-foreground">
-                {card.count}
+                {card.count ?? "Tidak tersedia"}
               </span>
             </div>
             <h2 class="mt-4 font-bold text-foreground group-hover:text-primary">
@@ -76,12 +78,11 @@ const cards = [
     <h2 class="font-bold text-foreground">Catatan</h2>
     <ul class="mt-3 space-y-2 text-sm leading-6 text-muted-foreground">
       <li>
-        Statistik beranda hanya tampil bila datanya terisi — bila kosong, bagian
+        Statistik beranda hanya tampil bila datanya terisi. Bila kosong, bagian
         tersebut otomatis disembunyikan.
       </li>
       <li>
-        Perubahan konten baru terlihat di situs setelah halaman pratinjau
-        di-build ulang saat deployment.
+        Konten yang diterbitkan dibaca dari API saat halaman situs dimuat.
       </li>
       <li>
         Gambar sampul dapat diunggah langsung ke Cloudflare R2 lewat menu

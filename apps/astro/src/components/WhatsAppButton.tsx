@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { waLink } from "@daydev/shared-types";
 import {
   FolderOpen,
   GraduationCap,
@@ -58,9 +59,25 @@ const topics = [
   },
 ];
 
-export default function WhatsAppButton() {
+export default function WhatsAppButton({ hideWhile }: { hideWhile?: string }) {
   const [open, setOpen] = useState(false);
+  const [heroVisible, setHeroVisible] = useState(Boolean(hideWhile));
+  const [focused, setFocused] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const firstLinkRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    const hero = hideWhile ? document.querySelector(hideWhile) : null;
+    if (!hero) { setHeroVisible(false); return; }
+    const observer = new IntersectionObserver(([entry]) => setHeroVisible(entry.isIntersecting));
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, [hideWhile]);
+
+  useEffect(() => {
+    if (open) firstLinkRef.current?.focus();
+  }, [open]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -69,7 +86,10 @@ export default function WhatsAppButton() {
       }
     };
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape" && ref.current?.contains(document.activeElement)) {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKey);
@@ -79,36 +99,40 @@ export default function WhatsAppButton() {
     };
   }, []);
 
-  const handleTopic = (message: string) => {
-    window.open(
-      `https://wa.me/6285175284253?text=${encodeURIComponent(message)}`,
-      "_blank",
-    );
+  const close = () => {
     setOpen(false);
+    triggerRef.current?.focus();
   };
 
   return (
     <div
       ref={ref}
-      className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3"
+      className={`fixed right-20 top-2.5 z-50 flex flex-col items-end gap-3 xl:bottom-6 xl:right-6 xl:top-auto ${!open && !focused ? "md:hidden xl:flex" : ""} ${heroVisible && !open && !focused ? "invisible pointer-events-none" : ""}`}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) { setOpen(false); setFocused(false); }
+      }}
     >
       {open && (
-        <div
-          className="wa-popup bg-[#172033] border border-white/10 rounded-2xl shadow-xl shadow-black/40 p-3 w-64"
-          role="menu"
+        <nav
+          id="whatsapp-topics"
+          className="wa-popup fixed right-4 top-[calc(var(--site-header-height)+0.5rem)] max-h-[calc(100dvh-7rem)] w-72 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-2xl bg-foreground p-3 shadow-xl xl:static"
           aria-label="Topik chat WhatsApp"
         >
-          <p className="text-slate-400 text-xs font-medium px-2 py-2 border-b border-white/10 mb-1">
+          <p className="mb-1 px-2 py-2 text-sm font-medium text-slate-300">
             Ada yang bisa kami bantu?
           </p>
-          {topics.map((topic) => {
+          {topics.map((topic, index) => {
             const Icon = topic.icon;
             return (
-              <button
+              <a
                 key={topic.label}
-                onClick={() => handleTopic(topic.message)}
+                ref={index === 0 ? firstLinkRef : undefined}
+                href={waLink(topic.message)}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={close}
                 className="w-full min-h-[48px] flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-white/5 transition-colors group"
-                role="menuitem"
               >
                 <Icon
                   className="size-5 shrink-0 text-slate-400 group-hover:text-green-400 transition-colors"
@@ -117,22 +141,24 @@ export default function WhatsAppButton() {
                 <span className="text-white text-sm font-medium group-hover:text-green-400 transition-colors">
                   {topic.label}
                 </span>
-              </button>
+              </a>
             );
           })}
-        </div>
+        </nav>
       )}
 
       <button
+        ref={triggerRef}
+        type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`w-14 h-14 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 group ${
+        className={`w-14 h-14 text-white rounded-full shadow-lg flex items-center justify-center transition-transform duration-200 hover:scale-105 group ${
           open
-            ? "bg-slate-600 hover:bg-slate-500 shadow-slate-500/30"
-            : "bg-green-500 hover:bg-green-400 shadow-green-500/40"
+            ? "bg-slate-700 hover:bg-slate-600"
+            : "bg-green-700 hover:bg-green-800"
         }`}
-        aria-label="Chat via WhatsApp"
+        aria-label={open ? "Tutup topik WhatsApp" : "Chat via WhatsApp"}
         aria-expanded={open}
-        aria-haspopup="menu"
+        aria-controls="whatsapp-topics"
       >
         {open ? (
           <svg
@@ -153,7 +179,7 @@ export default function WhatsAppButton() {
           WA_ICON
         )}
         {!open && (
-          <span className="absolute right-16 bg-[#172033] text-white text-xs font-medium px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          <span className="absolute right-16 hidden bg-foreground text-white text-sm font-medium px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none xl:block">
             Chat WhatsApp
           </span>
         )}

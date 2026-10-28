@@ -12,7 +12,7 @@ interface Props {
 
 const {
   title = "Daydev – Dari Ide Menjadi Aplikasi",
-  description = "Jasa pembuatan aplikasi Web & Mobile untuk Startup, UMKM, dan Mahasiswa. Konsultasi gratis, harga mulai Rp 99 ribu.",
+  description = "Jasa pembuatan aplikasi Web & Mobile untuk Startup, UMKM, dan Mahasiswa. Konsultasikan kebutuhan proyek Anda secara gratis.",
   canonicalPath = "/",
 } = Astro.props;
 
@@ -91,31 +91,42 @@ const localBusinessSchema = {
       set:html={JSON.stringify(localBusinessSchema)}
     />
   </head>
-  <body class="antialiased">
+  <body class="site-shell antialiased">
+    <a href="#konten" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:p-4 focus:text-foreground">Lewati ke konten</a>
     <Header />
-    <slot />
+    <div id="konten" tabindex="-1"><slot /></div>
     <Footer />
-    <WhatsAppButton client:idle />
-    <!-- Reveal on scroll: elemen .fade-in* hanya terlihat setelah memasuki viewport -->
+    <WhatsAppButton client:idle hideWhile={canonicalPath === "/" ? "#hero" : undefined} />
     <script is:inline>
+      function hideUnavailableCover(image) {
+        const frame = image.closest('[data-optional-image]');
+        if (frame) frame.hidden = true;
+      }
+      document.addEventListener('error', (event) => {
+        if (event.target instanceof HTMLImageElement) hideUnavailableCover(event.target);
+      }, true);
+      document.querySelectorAll('[data-optional-image] img').forEach((image) => {
+        if (image.complete && image.naturalWidth === 0) hideUnavailableCover(image);
+      });
       const revealEls = document.querySelectorAll(
         ".fade-in, .fade-in-left, .fade-in-right",
       );
-      if (revealEls.length && "IntersectionObserver" in window) {
+      if (revealEls.length && "IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         const io = new IntersectionObserver(
           (entries) => {
             for (const entry of entries) {
               if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
+                entry.target.classList.remove("reveal-pending");
                 io.unobserve(entry.target);
               }
             }
           },
           { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
         );
-        revealEls.forEach((el) => io.observe(el));
-      } else {
-        revealEls.forEach((el) => el.classList.add("visible"));
+        revealEls.forEach((el) => {
+          if (el.getBoundingClientRect().top > window.innerHeight) el.classList.add("reveal-pending");
+          io.observe(el);
+        });
       }
     </script>
   </body>

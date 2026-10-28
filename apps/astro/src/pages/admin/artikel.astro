@@ -1,16 +1,17 @@
 ---
 import Admin from "../../layouts/Admin.astro";
 import BlogManager from "../../components/admin/BlogManager";
-import { getBlogPosts } from "../../lib/api";
+import { getBlogPosts, loadData } from "../../lib/api";
+import DataNotice from "../../components/DataNotice.astro";
 
 export const prerender = false;
 
-const posts = await getBlogPosts().catch(() => []);
+const posts = await loadData(getBlogPosts());
 ---
 
 <Admin
   title="Artikel"
   description="Kelola konten blog. Konten ditulis dalam format markdown; ringkasan dan jumlah menit baca ditampilkan otomatis di situs."
 >
-  <BlogManager client:load initial={posts} />
+  {posts.ok ? <BlogManager client:load initial={posts.data} /> : <DataNotice title="Artikel belum dapat dimuat" />}
 </Admin>

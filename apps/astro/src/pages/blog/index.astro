@@ -1,11 +1,11 @@
 ---
 import Base from "../../layouts/Base.astro";
 import BlogBrowser from "../../components/BlogBrowser";
-import { getBlogPosts } from "../../lib/api";
+import { getBlogPosts, loadData } from "../../lib/api";
 
-const posts = await getBlogPosts();
+const posts = await loadData(getBlogPosts());
 
-const published = posts
+const published = (posts.data ?? [])
   .filter((p) => p.is_published)
   .sort(
     (a, b) =>
@@ -15,12 +15,12 @@ const published = posts
     slug: p.slug,
     title: p.title,
     excerpt: p.excerpt,
+    cover_image_url: p.cover_image_url,
     author: p.author,
     reading_minutes: p.reading_minutes,
     published_at: p.published_at,
   }));
 
-const featured = published[0];
 ---
 
 <Base
@@ -28,7 +28,7 @@ const featured = published[0];
   description="Panduan praktis, perspektif produk, dan strategi teknologi untuk membangun website serta aplikasi yang benar-benar dipakai."
   canonicalPath="/blog"
 >
-  <main class="min-h-screen bg-background text-foreground">
-    <BlogBrowser client:load articles={published} featured={featured} />
+  <main class="min-h-dvh bg-background text-foreground">
+    <BlogBrowser client:load articles={published} loadError={!posts.ok} />
   </main>
 </Base>

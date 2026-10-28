@@ -1,0 +1,14 @@
+---
+import { projectImage } from "../lib/project-images";
+
+interface Props {
+  src: string;
+  title: string;
+  portrait?: boolean;
+}
+const { src, title, portrait = false } = Astro.props;
+---
+
+<div class:list={["project-image", { "project-image-portrait": portrait }]}>
+  <img src={projectImage(src)} alt={`Tampilan ${title}`} width="1440" height="810" loading="lazy" decoding="async" />
+</div>

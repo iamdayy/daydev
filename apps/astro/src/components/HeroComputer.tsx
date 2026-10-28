@@ -1,376 +1,91 @@
-import {
-  ContactShadows,
-  Environment,
-  Lightformer,
-  RoundedBox,
-} from "@react-three/drei";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { Suspense, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import * as THREE from "three";
+import { Component, Suspense, lazy, useCallback, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { HERO_PROJECTS } from "../lib/project-images";
 
-const PROJECTS = [
-  {
-    title: "Undangan Digital Interaktif",
-    image: "/image/portfolio/invitation.png",
-    link: "https://invitation-interactive-storyboard.daydev.studio",
-  },
-  {
-    title: "Sistem Informasi Sekolah",
-    image: "/image/portfolio/sisku.png",
-    link: "https://sisku.daydev.studio",
-  },
-  {
-    title: "EcoWarn Smart Hub",
-    image: "/image/portfolio/ecowarn.jpeg",
-    link: "https://ecowarn.daydev.studio",
-  },
-  {
-    title: "HIMATIKA Ecosystem",
-    image: "/image/portfolio/himatika.png",
-    link: "https://himatika-itsnupekalongan.com",
-  },
-] as const;
+const HeroMonitor = lazy(() => import("./HeroMonitor"));
+const reducedQuery = "(prefers-reduced-motion: reduce)";
+const subscribeReduced = (notify: () => void) => {
+  const media = window.matchMedia(reducedQuery);
+  media.addEventListener("change", notify);
+  return () => media.removeEventListener("change", notify);
+};
 
-const CYCLE_MS = 4200;
-const CROSSFADE_S = 0.6;
-const CHASSIS_COLOR = "#172033";
-const REDUCED_QUERY = "(prefers-reduced-motion: reduce)";
-
-function smoothstep(t: number) {
-  return t * t * (3 - 2 * t);
-}
-
-function subscribeReduced(onChange: () => void) {
-  const mq = window.matchMedia(REDUCED_QUERY);
-  mq.addEventListener("change", onChange);
-  return () => mq.removeEventListener("change", onChange);
-}
-
-function getReducedSnapshot() {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia(REDUCED_QUERY).matches;
-}
-
-function useReducedMotion() {
-  return useSyncExternalStore(subscribeReduced, getReducedSnapshot, () => false);
-}
-
-function ScreenSlides({ current }: { current: number }) {
-  const textures = useLoader(
-    THREE.TextureLoader,
-    PROJECTS.map((p) => p.image),
-  );
-  const shown = useRef(0);
-  const incoming = useRef(-1);
-  const progress = useRef(1);
-  const fromMat = useRef<THREE.MeshStandardMaterial>(null);
-  const toMat = useRef<THREE.MeshStandardMaterial>(null);
-
-  useEffect(() => {
-    if (current === shown.current || current === incoming.current) return;
-    incoming.current = current;
-    progress.current = 1;
-    if (fromMat.current) {
-      fromMat.current.map = textures[shown.current];
-      fromMat.current.emissiveMap = textures[shown.current];
-      fromMat.current.needsUpdate = true;
-    }
-    if (toMat.current) {
-      toMat.current.map = textures[current];
-      toMat.current.emissiveMap = textures[current];
-      toMat.current.needsUpdate = true;
-    }
-  }, [current, textures]);
-
-  useFrame((_, delta) => {
-    const d = Math.min(delta, 0.05);
-    if (incoming.current >= 0) {
-      progress.current -= d / CROSSFADE_S;
-      if (progress.current <= 0) {
-        progress.current = 0;
-        shown.current = incoming.current;
-        incoming.current = -1;
-      }
-    }
-    const shownAlpha = smoothstep(progress.current);
-    if (fromMat.current) fromMat.current.opacity = shownAlpha;
-    if (toMat.current) toMat.current.opacity = smoothstep(1 - progress.current);
-  });
-
-  return (
-    <>
-      <mesh position={[0, 0, 0.045]} renderOrder={1}>
-        <planeGeometry args={[3.84, 2.04]} />
-        <meshStandardMaterial
-          ref={fromMat}
-          color="#111827"
-          emissive="#ffffff"
-          emissiveIntensity={1.15}
-          map={textures[0]}
-          emissiveMap={textures[0]}
-          transparent
-          opacity={1}
-          depthWrite={false}
-          roughness={0.5}
-        />
-      </mesh>
-      <mesh position={[0, 0, 0.05]} renderOrder={2}>
-        <planeGeometry args={[3.84, 2.04]} />
-        <meshStandardMaterial
-          ref={toMat}
-          color="#111827"
-          emissive="#ffffff"
-          emissiveIntensity={1.15}
-          map={textures[0]}
-          emissiveMap={textures[0]}
-          transparent
-          opacity={0}
-          depthWrite={false}
-          roughness={0.5}
-        />
-      </mesh>
-    </>
-  );
-}
-
-function Chassis() {
-  const material = (
-    <meshStandardMaterial
-      color={CHASSIS_COLOR}
-      roughness={0.42}
-      metalness={0.4}
-      envMapIntensity={0.9}
-    />
-  );
-
-  return (
-    <>
-      {(
-        [
-          { p: [0, 1.14, 0], s: [4.3, 0.22, 0.14] },
-          { p: [0, -1.14, 0], s: [4.3, 0.22, 0.14] },
-          { p: [-2.04, 0, 0], s: [0.22, 2.5, 0.14] },
-          { p: [2.04, 0, 0], s: [0.22, 2.5, 0.14] },
-        ] as { p: [number, number, number]; s: [number, number, number] }[]
-      ).map((strip, i) => (
-        <RoundedBox
-          key={i}
-          args={strip.s}
-          radius={0.05}
-          smoothness={4}
-          position={strip.p}
-        >
-          {material}
-        </RoundedBox>
-      ))}
-      <RoundedBox args={[4.0, 2.26, 0.1]} radius={0.06} smoothness={4} position={[0, 0, -0.04]}>
-        <meshStandardMaterial color="#0b1220" roughness={0.55} metalness={0.45} />
-      </RoundedBox>
-      <mesh position={[0, -1.49, 0]}>
-        <boxGeometry args={[0.26, 0.5, 0.24]} />
-        {material}
-      </mesh>
-      <RoundedBox args={[1.6, 0.14, 0.8]} radius={0.07} smoothness={4} position={[0, -1.81, 0]}>
-        {material}
-      </RoundedBox>
-      <mesh position={[0, 2.35, 0.085]}>
-        <sphereGeometry args={[0.04, 16, 16]} />
-        <meshStandardMaterial color="#0b1220" roughness={0.4} metalness={0.6} />
-      </mesh>
-      <mesh position={[1.98, -1.14, 0.085]}>
-        <sphereGeometry args={[0.028, 16, 16]} />
-        <meshStandardMaterial color="#ea7b3c" emissive="#ea7b3c" emissiveIntensity={1.5} />
-      </mesh>
-    </>
-  );
-}
-
-function MonitorRig({ current, reduced }: { current: number; reduced: boolean }) {
-  const tiltRef = useRef<THREE.Group>(null);
-  const enterRef = useRef<THREE.Group>(null);
-  const pointer = useRef({ x: 0, y: 0 });
-
-  useEffect(() => {
-    if (!window.matchMedia("(pointer: fine)").matches) return;
-    const onMove = (e: PointerEvent) => {
-      if (document.hidden) return;
-      pointer.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
-      pointer.current.y = (e.clientY / window.innerHeight - 0.5) * 2;
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
-  }, []);
-
-  useFrame((_, delta) => {
-    const d = Math.min(delta, 0.05);
-    if (tiltRef.current) {
-      const targetY = reduced ? 0 : pointer.current.x * 0.2;
-      const targetX = reduced ? 0 : pointer.current.y * -0.12;
-      tiltRef.current.rotation.y = THREE.MathUtils.damp(
-        tiltRef.current.rotation.y,
-        targetY,
-        2.2,
-        d,
-      );
-      tiltRef.current.rotation.x = THREE.MathUtils.damp(
-        tiltRef.current.rotation.x,
-        targetX,
-        2.2,
-        d,
-      );
-    }
-    if (enterRef.current) {
-      enterRef.current.position.y = THREE.MathUtils.damp(
-        enterRef.current.position.y,
-        0.315,
-        3.4,
-        d,
-      );
-    }
-  });
-
-  return (
-    <group ref={tiltRef}>
-      <group ref={enterRef} position={[0, reduced ? 0.315 : -0.5, 0]}>
-        <Chassis />
-        <Suspense fallback={null}>
-          <ScreenSlides current={current} />
-        </Suspense>
-      </group>
-    </group>
-  );
+class MonitorBoundary extends Component<{ children: ReactNode; onFailure: () => void }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() { return { failed: true }; }
+  componentDidCatch() { this.props.onFailure(); }
+  render() { return this.state.failed ? null : this.props.children; }
 }
 
 export default function HeroComputer() {
-  const reduced = useReducedMotion();
-  const mounted = useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false,
-  );
+  const reduced = useSyncExternalStore(subscribeReduced, () => window.matchMedia(reducedQuery).matches, () => false);
+  const [mounted, setMounted] = useState(false);
   const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
   const [hovering, setHovering] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [tabVisible, setTabVisible] = useState(true);
+  const [ready, setReady] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const figureRef = useRef<HTMLElement>(null);
+  const onReady = useCallback(() => setReady(true), []);
+  const onFailure = useCallback(() => { setFailed(true); setReady(false); }, []);
 
   useEffect(() => {
-    if (reduced || hovering) return;
-    const id = window.setInterval(
-      () => setIndex((i) => (i + 1) % PROJECTS.length),
-      CYCLE_MS,
-    );
-    return () => window.clearInterval(id);
-  }, [reduced, hovering]);
+    setMounted(true);
+    const onVisibility = () => setTabVisible(!document.hidden);
+    onVisibility();
+    document.addEventListener("visibilitychange", onVisibility);
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: 0.1 });
+    if (figureRef.current) observer.observe(figureRef.current);
+    return () => { observer.disconnect(); document.removeEventListener("visibilitychange", onVisibility); };
+  }, []);
 
-  const openCurrent = () => {
-    window.open(PROJECTS[index].link, "_blank", "noopener,noreferrer");
+  useEffect(() => {
+    if (!mounted || reduced || paused || hovering || focused || !visible || !tabVisible) return;
+    const timer = window.setInterval(() => setIndex((current) => (current + 1) % HERO_PROJECTS.length), 4200);
+    return () => window.clearInterval(timer);
+  }, [mounted, reduced, paused, hovering, focused, visible, tabVisible]);
+
+  const step = (direction: number) => {
+    setPaused(true);
+    setIndex((current) => (current + direction + HERO_PROJECTS.length) % HERO_PROJECTS.length);
   };
-
-  const step = (dir: 1 | -1) =>
-    setIndex((i) => (i + dir + PROJECTS.length) % PROJECTS.length);
-
-  const handleEnter = () => {
-    if (window.matchMedia("(pointer: fine)").matches) setHovering(true);
-  };
+  const project = HERO_PROJECTS[index];
 
   return (
-    <figure className="flex w-full max-w-md flex-col items-center gap-4 lg:items-end">
-      <div
-        onClick={openCurrent}
-        onMouseEnter={handleEnter}
-        onMouseLeave={() => setHovering(false)}
-        role="group"
-        aria-label="Galeri proyek Daydev. Klik layar untuk membuka demo proyek yang sedang ditampilkan."
-        className="relative h-[300px] w-full cursor-pointer overflow-hidden rounded-2xl border border-white/15 bg-[#172033] shadow-xl sm:h-[380px] lg:h-[420px]"
-      >
-        {mounted ? (
-          <Canvas
-            dpr={[1, 1.75]}
-            gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-            camera={{ position: [0, 0, 6.6], fov: 40 }}
-            style={{ pointerEvents: "none" }}
-            aria-hidden="true"
-          >
-            <ambientLight intensity={0.5} color="#e6f2f0" />
-            <directionalLight position={[3, 4, 5]} intensity={1.1} color="#fff1e2" />
-            <directionalLight position={[-4, -1, 3]} intensity={0.3} color="#cfe3de" />
-            <Suspense fallback={null}>
-              <Environment resolution={256} frames={1}>
-                <Lightformer
-                  form="circle"
-                  intensity={3}
-                  position={[0, 5, -9]}
-                  scale={2}
-                  color="#ffffff"
-                />
-                <Lightformer
-                  form="rect"
-                  intensity={2}
-                  position={[6, 1, -2]}
-                  rotation={[0, -Math.PI / 2, 0]}
-                  scale={[6, 1.2, 1]}
-                  color="#ffd9bd"
-                />
-                <Lightformer
-                  form="rect"
-                  intensity={1.2}
-                  position={[-6, 0, -1]}
-                  rotation={[0, Math.PI / 2, 0]}
-                  scale={[5, 1, 1]}
-                  color="#9fd8d0"
-                />
-              </Environment>
-              <MonitorRig current={index} reduced={reduced} />
-            </Suspense>
-            <ContactShadows
-              position={[0, -1.56, 0]}
-              opacity={0.28}
-              scale={8}
-              blur={2.6}
-              far={3}
-              color="#172033"
-            />
-          </Canvas>
-        ) : (
-          <div
-            className="flex h-full flex-col items-center justify-center gap-3 text-gray-300"
-            aria-hidden="true"
-          >
-            <span className="size-8 rounded-full border-2 border-[#ea7b3c]/30 border-t-[#ea7b3c] animate-spin" />
-            <span className="text-sm">Memuat galeri proyek...</span>
+    <figure
+      ref={figureRef}
+      aria-label="Galeri proyek Daydev"
+      className="min-w-0 w-full rounded-2xl bg-white/5"
+      onPointerEnter={(event) => { if (event.pointerType === "mouse") setHovering(true); }}
+      onPointerLeave={() => setHovering(false)}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false); }}
+    >
+      <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`Buka demo ${project.title}`} className="relative block aspect-[16/11] w-full rounded-2xl">
+        <img src={project.image} alt={`Tampilan ${project.title}`} width="1440" height="810" fetchPriority="high" className={`absolute inset-0 h-full w-full rounded-2xl object-contain p-4 sm:p-6 ${ready && !failed ? "opacity-0" : "opacity-100"}`} />
+        {mounted && !failed && (
+          <div className={`absolute inset-0 overflow-hidden rounded-2xl ${ready ? "opacity-100" : "opacity-0"}`} aria-hidden="true">
+            <MonitorBoundary onFailure={onFailure}>
+              <Suspense fallback={null}>
+                <HeroMonitor current={index} reduced={reduced} active={visible && tabVisible} onReady={onReady} onFailure={onFailure} />
+              </Suspense>
+            </MonitorBoundary>
           </div>
         )}
-      </div>
-      <figcaption className="flex w-full items-center gap-1 rounded-2xl bg-[#172033]/95 px-2 py-1 shadow-lg">
-        <button
-          type="button"
-          onClick={() => step(-1)}
-          aria-label="Proyek sebelumnya"
-          className="flex size-11 shrink-0 items-center justify-center rounded-xl text-white/70 hover:text-white"
-        >
-          <ChevronLeft className="size-5" aria-hidden="true" />
-        </button>
-        <div className="flex min-w-0 flex-1 flex-col items-center px-1">
-          <span className="max-w-full truncate text-[11px] text-gray-300">
-            Galeri proyek Daydev, klik layar untuk buka demo
-          </span>
-          <a
-            href={PROJECTS[index].link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-0.5 inline-flex max-w-full items-center gap-1 text-sm font-semibold text-[#ea7b3c] hover:underline"
-          >
-            <span className="truncate">{PROJECTS[index].title}</span>
-            <ArrowUpRight className="size-4 shrink-0" aria-hidden="true" />
-          </a>
+      </a>
+      <figcaption className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3 px-4 pb-5 sm:px-6 sm:pb-6">
+        <a href={project.link} target="_blank" rel="noopener noreferrer" className="group min-h-11 min-w-0 basis-36 flex-1 text-white" aria-live={paused || focused ? "polite" : "off"}>
+          <span className="block text-lg font-semibold leading-snug tracking-tight">{project.title}</span>
+          <span className="mt-2 inline-flex items-center gap-2 text-sm text-slate-300 underline underline-offset-4 group-hover:text-white">Buka demo <ArrowUpRight className="size-4 shrink-0" aria-hidden="true" /></span>
+        </a>
+        <div className="ml-auto flex shrink-0 items-center gap-1" role="group" aria-label="Kontrol galeri">
+          <button type="button" disabled={!mounted} onClick={() => step(-1)} aria-label="Proyek sebelumnya" className="flex size-11 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 disabled:opacity-50"><ChevronLeft className="size-5" aria-hidden="true" /></button>
+          {!reduced && <button type="button" disabled={!mounted} onClick={() => setPaused((value) => !value)} aria-label={paused ? "Putar tayangan otomatis" : "Jeda tayangan otomatis"} aria-pressed={paused} className="flex size-11 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 disabled:opacity-50">{paused ? <Play className="size-4" aria-hidden="true" /> : <Pause className="size-4" aria-hidden="true" />}</button>}
+          <button type="button" disabled={!mounted} onClick={() => step(1)} aria-label="Proyek berikutnya" className="flex size-11 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 disabled:opacity-50"><ChevronRight className="size-5" aria-hidden="true" /></button>
         </div>
-        <button
-          type="button"
-          onClick={() => step(1)}
-          aria-label="Proyek berikutnya"
-          className="flex size-11 shrink-0 items-center justify-center rounded-xl text-white/70 hover:text-white"
-        >
-          <ChevronRight className="size-5" aria-hidden="true" />
-        </button>
       </figcaption>
     </figure>
   );

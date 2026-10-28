@@ -1,16 +1,17 @@
 ---
 import Admin from "../../layouts/Admin.astro";
 import PortfolioManager from "../../components/admin/PortfolioManager";
-import { getPortfolio } from "../../lib/api";
+import { getPortfolio, loadData } from "../../lib/api";
+import DataNotice from "../../components/DataNotice.astro";
 
 export const prerender = false;
 
-const portfolio = await getPortfolio().catch(() => []);
+const portfolio = await loadData(getPortfolio());
 ---
 
 <Admin
   title="Portofolio"
   description="Kelola proyek dan case studies. Setiap proyek yang terbit wajib memiliki gambar sampul agar tampil rapi di situs."
 >
-  <PortfolioManager client:load initial={portfolio} />
+  {portfolio.ok ? <PortfolioManager client:load initial={portfolio.data} /> : <DataNotice title="Portofolio belum dapat dimuat" />}
 </Admin>

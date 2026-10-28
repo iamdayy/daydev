@@ -3,17 +3,18 @@ const navLinks = [
   { label: "Beranda", href: "/" },
   { label: "Layanan", href: "/services" },
   { label: "Harga", href: "/pricing" },
-  { label: "Portfolio", href: "/portfolio" },
+  { label: "Portofolio", href: "/portfolio" },
   { label: "Blog", href: "/blog" },
 ];
 
 const pathname = Astro.url.pathname;
 const waLink = "https://wa.me/6285175284253";
+const isActive = (href: string) => pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 ---
 
-<header id="site-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#172033]/95 backdrop-blur-sm py-4">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-    <a href="/" class="flex items-center gap-2 group" aria-label="Daydev Studio - Beranda">
+<header id="site-header" class="fixed inset-x-0 top-0 z-50 bg-foreground text-white">
+  <div class="site-container flex h-[var(--site-header-height)] items-center justify-between">
+    <a href="/" class="flex min-h-11 items-center gap-2 group" aria-label="Daydev Studio - Beranda">
       <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center font-bold text-[#172033] text-lg group-hover:scale-110 transition-transform overflow-hidden">
         <img src="/logo.png" alt="Daydev Logo" width="20" height="20" class="object-contain" />
       </div>
@@ -28,12 +29,12 @@ const waLink = "https://wa.me/6285175284253";
           <a
             href={link.href}
             class:list={[
-              "transition-colors font-medium text-sm",
-              pathname === link.href
+               "inline-flex min-h-11 items-center transition-colors font-medium text-sm",
+               isActive(link.href)
                 ? "text-[#ea7b3c]"
                 : "text-gray-300 hover:text-[#ea7b3c]",
             ]}
-            aria-current={pathname === link.href ? "page" : undefined}
+            aria-current={isActive(link.href) ? "page" : undefined}
           >
             {link.label}
           </a>
@@ -43,7 +44,7 @@ const waLink = "https://wa.me/6285175284253";
         href={waLink}
         target="_blank"
         rel="noopener noreferrer"
-        class="bg-[#ea7b3c] text-[#172033] px-5 py-2 min-h-[40px] inline-flex items-center rounded-full font-semibold text-sm hover:brightness-110 transition-all"
+        class="button-primary text-sm"
       >
         Konsultasi Gratis
       </a>
@@ -54,6 +55,7 @@ const waLink = "https://wa.me/6285175284253";
       class="md:hidden text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
       aria-label="Buka menu"
       aria-expanded="false"
+      aria-controls="mobile-menu"
     >
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" data-icon="open">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -64,15 +66,16 @@ const waLink = "https://wa.me/6285175284253";
     </button>
   </div>
 
-  <div id="mobile-menu" class="md:hidden bg-[#172033] border-t border-white/10 px-4 pb-4 hidden" hidden>
+  <nav id="mobile-menu" aria-label="Navigasi mobile" class="md:hidden bg-foreground px-4 pb-4 hidden max-h-[calc(100dvh-var(--site-header-height))] overflow-y-auto" hidden>
     {
       navLinks.map((link) => (
         <a
           href={link.href}
           class:list={[
             "block py-3 min-h-[44px] flex items-center transition-colors font-medium border-b border-white/5",
-            pathname === link.href ? "text-[#ea7b3c]" : "text-gray-300 hover:text-[#ea7b3c]",
+            isActive(link.href) ? "text-[#ea7b3c]" : "text-gray-300 hover:text-[#ea7b3c]",
           ]}
+          aria-current={isActive(link.href) ? "page" : undefined}
         >
           {link.label}
         </a>
@@ -86,7 +89,7 @@ const waLink = "https://wa.me/6285175284253";
     >
       Konsultasi Gratis
     </a>
-  </div>
+  </nav>
 </header>
 
 <script>
@@ -100,8 +103,6 @@ const waLink = "https://wa.me/6285175284253";
     if (!header) return;
     const scrolled = window.scrollY > 20;
     header.classList.toggle("shadow-lg", scrolled);
-    header.classList.toggle("py-3", scrolled);
-    header.classList.toggle("py-4", !scrolled);
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
@@ -118,6 +119,19 @@ const waLink = "https://wa.me/6285175284253";
 
   toggle?.addEventListener("click", () => setOpen(menu?.hidden === true));
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") setOpen(false);
+    if (e.key === "Escape" && menu && !menu.hidden) {
+      setOpen(false);
+      toggle?.focus();
+    }
   });
+  menu?.addEventListener("click", (e) => {
+    if (e.target instanceof Element && e.target.closest("a")) setOpen(false);
+  });
+  header?.addEventListener("focusout", (e) => {
+    if (e.relatedTarget instanceof Node && !header.contains(e.relatedTarget)) setOpen(false);
+  });
+  document.addEventListener("pointerdown", (e) => {
+    if (e.target instanceof Node && !header?.contains(e.target)) setOpen(false);
+  });
+  window.matchMedia("(min-width: 768px)").addEventListener("change", () => setOpen(false));
 </script>

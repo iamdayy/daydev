@@ -118,7 +118,7 @@ export default function BlogManager({ initial }: BlogManagerProps) {
   };
 
   const inputClass =
-    "w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary";
+    "w-full rounded-xl border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary";
 
   return (
     <div className="space-y-6">
@@ -154,8 +154,9 @@ export default function BlogManager({ initial }: BlogManagerProps) {
 
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
-            <label className="mb-1.5 block text-sm font-semibold">Judul</label>
+            <label htmlFor="post-title" className="mb-1.5 block text-sm font-semibold">Judul</label>
             <input
+              id="post-title"
               required minLength={3}
               value={form.title}
               onChange={(e) => set("title", e.target.value)}
@@ -164,8 +165,9 @@ export default function BlogManager({ initial }: BlogManagerProps) {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-semibold">Slug (opsional)</label>
+            <label htmlFor="post-slug" className="mb-1.5 block text-sm font-semibold">Slug (opsional)</label>
             <input
+              id="post-slug"
               value={form.slug}
               onChange={(e) => set("slug", e.target.value)}
               placeholder="otomatis dari judul bila kosong"
@@ -174,8 +176,9 @@ export default function BlogManager({ initial }: BlogManagerProps) {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-semibold">Penulis</label>
+            <label htmlFor="post-author" className="mb-1.5 block text-sm font-semibold">Penulis</label>
             <input
+              id="post-author"
               value={form.author}
               onChange={(e) => set("author", e.target.value)}
               className={inputClass}
@@ -183,8 +186,9 @@ export default function BlogManager({ initial }: BlogManagerProps) {
           </div>
 
           <div className="sm:col-span-2">
-            <label className="mb-1.5 block text-sm font-semibold">Ringkasan</label>
+            <label htmlFor="post-excerpt" className="mb-1.5 block text-sm font-semibold">Ringkasan</label>
             <textarea
+              id="post-excerpt"
               required minLength={10} rows={2}
               value={form.excerpt}
               onChange={(e) => set("excerpt", e.target.value)}
@@ -193,8 +197,9 @@ export default function BlogManager({ initial }: BlogManagerProps) {
           </div>
 
           <div className="sm:col-span-2">
-            <label className="mb-1.5 block text-sm font-semibold">Konten (markdown)</label>
+            <label htmlFor="post-content" className="mb-1.5 block text-sm font-semibold">Konten (markdown)</label>
             <textarea
+              id="post-content"
               required minLength={20} rows={12}
               value={form.content}
               onChange={(e) => set("content", e.target.value)}
@@ -204,8 +209,9 @@ export default function BlogManager({ initial }: BlogManagerProps) {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-semibold">Banyak menit baca</label>
+            <label htmlFor="post-reading-minutes" className="mb-1.5 block text-sm font-semibold">Banyak menit baca</label>
             <input
+              id="post-reading-minutes"
               type="number" min={1} max={120}
               value={form.readingMinutes}
               onChange={(e) => set("readingMinutes", Number(e.target.value))}
@@ -215,7 +221,7 @@ export default function BlogManager({ initial }: BlogManagerProps) {
         </div>
 
         <div className="mt-4 rounded-xl border border-dashed border-border bg-background p-4">
-          <label className="mb-1.5 block text-sm font-semibold">Gambar sampul</label>
+          <label htmlFor="post-cover" className="mb-1.5 block text-sm font-semibold">Gambar sampul</label>
           <div className="flex flex-wrap items-center gap-4">
             {form.coverImageUrl ? (
               <img
@@ -228,11 +234,13 @@ export default function BlogManager({ initial }: BlogManagerProps) {
                 Belum ada gambar
               </div>
             )}
-            <label className="inline-flex min-h-[46px] cursor-pointer items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:border-primary hover:text-primary">
+            <label className="inline-flex min-h-[46px] cursor-pointer items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:border-primary hover:text-primary focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary">
               <Upload className="size-4" aria-hidden="true" />
               {uploading ? "Mengunggah..." : "Unggah gambar"}
               <input
+                id="post-cover"
                 type="file"
+                disabled={uploading}
                 accept="image/*"
                 className="sr-only"
                 onChange={(e) => handleUpload(e.target.files?.[0])}

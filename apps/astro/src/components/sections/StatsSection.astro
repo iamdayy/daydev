@@ -5,15 +5,7 @@ interface Props {
   stats: SiteStat[];
 }
 
-const { stats } = Astro.props;
-
-const statStyle: Record<string, string> = {
-  "topik-konsultasi": "from-[#0f766e] to-[#16a394]",
-  "proyek-selesai": "from-[#ea7b3c] to-[#c2410c]",
-  "klien-bisnis": "from-[#4338ca] to-[#6366f1]",
-  "rating-klien": "from-[#334155] to-[#172033]",
-  review: "from-[#334155] to-[#172033]",
-};
+const stats = Astro.props.stats.filter((stat) => stat.value.trim());
 
 const statLabels: Record<string, string> = {
   "topik-konsultasi": "Topik konsultasi",
@@ -26,31 +18,25 @@ const statLabels: Record<string, string> = {
   tahun_pengalaman: "Tahun pengalaman",
 };
 
-const fallbackGradient = "from-[#334155] to-[#172033]";
 ---
 
 {
   stats.length > 0 && (
-    <section class="bg-[#172033] py-16">
-      <div class="mx-auto max-w-6xl px-4 sm:px-6">
-        <div class="grid grid-cols-2 gap-6 md:grid-cols-4">
+    <section id="statistik" class="bg-foreground py-12 text-white">
+      <div class="site-container">
+        <h2 class="mb-8 text-2xl font-semibold tracking-tight">Daydev dalam angka</h2>
+        <dl class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))] gap-8">
           {
             stats.map((stat) => (
-              <div
-                class={`rounded-2xl bg-gradient-to-br p-6 text-center text-white shadow-lg ${
-                  statStyle[stat.key] ?? fallbackGradient
-                }`}
-              >
-                <p class="text-3xl font-extrabold tracking-tight sm:text-4xl">
+              <div class="min-w-0">
+                <dt class="text-sm text-slate-300">{statLabels[stat.key] ?? stat.key.replace(/[-_]/g, " ")}</dt>
+                <dd class="mt-2 break-words text-3xl font-bold tracking-tight tabular-nums sm:text-4xl">
                   {stat.value}
-                </p>
-                <p class="mt-2 text-xs font-medium uppercase tracking-wider text-white/80">
-                  {statLabels[stat.key] ?? stat.key.replace(/-/g, " ")}
-                </p>
+                </dd>
               </div>
             ))
           }
-        </div>
+        </dl>
       </div>
     </section>
   )

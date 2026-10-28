@@ -1,21 +1,19 @@
 ---
 import Base from "../../layouts/Base.astro";
-import { getBlogPost } from "../../lib/api";
+import { getBlogPost, loadData } from "../../lib/api";
+import DataNotice from "../../components/DataNotice.astro";
 import { renderMarkdown } from "../../lib/markdown";
 import { waLink } from "@daydev/shared-types";
-import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 const { slug } = Astro.params;
-const post = await getBlogPost(slug!);
+const result = await loadData(getBlogPost(slug!));
+const post = result.data;
 
-if (!post) {
-  return new Response("Artikel tidak ditemukan", {
-    status: 404,
-    statusText: "Artikel tidak ditemukan",
-  });
-}
+if (!result.ok) Astro.response.status = 503;
+else if (!post) Astro.response.status = 404;
 
-const html = renderMarkdown(post.content);
+const html = post ? renderMarkdown(post.content) : "";
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("id-ID", {
@@ -26,44 +24,40 @@ const formatDate = (iso: string) =>
 ---
 
 <Base
-  title={`${post.title} - Daydev Studio`}
-  description={post.excerpt}
-  canonicalPath={`/blog/${post.slug}`}
+  title={`${post?.title ?? "Artikel"} - Daydev Studio`}
+  description={post?.excerpt ?? "Artikel Daydev Studio"}
+  canonicalPath={`/blog/${slug}`}
 >
-  <main class="min-h-screen bg-background text-foreground">
-    <header class="border-b border-border bg-card">
-      <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:py-16">
-        <a href="/blog" class="inline-flex items-center gap-2 text-sm font-semibold text-primary">
+  {post ? (
+  <main class="min-h-dvh bg-background text-foreground">
+    <header class="section-space bg-card">
+      <div class="site-container">
+        <a href="/blog" class="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary">
           <ArrowLeft className="size-4" aria-hidden="true" />Kembali ke blog
         </a>
-        <div class="mt-10 flex flex-wrap items-center gap-3 text-sm font-semibold text-primary">
-          <span class="flex items-center gap-1 text-muted-foreground">
-            <Clock3 className="size-4" aria-hidden="true" />
-            {post.reading_minutes} menit membaca
-          </span>
-        </div>
-        <h1 class="mt-6 text-balance text-4xl font-bold tracking-tight sm:text-6xl">
+        <h1 class="page-title mt-6 max-w-4xl break-words">
           {post.title}
         </h1>
-        <p class="mt-6 text-pretty text-lg leading-8 text-muted-foreground">
+        <p class="mt-6 max-w-2xl text-lg leading-8">
           {post.excerpt}
         </p>
-        <div class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
+        <div class="article-meta mt-8">
           <span>Oleh {post.author}</span>
-          <span>{formatDate(post.published_at)}</span>
+          <time datetime={post.published_at}>{formatDate(post.published_at)}</time>
+          <span>{post.reading_minutes} menit membaca</span>
         </div>
+        {post.cover_image_url && <div class="article-cover mt-10" data-optional-image>
+          <img src={post.cover_image_url} alt={`Sampul artikel ${post.title}`} width="1200" height="800" fetchpriority="high" decoding="async" />
+        </div>}
       </div>
     </header>
 
-    <div class="mx-auto grid max-w-6xl gap-12 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,680px)_260px] lg:py-16">
-      <article>
+    <div class="reading-container section-space">
+      <article class="min-w-0">
         <div class="prose-blog" set:html={html} />
-        <div class="mt-14 rounded-3xl bg-secondary p-7 sm:p-9">
-          <p class="text-sm font-semibold uppercase tracking-wide text-primary">
-            Siap mulai?
-          </p>
-          <h2 class="mt-3 text-2xl font-bold tracking-tight">
-            Butuh partner untuk membangun solusi digital?
+        <div class="mt-14 rounded-2xl bg-muted p-6 sm:p-8">
+          <h2 class="text-2xl font-bold tracking-tight">
+            Punya kebutuhan serupa?
           </h2>
           <p class="mt-3 leading-7 text-muted-foreground">
             Ceritakan tantangan Anda. Kami bantu menyusun langkah yang paling
@@ -73,25 +67,19 @@ const formatDate = (iso: string) =>
             href={waLink("Halo Daydev, saya ingin diskusi proyek.")}
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-6 inline-flex min-h-[48px] items-center gap-2 rounded-full bg-primary px-5 py-3 font-semibold text-primary-foreground"
+             class="button-primary mt-6"
           >
-            Diskusikan proyek via WhatsApp{" "}
-            <ArrowUpRight className="size-4" aria-hidden="true" />
+            Diskusikan via WhatsApp
           </a>
         </div>
       </article>
-      <aside class="lg:sticky lg:top-8 lg:self-start">
-        <div class="rounded-2xl border border-border bg-card p-5">
-          <p class="text-xs font-semibold uppercase tracking-wide text-primary">
-            Tentang penulis
-          </p>
-          <p class="mt-4 text-lg font-bold">{post.author}</p>
-          <p class="mt-2 text-sm leading-6 text-muted-foreground">
-            Tim developer Daydev yang membagikan pengalaman membangun produk
-            digital.
-          </p>
-        </div>
-      </aside>
     </div>
   </main>
+  ) : (
+    <main class="site-container min-h-[60vh] py-16">
+      <h1 class="page-title mb-8">{result.ok ? "Artikel tidak ditemukan" : "Artikel belum tersedia"}</h1>
+      {!result.ok ? <DataNotice title="Artikel belum dapat dimuat" /> : <p class="leading-7 text-muted-foreground">Artikel ini belum terbit atau sudah dihapus.</p>}
+      <a href="/blog" class="button-secondary mt-8">Kembali ke blog</a>
+    </main>
+  )}
 </Base>

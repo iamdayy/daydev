@@ -31,6 +31,7 @@ export async function fetchJson<T>(path: string): Promise<T> {
   try {
     res = await fetch(`${API_BASE_URL}${path}`, {
       headers: { Accept: "application/json" },
+      signal: AbortSignal.timeout(8000),
     });
   } catch {
     throw new ApiError(0, "API tidak dapat dijangkau.");
@@ -42,6 +43,16 @@ export async function fetchJson<T>(path: string): Promise<T> {
     throw new ApiError(res.status, body?.error ?? `API error ${res.status}`);
   }
   return (await res.json()) as T;
+}
+
+export async function loadData<T>(request: Promise<T>): Promise<
+  { ok: true; data: T } | { ok: false; data: null }
+> {
+  try {
+    return { ok: true, data: await request };
+  } catch {
+    return { ok: false, data: null };
+  }
 }
 
 export async function getStats(): Promise<SiteStat[]> {

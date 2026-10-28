@@ -1,16 +1,17 @@
 ---
 import Admin from "../../layouts/Admin.astro";
 import StatsManager from "../../components/admin/StatsManager";
-import { getStats } from "../../lib/api";
+import { getStats, loadData } from "../../lib/api";
+import DataNotice from "../../components/DataNotice.astro";
 
 export const prerender = false;
 
-const stats = await getStats().catch(() => []);
+const stats = await loadData(getStats());
 ---
 
 <Admin
   title="Statistik"
   description="Angka beranda disimpan di satu tempat sehingga konsisten di semua halaman. Baris kosong otomatis disembunyikan."
 >
-  <StatsManager client:load initial={stats} />
+  {stats.ok ? <StatsManager client:load initial={stats.data} /> : <DataNotice title="Statistik belum dapat dimuat" />}
 </Admin>

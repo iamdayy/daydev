@@ -37,3 +37,7 @@ yarn-error.log*
 /agents/
 anti-slop
 .env*
+
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md

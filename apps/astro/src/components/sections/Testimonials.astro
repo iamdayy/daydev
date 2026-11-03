@@ -1,11 +1,14 @@
 ---
-import { SEGMENT_LABELS, type Testimonial } from "@daydev/shared-types";
+import { SEGMENT_LABELS, waLink, type Testimonial } from "@daydev/shared-types";
+import { Star, MapPin, MessageSquare } from "lucide-react";
+import DataNotice from "../DataNotice.astro";
 
 interface Props {
   testimonials: Testimonial[];
+  loadError?: boolean;
 }
 
-const { testimonials: items } = Astro.props;
+const { testimonials: items, loadError = false } = Astro.props;
 
 const published = items
   .filter((t) => t.is_published)
@@ -29,25 +32,99 @@ const reviewSchema = {
   published.length > 0 && (
     <>
       <script type="application/ld+json" set:html={JSON.stringify(reviewSchema)} />
-      <section id="testimoni" class="section-space bg-muted">
+      <section id="testimoni" class="section-space bg-background" aria-labelledby="testimonials-title">
         <div class="site-container">
-          <h2 class="section-title mb-10">Cerita klien</h2>
-          <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,24rem),1fr))] gap-x-16 gap-y-10">
-            {
-              published.map((t) => (
-                <figure class="fade-in min-w-0">
-                  <blockquote class="text-xl leading-8 text-foreground">&ldquo;{t.quote}&rdquo;</blockquote>
-                  <figcaption class="mt-5">
-                    <p class="font-semibold">{t.client_name}</p>
-                    {t.client_role && <p class="mt-1 text-sm text-muted-foreground">{t.client_role}</p>}
-                    <p class="mt-2 text-sm text-muted-foreground">Rating {t.rating} dari 5{t.segment && ` · ${SEGMENT_LABELS[t.segment]}`}</p>
-                  </figcaption>
-                </figure>
-              ))
-            }
+          <div class="mb-12 text-center max-w-3xl mx-auto fade-in">
+            <h2 id="testimonials-title" class="section-title">Kata mereka yang telah bekerja sama</h2>
+            <p class="mt-5 text-lg leading-8 text-muted-foreground">
+              Tidak ada klaim kosong. Hanya suara jujur dari pelanggan yang merasakan perubahan nyata.
+            </p>
           </div>
+
+          {loadError ? (
+            <DataNotice title="Testimoni belum dapat dimuat" />
+          ) : (
+            <div class="stagger-children grid grid-cols-[repeat(auto-fit,minmax(min(100%,28rem),1fr))] gap-x-16 gap-y-10">
+              {
+                published.map((t) => (
+                  <figure class="fade-in min-w-0 group relative rounded-2xl bg-card border border-border p-6 sm:p-8 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30 transition-all duration-300">
+                    <div class="flex items-center gap-1 mb-4" aria-label={`Rating ${t.rating} dari 5`}>
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-5 h-5 ${i < t.rating ? "fill-current text-amber-400" : "text-muted-foreground"}`}
+                          aria-hidden="true"
+                        />
+                      ))}
+                    </div>
+                    <blockquote class="text-lg leading-8 text-foreground relative">
+                      <MessageSquare className="absolute -top-2 -left-2 w-8 h-8 text-primary/10" aria-hidden="true" />
+                      <p class="relative z-10">&ldquo;{t.quote}&rdquo;</p>
+                    </blockquote>
+                    <figcaption class="mt-6 pt-6 border-t border-border">
+                      <div class="flex items-start gap-4">
+                        {t.avatar_url ? (
+                          <img
+                            src={t.avatar_url}
+                            alt={`Foto ${t.client_name}`}
+                            loading="lazy"
+                            width="56"
+                            height="56"
+                            class="size-14 shrink-0 rounded-2xl object-cover"
+                          />
+                        ) : (
+                          <div class="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary font-bold text-xl" aria-hidden="true">
+                            {t.client_name.charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                        <div class="min-w-0 flex-1">
+                          <p class="font-semibold text-foreground">{t.client_name}</p>
+                          {t.client_role && <p class="mt-1 text-sm text-muted-foreground">{t.client_role}</p>}
+                          <div class="mt-2 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                            {t.segment && (
+                              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                                {SEGMENT_LABELS[t.segment]}
+                              </span>
+                            )}
+                            <span class="inline-flex items-center gap-1">
+                              <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
+                              Pekalongan
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </figcaption>
+                  </figure>
+                ))
+              }
+            </div>
+          )}
         </div>
       </section>
     </>
+  )
+}
+
+{
+  !published.length && !loadError && (
+    <section id="testimoni" class="section-space bg-background" aria-labelledby="testimonials-title">
+      <div class="site-container">
+        <div class="text-center max-w-xl mx-auto fade-in">
+          <h2 id="testimonials-title" class="section-title">Belum ada cerita pelanggan</h2>
+          <p class="mt-5 leading-7 text-muted-foreground">
+            Kami baru memulai perjalanan. Jadilah pelanggan pertama yang berbagi pengalaman
+            bekerja sama dengan Daydev Studio.
+          </p>
+          <a
+            href={waLink("Halo Daydev, saya ingin konsultasi gratis mengenai proyek saya.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="button-primary mt-6 inline-flex"
+          >
+            Mulai konsultasi gratis
+          </a>
+        </div>
+      </div>
+    </section>
   )
 }

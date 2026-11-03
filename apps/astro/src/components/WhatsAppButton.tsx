@@ -116,10 +116,10 @@ export default function WhatsAppButton({ hideWhile }: { hideWhile?: string }) {
       {open && (
         <nav
           id="whatsapp-topics"
-          className="wa-popup fixed right-4 top-[calc(var(--site-header-height)+0.5rem)] max-h-[calc(100dvh-7rem)] w-72 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-2xl bg-foreground p-3 shadow-xl xl:static"
+          className="wa-popup fixed right-4 top-[calc(var(--site-header-height)+0.5rem)] max-h-[calc(100dvh-7rem)] w-72 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-2xl bg-card border border-border p-3 shadow-xl xl:static"
           aria-label="Topik chat WhatsApp"
         >
-          <p className="mb-1 px-2 py-2 text-sm font-medium text-slate-300">
+          <p className="mb-1 px-2 py-2 text-sm font-medium text-muted-foreground">
             Ada yang bisa kami bantu?
           </p>
           {topics.map((topic, index) => {
@@ -132,13 +132,13 @@ export default function WhatsAppButton({ hideWhile }: { hideWhile?: string }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={close}
-                className="w-full min-h-[48px] flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-white/5 transition-colors group"
+                className="w-full min-h-[48px] flex items-center gap-3 px-3 py-2.5 rounded-xl text-left hover:bg-muted transition-colors group"
               >
                 <Icon
-                  className="size-5 shrink-0 text-slate-400 group-hover:text-green-400 transition-colors"
+                  className="size-5 shrink-0 text-muted-foreground group-hover:text-green-400 transition-colors"
                   aria-hidden="true"
                 />
-                <span className="text-white text-sm font-medium group-hover:text-green-400 transition-colors">
+                <span className="text-card-foreground text-sm font-medium group-hover:text-green-400 transition-colors">
                   {topic.label}
                 </span>
               </a>
@@ -153,7 +153,7 @@ export default function WhatsAppButton({ hideWhile }: { hideWhile?: string }) {
         onClick={() => setOpen((o) => !o)}
         className={`w-14 h-14 text-white rounded-full shadow-lg flex items-center justify-center transition-transform duration-200 hover:scale-105 group ${
           open
-            ? "bg-slate-700 hover:bg-slate-600"
+            ? "bg-muted-foreground hover:bg-muted-foreground/80"
             : "bg-green-700 hover:bg-green-800"
         }`}
         aria-label={open ? "Tutup topik WhatsApp" : "Chat via WhatsApp"}
@@ -179,7 +179,7 @@ export default function WhatsAppButton({ hideWhile }: { hideWhile?: string }) {
           WA_ICON
         )}
         {!open && (
-          <span className="absolute right-16 hidden bg-foreground text-white text-sm font-medium px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none xl:block">
+          <span className="absolute right-16 hidden bg-card text-card-foreground text-sm font-medium px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none xl:block border border-border">
             Chat WhatsApp
           </span>
         )}

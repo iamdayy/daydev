@@ -1,47 +1,261 @@
 ---
-import { PORTFOLIO_CATEGORY_LABELS, waLink } from "@daydev/shared-types";
-import { ArrowUpRight } from "lucide-react";
+import { PORTFOLIO_CATEGORY_LABELS, SEGMENT_LABELS, waLink, type Segment } from "@daydev/shared-types";
+import { ArrowUpRight, Filter, X, Building2, GraduationCap, Rocket } from "lucide-react";
 import Base from "../layouts/Base.astro";
 import { getPortfolio, loadData } from "../lib/api";
 import ProjectImage from "../components/ProjectImage.astro";
 import DataNotice from "../components/DataNotice.astro";
 
 const projects = await loadData(getPortfolio());
-const published = (projects.data ?? [])
+const allPublished = (projects.data ?? [])
   .filter((project) => project.is_published)
   .sort((a, b) => a.display_order - b.display_order);
+
+// Segment filter options
+const segmentFilters: { value: Segment | "all"; label: string; icon: typeof Building2 | typeof GraduationCap | typeof Rocket }[] = [
+  { value: "all", label: "Semua cerita", icon: Building2 },
+  { value: "umkm", label: "UMKM", icon: Building2 },
+  { value: "mahasiswa", label: "Mahasiswa", icon: GraduationCap },
+  { value: "startup", label: "Startup", icon: Rocket },
+];
+
+const segmentIcons: Record<string, typeof Building2 | typeof GraduationCap | typeof Rocket> = {
+  umkm: Building2,
+  mahasiswa: GraduationCap,
+  startup: Rocket,
+};
 ---
 
-<Base title="Portofolio - Daydev Studio" description="Lihat proyek Daydev, dari website dan aplikasi mobile hingga bot Telegram dan undangan digital." canonicalPath="/portfolio">
+<Base title="Cerita Pelanggan - Daydev Studio" description="Baca cerita transformasi nyata UMKM, mahasiswa, dan startup yang membangun website dan aplikasi mobile dengan Daydev Studio." canonicalPath="/portfolio">
   <main class="bg-background text-foreground">
     <header class="section-space bg-card">
       <div class="site-container">
-        <h1 class="page-title">Portofolio Daydev</h1>
-        <p class="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">Lihat tampilan, cakupan pekerjaan, dan teknologi di balik proyek kami. Buka demo untuk mencoba langsung.</p>
+        <div class="max-w-3xl mx-auto text-center fade-in">
+          <h1 class="page-title">Cerita pelanggan</h1>
+          <p class="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground mx-auto">
+            Bukan portofolio biasa. Ini cerita bisnis UMKM, mahasiswa, dan startup yang bertransformasi
+            lewat solusi digital yang benar-benar dipakai. Filter berdasarkan segmen yang mirip dengan Anda.
+          </p>
+        </div>
       </div>
     </header>
+
     <div class="site-container section-space space-y-16">
-      {!projects.ok ? <DataNotice title="Portofolio belum dapat dimuat" /> : published.length === 0 ? (
-        <p class="leading-7 text-muted-foreground">Portofolio sedang disusun. Hubungi kami untuk melihat hasil kerja sebelumnya.</p>
-      ) : published.map((project) => (
-        <article class:list={["grid items-start gap-8 lg:gap-12", { "md:grid-cols-[1.2fr_1fr]": project.cover_image_url }]}>
-          {project.cover_image_url && <ProjectImage src={project.cover_image_url} title={project.title} portrait={project.category === "mobile"} />}
-          <div class="min-w-0 max-w-2xl">
-            <h2 class="text-2xl font-bold leading-tight tracking-tight sm:text-3xl">{project.title}</h2>
-            <p class="mt-3 text-sm text-primary">{PORTFOLIO_CATEGORY_LABELS[project.category]}{project.client_name && ` · ${project.client_name}`}</p>
-            <p class="mt-5 leading-7">{project.description}</p>
-            {project.result_highlight && <p class="mt-5 rounded-xl bg-muted p-4 font-medium leading-7">{project.result_highlight}</p>}
-            {project.tech_stack?.length ? <p class="mt-5 text-sm leading-6 text-muted-foreground">{project.tech_stack.join(" · ")}</p> : null}
-            {project.demo_url && <a href={project.demo_url} target="_blank" rel="noopener noreferrer" class="mt-5 inline-flex min-h-11 items-center gap-2 font-semibold text-primary">Buka demo proyek <ArrowUpRight className="size-4" aria-hidden="true" /></a>}
+      {!projects.ok ? (
+        <DataNotice title="Cerita pelanggan belum dapat dimuat" />
+      ) : allPublished.length === 0 ? (
+        <div class="text-center py-16 fade-in">
+          <div class="mx-auto w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-4">
+            <Building2 className="w-8 h-8 text-muted-foreground" aria-hidden="true" />
           </div>
-        </article>
-      ))}
+          <h2 class="text-xl font-semibold text-foreground">Belum ada cerita yang dipublikasikan</h2>
+          <p class="mt-3 leading-7 text-muted-foreground max-w-md mx-auto">
+            Kami baru memulai perjalanan bersama pelanggan. Kembali nanti untuk melihat transformasi nyata.
+          </p>
+          <a
+            href={waLink("Halo Daydev, saya ingin melihat portofolio untuk kebutuhan proyek saya.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-6 inline-flex min-h-11 items-center font-semibold text-primary"
+          >
+            Tanyakan portofolio
+          </a>
+        </div>
+      ) : (
+        <>
+          <!-- Segment Filter -->
+          <div class="fade-in" id="segment-filter">
+            <div class="flex flex-wrap items-center justify-center gap-2" role="group" aria-label="Filter segmen pelanggan">
+              {segmentFilters.map((filter) => (
+                <button
+                  type="button"
+                  data-segment={filter.value}
+                  class="segment-filter-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-200 border border-border bg-card text-foreground hover:border-primary/50 hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/20 {filter.value === 'all' ? 'border-primary bg-primary/5 text-primary' : ''}"
+                  aria-pressed={filter.value === "all"}
+                >
+                  <filter.icon className="w-4 h-4" aria-hidden="true" />
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <!-- Stories Grid -->
+          <div class="stagger-children grid gap-8 md:gap-10" id="stories-grid" role="list" aria-label="Cerita pelanggan">
+            {allPublished.map((project) => {
+              const Icon = segmentIcons[project.segment ?? "umkm"] ?? Building2;
+              const segmentLabel = project.segment ? SEGMENT_LABELS[project.segment] : PORTFOLIO_CATEGORY_LABELS[project.category];
+
+              return (
+                <article
+                  data-segment={project.segment ?? "umkm"}
+                  class="story-card group relative rounded-2xl bg-card border border-border overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30"
+                  role="listitem"
+                >
+                  <div class:list={["grid gap-6 lg:gap-8", { "lg:grid-cols-[1.1fr_1fr]": project.cover_image_url }]}>
+                    {project.cover_image_url && (
+                      <div class="relative min-w-0">
+                        <a href={project.demo_url ?? "#"} target="_blank" rel="noopener noreferrer" aria-label={`Buka demo ${project.title}`} class="block aspect-[4/3] overflow-hidden">
+                          <ProjectImage src={project.cover_image_url} title={project.title} portrait={project.category === "mobile"} />
+                          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
+                        </a>
+                        <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0">
+                          <span class="px-3 py-1.5 text-xs font-medium bg-white/90 backdrop-blur-sm rounded-full text-foreground">
+                            {segmentLabel}
+                          </span>
+                          {project.demo_url && (
+                            <a href={project.demo_url} target="_blank" rel="noopener noreferrer" class="p-2 bg-white/90 backdrop-blur-sm rounded-full text-foreground hover:bg-white transition-colors" aria-label="Buka demo proyek">
+                              <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    <div class="min-w-0 p-6 sm:p-8 lg:p-6 flex flex-col justify-center">
+                      <div class="flex items-center gap-2 mb-4">
+                        <Icon className="w-5 h-5 text-primary" aria-hidden="true" />
+                        <span class="text-sm font-medium text-primary">{segmentLabel}</span>
+                        {project.client_name && <span class="text-sm text-muted-foreground">· {project.client_name}</span>}
+                      </div>
+                      <h3 class="text-2xl sm:text-3xl font-bold leading-tight tracking-tight text-foreground group-hover:text-primary transition-colors">{project.title}</h3>
+                      <p class="mt-4 leading-7 text-muted-foreground">{project.description}</p>
+                      {project.result_highlight && (
+                        <div class="mt-5 rounded-xl bg-primary/5 border border-primary/20 p-4">
+                          <p class="font-medium leading-7 text-foreground flex items-start gap-2">
+                            <svg class="w-5 h-5 shrink-0 mt-0.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            {project.result_highlight}
+                          </p>
+                        </div>
+                      )}
+                      {project.tech_stack?.length && (
+                        <p class="mt-5 text-sm leading-6 text-muted-foreground flex flex-wrap gap-2">
+                          {project.tech_stack.map((tech) => (
+                            <span class="px-2.5 py-1 text-xs bg-muted rounded-full">{tech}</span>
+                          ))}
+                        </p>
+                      )}
+                      {project.demo_url && (
+                        <a href={project.demo_url} target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex min-h-11 items-center gap-2 font-semibold text-primary group-hover:gap-3 transition-all">
+                          Buka demo proyek
+                          <ArrowUpRight className="size-4 shrink-0" aria-hidden="true" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <!-- No results message (hidden by default) -->
+          <div id="no-results" class="hidden text-center py-16 fade-in">
+            <div class="mx-auto w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-4">
+              <Filter className="w-8 h-8 text-muted-foreground" aria-hidden="true" />
+            </div>
+            <h2 class="text-xl font-semibold text-foreground">Tidak ada cerita untuk filter ini</h2>
+            <p class="mt-3 leading-7 text-muted-foreground">Coba pilih segmen lain atau lihat semua cerita.</p>
+            <button
+              type="button"
+              id="reset-filter"
+              class="mt-4 inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium text-primary border border-primary hover:bg-primary/5 transition-colors"
+            >
+              <X className="w-4 h-4" aria-hidden="true" />
+              Tampilkan semua
+            </button>
+          </div>
+        </>
+      )}
     </div>
+
+    <!-- CTA Section -->
     <section class="section-space bg-muted">
       <div class="site-container flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
-        <div><h2 class="section-title">Punya proyek serupa?</h2><p class="mt-4 leading-7 text-muted-foreground">Mari bahas kebutuhan dan langkah berikutnya bersama.</p></div>
-        <a href={waLink("Halo Daydev, saya ingin diskusi proyek setelah melihat portofolio.")} target="_blank" rel="noopener noreferrer" class="button-primary shrink-0">Diskusikan via WhatsApp</a>
+        <div class="fade-in">
+          <h2 class="section-title">Punya cerita serupa?</h2>
+          <p class="mt-4 leading-7 text-muted-foreground">Mari bahas kebutuhan dan langkah berikutnya bersama.</p>
+        </div>
+        <a
+          href={waLink("Halo Daydev, saya ingin diskusi proyek setelah membaca cerita pelanggan.")}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button-primary shrink-0 fade-in-right"
+        >
+          Diskusikan via WhatsApp
+        </a>
       </div>
     </section>
   </main>
 </Base>
+
+<script is:inline>
+  // Client-side segment filtering
+  const filterButtons = document.querySelectorAll('.segment-filter-btn');
+  const storyCards = document.querySelectorAll('.story-card');
+  const noResults = document.getElementById('no-results');
+  const resetFilterBtn = document.getElementById('reset-filter');
+  const storiesGrid = document.getElementById('stories-grid');
+
+  let activeSegment = 'all'; // eslint-disable-line no-unused-vars
+
+  function filterStories(segment) {
+    activeSegment = segment;
+    let visibleCount = 0;
+
+    filterButtons.forEach(function(btn) {
+      const isActive = btn.dataset.segment === segment;
+      btn.setAttribute('aria-pressed', String(isActive));
+      btn.classList.toggle('border-primary', isActive);
+      btn.classList.toggle('bg-primary/5', isActive);
+      btn.classList.toggle('text-primary', isActive);
+      btn.classList.toggle('border-border', !isActive);
+      btn.classList.toggle('bg-card', !isActive);
+      btn.classList.toggle('text-foreground', !isActive);
+    });
+
+    storyCards.forEach(function(card) {
+      const cardSegment = card.dataset.segment;
+      const matches = segment === 'all' || cardSegment === segment;
+
+      if (matches) {
+        card.hidden = false;
+        card.style.animationDelay = (visibleCount * 100) + 'ms';
+        card.classList.remove('hidden');
+        card.classList.add('fade-in');
+        visibleCount++;
+      } else {
+        card.hidden = true;
+        card.classList.add('hidden');
+      }
+    });
+
+    if (visibleCount === 0) {
+      noResults?.classList.remove('hidden');
+      storiesGrid?.classList.add('hidden');
+    } else {
+      noResults?.classList.add('hidden');
+      storiesGrid?.classList.remove('hidden');
+    }
+  }
+
+  filterButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() { filterStories(this.dataset.segment); });
+  });
+
+  resetFilterBtn?.addEventListener('click', function() {
+    const allBtn = document.querySelector('.segment-filter-btn[data-segment="all"]');
+    allBtn?.click();
+  });
+
+  // Keyboard navigation for filter buttons
+  filterButtons.forEach(function(btn, index) {
+    btn.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const nextIndex = e.key === 'ArrowRight' ? (index + 1) % filterButtons.length : (index - 1 + filterButtons.length) % filterButtons.length;
+        filterButtons[nextIndex]?.focus();
+      }
+    });
+  });
+</script>

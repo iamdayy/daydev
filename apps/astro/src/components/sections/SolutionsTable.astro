@@ -1,0 +1,131 @@
+---
+import { Globe, Check, HelpCircle } from "lucide-react";
+import { waLink } from "@daydev/shared-types";
+
+const solutions = [
+  {
+    category: "Website & Aplikasi Mobile",
+    icon: Globe,
+    description: "Solusi digital utama untuk bisnis yang butuh hadir online dan di genggaman pelanggan.",
+    items: [
+      { name: "Website Profesional", desc: "Desain modern, responsif, SEO-ready, cepat, aman", included: true },
+      { name: "Aplikasi Mobile (iOS & Android)", desc: "Native performance, offline, push notif, real-time sync", included: true },
+      { name: "Sistem Informasi Custom", desc: "Dashboard, laporan, manajemen data, multi-role", included: true },
+      { name: "E-commerce / Marketplace", desc: "Keranjang, pembayaran, kurir, inventori, laporan", included: true },
+    ],
+  },
+  {
+    category: "Otomatisasi & Kebutuhan Khusus",
+    icon: Globe,
+    description: "Layanan pendukung untuk efisiensi operasional dan momen spesial.",
+    items: [
+      { name: "Bot Telegram", desc: "Automasi CS, notifikasi, integrasi API, database", included: true },
+      { name: "Undangan Digital Interaktif", desc: "RSVP real-time, galeri, countdown, notifikasi WA", included: true },
+    ],
+  },
+];
+
+const segmentNeeds = [
+  { segment: "UMKM", icon: "🏪", needs: "Website toko online, sistem stok & keuangan, integrasi payment gateway, bot CS otomatis" },
+  { segment: "Mahasiswa", icon: "🎓", needs: "Sistem informasi skripsi, bimbingan teknis, dokumentasi lengkap, presentasi demo" },
+  { segment: "Startup", icon: "🚀", needs: "MVP cepat, validasi pasar, skalabilitas, analytics, tim teknis pendamping" },
+];
+---
+
+<section id="solusi" class="section-space bg-muted" aria-labelledby="solutions-title">
+  <div class="site-container">
+    <div class="mb-12 text-center max-w-3xl mx-auto fade-in">
+      <h2 id="solutions-title" class="section-title">Solusi untuk setiap tahap</h2>
+      <p class="mt-5 text-lg leading-8 text-muted-foreground">
+        Tidak semua bisnis butuh hal yang sama. Pilih yang relevan, kita bahas detailnya saat konsultasi.
+      </p>
+    </div>
+
+    <!-- Solutions Comparison Table -->
+    <div class="fade-in overflow-x-auto rounded-2xl bg-card border border-border">
+      <table class="w-full" role="table">
+        <thead>
+          <tr class="border-b border-border bg-muted/50">
+            <th scope="col" class="px-4 py-4 sm:px-6 text-left font-semibold text-foreground">Layanan</th>
+            <th scope="col" class="px-4 py-4 sm:px-6 text-left font-semibold text-foreground">Cakupan Utama</th>
+            <th scope="col" class="px-4 py-4 sm:px-6 text-left font-semibold text-foreground">Cocok Untuk</th>
+            <th scope="col" class="px-4 py-4 sm:px-6 text-center font-semibold text-foreground">Tersedia</th>
+          </tr>
+        </thead>
+        <tbody>
+          {solutions.map((solution) => (
+            <>
+              <tr class="border-b border-border last:border-0 bg-muted/30">
+                <td class="px-4 py-3 sm:px-6 font-medium text-foreground" colspan="4">
+                  <span class="inline-flex items-center gap-2">
+                    <solution.icon className="w-5 h-5 text-primary" aria-hidden="true" />
+                    {solution.category}
+                  </span>
+                </td>
+              </tr>
+              {solution.items.map((item) => (
+                <tr class="border-b border-border last:border-0 hover:bg-muted/50 transition-colors">
+                  <td class="px-4 py-4 sm:px-6">
+                    <div class="flex items-center gap-3">
+                      <span class="text-base font-medium text-foreground">{item.name}</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4 sm:px-6 text-muted-foreground max-w-md">{item.desc}</td>
+                  <td class="px-4 py-4 sm:px-6 text-sm text-muted-foreground">
+                    {solution.category === "Website & Aplikasi Mobile" ? (
+                      <>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">UMKM</span>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Startup</span>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">Mahasiswa</span>
+                      </>
+                    ) : (
+                      <>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber/10 text-amber text-xs font-medium">UMKM</span>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber/10 text-amber text-xs font-medium">Startup</span>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber/10 text-amber text-xs font-medium">Individu</span>
+                      </>
+                    )}
+                  </td>
+                  <td class="px-4 py-4 sm:px-6 text-center">
+                    {item.included ? (
+                      <Check className="w-5 h-5 text-primary mx-auto" aria-hidden="true" />
+                    ) : (
+                      <HelpCircle className="w-5 h-5 text-muted-foreground mx-auto" aria-hidden="true" />
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Segment Needs -->
+    <div class="mt-16 fade-in">
+      <h3 class="text-xl font-bold text-center text-foreground mb-8">Apa yang biasa dibutuhkan?</h3>
+      <div class="grid gap-6 md:grid-cols-3">
+        {segmentNeeds.map((seg) => (
+          <div class="rounded-2xl bg-card border border-border p-6 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30 transition-all duration-300">
+            <div class="text-4xl mb-4">{seg.icon}</div>
+            <h4 class="font-semibold text-foreground mb-3">{seg.segment}</h4>
+            <p class="text-sm leading-6 text-muted-foreground">{seg.needs}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-16 text-center fade-in">
+      <p class="text-muted-foreground mb-4">Masih bingung mana yang cocok? Ceritakan kondisi bisnis Anda.</p>
+      <a
+        href={waLink("Halo Daydev, saya butuh bantuan menentukan layanan yang cocok untuk bisnis saya.")}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="button-primary inline-flex"
+      >
+        Konsultasi gratis via WhatsApp
+      </a>
+    </div>
+  </div>
+</section>

@@ -3,7 +3,7 @@ const navLinks = [
   { label: "Beranda", href: "/" },
   { label: "Layanan", href: "/services" },
   { label: "Harga", href: "/pricing" },
-  { label: "Portofolio", href: "/portfolio" },
+  { label: "Cerita Pelanggan", href: "/portfolio" },
   { label: "Blog", href: "/blog" },
 ];
 
@@ -12,14 +12,14 @@ const waLink = "https://wa.me/6285175284253";
 const isActive = (href: string) => pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 ---
 
-<header id="site-header" class="fixed inset-x-0 top-0 z-50 bg-foreground text-white">
+<header id="site-header" class="fixed inset-x-0 top-0 z-50 bg-foreground text-[var(--card-foreground)]">
   <div class="site-container flex h-[var(--site-header-height)] items-center justify-between">
     <a href="/" class="flex min-h-11 items-center gap-2 group" aria-label="Daydev Studio - Beranda">
-      <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center font-bold text-[#172033] text-lg group-hover:scale-110 transition-transform overflow-hidden">
+      <div class="w-9 h-9 bg-[var(--card)] rounded-lg flex items-center justify-center font-bold text-[var(--foreground)] text-lg group-hover:scale-110 transition-transform overflow-hidden">
         <img src="/logo.png" alt="Daydev Logo" width="20" height="20" class="object-contain" />
       </div>
-      <span class="text-white font-bold text-xl tracking-tight">
-        day<span class="text-[#ea7b3c]">dev</span>
+      <span class="font-bold text-xl tracking-tight text-[var(--card-foreground)]">
+        day<span class="text-accent">dev</span>
       </span>
     </a>
 
@@ -31,8 +31,8 @@ const isActive = (href: string) => pathname === href || (href !== "/" && pathnam
             class:list={[
                "inline-flex min-h-11 items-center transition-colors font-medium text-sm",
                isActive(link.href)
-                ? "text-[#ea7b3c]"
-                : "text-gray-300 hover:text-[#ea7b3c]",
+                ? "text-accent"
+                : "text-[var(--muted-foreground)] hover:text-accent",
             ]}
             aria-current={isActive(link.href) ? "page" : undefined}
           >
@@ -52,7 +52,7 @@ const isActive = (href: string) => pathname === href || (href !== "/" && pathnam
 
     <button
       id="menu-toggle"
-      class="md:hidden text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+      class="md:hidden text-[var(--card-foreground)] p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
       aria-label="Buka menu"
       aria-expanded="false"
       aria-controls="mobile-menu"
@@ -72,8 +72,8 @@ const isActive = (href: string) => pathname === href || (href !== "/" && pathnam
         <a
           href={link.href}
           class:list={[
-            "block py-3 min-h-[44px] flex items-center transition-colors font-medium border-b border-white/5",
-            isActive(link.href) ? "text-[#ea7b3c]" : "text-gray-300 hover:text-[#ea7b3c]",
+            "block py-3 min-h-[44px] flex items-center transition-colors font-medium border-b border-[var(--border)]",
+            isActive(link.href) ? "text-accent" : "text-[var(--muted-foreground)] hover:text-accent",
           ]}
           aria-current={isActive(link.href) ? "page" : undefined}
         >
@@ -85,7 +85,7 @@ const isActive = (href: string) => pathname === href || (href !== "/" && pathnam
       href={waLink}
       target="_blank"
       rel="noopener noreferrer"
-      class="mt-4 flex min-h-[48px] items-center justify-center bg-[#ea7b3c] text-[#172033] px-5 py-3 rounded-full font-semibold text-center hover:brightness-110 transition-all"
+      class="mt-4 flex min-h-[48px] items-center justify-center bg-accent text-[var(--accent-foreground)] px-5 py-3 rounded-full font-semibold text-center hover:brightness-110 transition-all"
     >
       Konsultasi Gratis
     </a>

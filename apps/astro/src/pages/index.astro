@@ -3,84 +3,100 @@ import Base from "../layouts/Base.astro";
 import HeroComputer from "../components/HeroComputer";
 import ArticlePreview from "../components/ArticlePreview";
 import DataNotice from "../components/DataNotice.astro";
-import FeaturedProjects from "../components/sections/FeaturedProjects.astro";
-import StatsSection from "../components/sections/StatsSection.astro";
-import TargetMarket from "../components/sections/TargetMarket.astro";
-import TeamSection from "../components/sections/TeamSection.astro";
+import CustomerStories from "../components/sections/CustomerStories.astro";
+import SolutionsTable from "../components/sections/SolutionsTable.astro";
 import Testimonials from "../components/sections/Testimonials.astro";
-import { getBlogPosts, getPortfolio, getStats, getTeam, getTestimonials, loadData } from "../lib/api";
-import { services } from "../lib/services";
-import { waLink, WHATSAPP } from "@daydev/shared-types";
+import { getBlogPosts, getPortfolio, getTestimonials, loadData } from "../lib/api";
+import { waLink } from "@daydev/shared-types";
 
-const [stats, team, portfolio, testimonials, posts] = await Promise.all([
-  loadData(getStats()), loadData(getTeam()), loadData(getPortfolio()),
-  loadData(getTestimonials()), loadData(getBlogPosts()),
+const [portfolio, testimonials, posts] = await Promise.all([
+  loadData(getPortfolio()),
+  loadData(getTestimonials()),
+  loadData(getBlogPosts()),
 ]);
-const featured = (posts.data ?? [])
+
+const featuredPosts = (posts.data ?? [])
   .filter((post) => post.is_published)
   .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
   .slice(0, 2);
 ---
 
-<Base title="Daydev - Dari Ide Menjadi Aplikasi" description="Jasa pembuatan website, aplikasi mobile, bot Telegram, dan undangan digital untuk startup, UMKM, dan mahasiswa. Konsultasi gratis via WhatsApp.">
+<Base title="Daydev Studio - Dari Ide Menjadi Aplikasi" description="Kami membangun website dan aplikasi mobile untuk UMKM, mahasiswa, dan startup. Ceritakan ide Anda, kami bantu wujudkan lewat konsultasi gratis via WhatsApp.">
   <main id="beranda">
-    <section id="hero" class="bg-foreground py-10 text-white sm:py-12 lg:py-16">
+    <!-- Hero Section -->
+    <section id="hero" class="relative bg-background py-10 sm:py-12 lg:py-16 overflow-hidden">
       <div class="site-container grid items-center gap-8 md:grid-cols-[0.9fr_1.3fr] lg:gap-10">
-        <div class="min-w-0">
-          <h1 class="text-[clamp(2.5rem,4.8vw,4.5rem)] font-bold leading-[1.08] tracking-[-0.04em]">Dari ide,<br />jadi aplikasi.</h1>
-          <p class="mt-6 max-w-lg text-lg leading-8 text-slate-300">Kami membangun website dan aplikasi mobile untuk startup, UMKM, dan mahasiswa.</p>
+        <div class="min-w-0 fade-in">
+          <h1 class="text-[clamp(2.5rem,4.8vw,4.5rem)] font-bold leading-[1.08] tracking-[-0.04em] text-foreground">Dari ide,<br />jadi aplikasi.</h1>
+          <p class="mt-6 max-w-lg text-lg leading-8 text-muted-foreground">
+            Setiap bisnis punya cerita unik. Kami mendengar, merancang, dan membangun solusi digital
+            yang benar-benar dipakai—tanpa jargon teknis yang membingungkan.
+          </p>
           <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <a href={waLink(WHATSAPP.defaultMessage)} target="_blank" rel="noopener noreferrer" class="button-primary">Konsultasi gratis</a>
-            <a href="#layanan" class="inline-flex min-h-12 items-center font-semibold text-white underline decoration-white/40 underline-offset-8 transition-colors hover:decoration-white">Jelajahi layanan</a>
+            <a
+              href={waLink("Halo Daydev, saya ingin konsultasi gratis mengenai ide aplikasi saya.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="button-primary"
+            >
+              Mulai konsultasi gratis
+            </a>
+            <a
+              href="#cerita-pelanggan"
+              class="inline-flex min-h-11 items-center font-semibold text-foreground underline decoration-foreground/40 underline-offset-8 transition-colors hover:decoration-foreground"
+            >
+              Baca cerita pelanggan
+            </a>
           </div>
-          <p class="mt-5 text-sm leading-6 text-slate-300">Balas via WhatsApp pada jam kerja.</p>
+          <p class="mt-5 text-sm leading-6 text-muted-foreground">
+            Balas via WhatsApp pada jam kerja. Tidak ada komitmen, hanya percakapan awal.
+          </p>
         </div>
-        <HeroComputer client:load />
+        <div class="relative fade-in-right">
+          <HeroComputer client:load />
+          <div class="absolute -bottom-6 -right-6 sm:-bottom-8 sm:-right-8 hidden lg:block">
+            <div class="rounded-2xl bg-card p-4 sm:p-6 shadow-lg border border-border min-w-[220px] animate-fade-in-up">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <span class="font-semibold text-foreground">Proyek nyata</span>
+              </div>
+              <p class="text-sm text-muted-foreground">Monitor menampilkan layar proyek pelanggan asli. Klik untuk buka demo.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <FeaturedProjects projects={portfolio.data ?? []} loadError={!portfolio.ok} />
+    <!-- Customer Stories Section (replaces Featured Projects) -->
+    <CustomerStories projects={portfolio.data ?? []} loadError={!portfolio.ok} />
 
-    <section id="layanan" class="section-space bg-muted">
-      <div class="site-container">
-        <div class="mb-12 flex flex-wrap items-end justify-between gap-6">
-          <h2 class="section-title max-w-xl">Yang bisa kami bangun</h2>
-          <a href="/services" class="inline-flex min-h-11 items-center font-semibold text-primary">Katalog layanan</a>
-        </div>
-        <ul class="grid gap-x-16 gap-y-10 md:grid-cols-2">
-          {services.map((service) => (
-            <li class="fade-in">
-              <a href={`/services/${service.slug}`} class="group block rounded-lg focus-visible:outline-offset-8">
-                <h3 class="text-2xl font-semibold tracking-tight transition-colors group-hover:text-primary">{service.title}</h3>
-                <p class="mt-3 max-w-lg leading-7">{service.description}</p>
-                <span class="mt-4 inline-flex min-h-11 items-center font-semibold text-primary underline underline-offset-4">Detail layanan</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+    <!-- Solutions Table Section -->
+    <SolutionsTable />
 
-    <TargetMarket />
-    <StatsSection stats={stats.data ?? []} />
-    <Testimonials testimonials={testimonials.data ?? []} />
-    <TeamSection teams={team.data ?? []} />
-    {(!stats.ok || !team.ok || !testimonials.ok) && <div class="site-container py-8"><DataNotice title="Sebagian informasi studio belum dapat dimuat" /></div>}
+    <!-- Testimonials Section -->
+    <Testimonials testimonials={testimonials.data ?? []} loadError={!testimonials.ok} />
 
-    <section id="artikel" class="section-space">
+    <!-- Blog Preview -->
+    <section id="artikel" class="section-space bg-background">
       <div class="site-container">
         <div class="mb-10 flex flex-wrap items-end justify-between gap-6">
-          <div class="max-w-xl">
+          <div class="max-w-xl fade-in">
             <h2 class="section-title">Catatan dari studio</h2>
-            <p class="mt-5 leading-7">Pengalaman membangun produk dan panduan untuk menentukan langkah digital Anda.</p>
+            <p class="mt-5 leading-7 text-muted-foreground">Pengalaman membangun produk dan panduan untuk menentukan langkah digital Anda.</p>
           </div>
-          <nav aria-label="Artikel studio"><a href="/blog" class="text-link">Baca semua artikel</a></nav>
+          <nav aria-label="Artikel studio" class="fade-in-right"><a href="/blog" class="text-link">Baca semua artikel</a></nav>
         </div>
-        {!posts.ok ? <DataNotice title="Artikel belum dapat dimuat" /> : featured.length === 0 ? (
-          <p class="self-center leading-7 text-muted-foreground">Artikel baru sedang disiapkan. Anda tetap bisa mendiskusikan kebutuhan proyek melalui WhatsApp.</p>
+        {!posts.ok ? (
+          <DataNotice title="Artikel belum dapat dimuat" />
+        ) : featuredPosts.length === 0 ? (
+          <p class="self-center leading-7 text-muted-foreground fade-in">Artikel baru sedang disiapkan. Anda tetap bisa mendiskusikan kebutuhan proyek melalui WhatsApp.</p>
         ) : (
-          <div class="article-list article-list-home" data-count={featured.length}>
-            {featured.map((article) => (
+          <div class="article-list article-list-home stagger-children" data-count={featuredPosts.length}>
+            {featuredPosts.map((article) => (
               <ArticlePreview article={article} />
             ))}
           </div>
@@ -88,14 +104,42 @@ const featured = (posts.data ?? [])
       </div>
     </section>
 
+    <!-- Final CTA Section -->
     <section class="section-space bg-primary text-white">
       <div class="site-container flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
-        <div>
-          <h2 class="section-title">Apa yang ingin Anda bangun?</h2>
-          <p class="mt-5 max-w-xl text-lg leading-8">Ceritakan ide, kebutuhan, dan anggaran Anda. Kita bahas langkah awalnya lewat konsultasi gratis.</p>
+        <div class="fade-in max-w-2xl">
+          <h2 class="section-title">Siap memulai cerita Anda?</h2>
+          <p class="mt-5 max-w-xl text-lg leading-8">
+            Ceritakan ide, kebutuhan, dan anggaran Anda. Kita bahas langkah awalnya lewat konsultasi gratis—tanpa tekanan, hanya pemikiran bersama.
+          </p>
         </div>
-        <a href={waLink(WHATSAPP.defaultMessage)} target="_blank" rel="noopener noreferrer" class="button-primary shrink-0">Ceritakan proyek Anda</a>
+        <a
+          href={waLink("Halo Daydev, saya ingin konsultasi gratis mengenai proyek saya.")}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button-primary shrink-0 fade-in-right"
+        >
+          Mulai konsultasi via WhatsApp
+        </a>
       </div>
     </section>
   </main>
 </Base>
+
+<style>
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+    animation-delay: 0.8s;
+    opacity: 0;
+  }
+</style>

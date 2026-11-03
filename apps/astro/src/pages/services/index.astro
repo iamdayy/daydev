@@ -1,57 +1,199 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { waLink } from "@daydev/shared-types";
-import { comparison, services } from "../../lib/services";
+import { services } from "../../lib/services";
+import { ArrowUpRight, Check, Globe, Smartphone, Bot, Mail } from "lucide-react";
 
 export const prerender = true;
 ---
 
-<Base title="Layanan - Daydev Studio" description="Jasa pengembangan website, aplikasi mobile, bot Telegram, dan undangan digital untuk startup, UMKM, dan mahasiswa." canonicalPath="/services">
-  <main>
+<Base title="Layanan - Daydev Studio" description="Jasa pembuatan website, aplikasi mobile, bot Telegram, dan undangan digital untuk startup, UMKM, dan mahasiswa. Konsultasi gratis via WhatsApp." canonicalPath="/services">
+  <main class="bg-background text-foreground">
     <header class="section-space bg-card">
       <div class="site-container">
-        <h1 class="page-title">Layanan Daydev</h1>
-        <p class="mt-6 max-w-2xl text-lg leading-8">Kami membantu startup, UMKM, dan mahasiswa membangun website, aplikasi mobile, bot Telegram, hingga undangan digital.</p>
+        <div class="max-w-3xl mx-auto text-center fade-in">
+          <h1 class="page-title">Layanan Daydev</h1>
+          <p class="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground mx-auto">
+            Kami membantu UMKM, mahasiswa, dan startup membangun solusi digital yang benar-benar dipakai.
+            Pilih yang relevan dengan tahap bisnis Anda.
+          </p>
+        </div>
       </div>
     </header>
 
-    <div class="site-container section-space space-y-14 sm:space-y-16">
-      {services.map((service) => (
-        <article class="grid gap-6 md:grid-cols-[0.85fr_1.15fr] md:gap-12 lg:gap-20">
-          <div class="min-w-0">
-            <h2 class="text-2xl font-bold leading-tight tracking-tight lg:text-3xl"><a href={`/services/${service.slug}`} class="hover:text-primary">{service.title}</a></h2>
-            {service.targetAudience.length > 0 && <p class="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">Untuk {service.targetAudience.join(", ")}</p>}
-          </div>
-          <div class="min-w-0 max-w-2xl">
-            <p class="whitespace-pre-line text-lg leading-8">{service.description}</p>
-            {service.benefits.length > 0 && <ul class="mt-5 list-disc space-y-2 pl-5 leading-7">
-              {service.benefits.slice(0, 3).map((benefit) => <li>{benefit}</li>)}
-            </ul>}
-            <a href={`/services/${service.slug}`} class="text-link mt-4">Detail layanan</a>
-          </div>
-        </article>
-      ))}
-    </div>
-
-    <section class="section-space bg-muted">
+    <!-- Main Services: Web & Mobile -->
+    <section class="section-space bg-background" aria-labelledby="main-services-title">
       <div class="site-container">
-        <h2 id="perbandingan-layanan" class="section-title">Bandingkan layanan</h2>
-        <p class="mt-5 leading-7">Perkiraan waktu menyesuaikan cakupan proyek yang disepakati saat konsultasi.</p>
-        <div class="mt-8 overflow-x-auto rounded-2xl bg-card" role="region" aria-labelledby="perbandingan-layanan" tabindex="0">
-          <table class="w-full text-left text-sm">
-            <thead><tr class="border-b border-border"><th scope="col" class="px-4 py-5 sm:px-6">Layanan</th><th scope="col" class="px-4 py-5 sm:px-6">Waktu</th><th scope="col" class="px-4 py-5 sm:px-6">Kompleksitas</th></tr></thead>
-            <tbody>{comparison.map((row) => (
-              <tr class="border-b border-border last:border-0"><th scope="row" class="px-4 py-5 font-semibold sm:px-6">{row.name}</th><td class="px-4 py-5 sm:px-6">{row.timeline}</td><td class="px-4 py-5 sm:px-6">{row.complexity}</td></tr>
-            ))}</tbody>
-          </table>
+        <div class="mb-12 text-center max-w-3xl mx-auto fade-in">
+          <h2 id="main-services-title" class="section-title">Layanan utama</h2>
+          <p class="mt-5 text-lg leading-8 text-muted-foreground">
+            Website dan aplikasi mobile adalah fondasi digital bisnis modern. Kami bangun keduanya dengan
+            standar performa, keamanan, dan pengalaman pengguna terbaik.
+          </p>
+        </div>
+
+        <div class="stagger-children grid gap-8 md:gap-10 lg:grid-cols-2">
+          {services
+            .filter(s => s.id === "web-development" || s.id === "mobile-development")
+            .map((service) => {
+              const IconMap = { Globe, Smartphone, Bot, Mail };
+              const Icon = IconMap[service.icon as keyof typeof IconMap] ?? Globe;
+              return (
+                <article class="relative rounded-2xl bg-card border border-border p-6 sm:p-8 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30 transition-all duration-300">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Icon className="w-6 h-6 text-primary" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <h3 class="text-xl font-bold text-foreground">{service.title}</h3>
+                      <p class="text-sm text-muted-foreground">{service.description}</p>
+                    </div>
+                  </div>
+                  <p class="leading-7 text-muted-foreground mb-6">{service.longDescription.split('\n\n')[0]}</p>
+                  <ul class="space-y-3 mb-6" role="list">
+                    {service.features.slice(0, 4).map((feature) => (
+                      <li class="flex items-start gap-3 leading-7">
+                        <Check className="w-5 h-5 shrink-0 mt-0.5 text-primary" aria-hidden="true" />
+                        <span class="text-sm text-foreground">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <a
+                    href={`/services/${service.slug}`}
+                    class="inline-flex items-center gap-2 font-semibold text-primary hover:underline"
+                  >
+                    Detail layanan <ArrowUpRight className="size-4" aria-hidden="true" />
+                  </a>
+                </article>
+              );
+            })}
         </div>
       </div>
     </section>
 
+    <!-- Comparison Table for Web & Mobile only -->
+    <section class="section-space bg-muted" aria-labelledby="comparison-title">
+      <div class="site-container">
+        <div class="mb-10 text-center max-w-3xl mx-auto fade-in">
+          <h2 id="comparison-title" class="section-title">Bandingkan Website vs Mobile</h2>
+          <p class="mt-5 leading-7 text-muted-foreground">Perkiraan waktu menyesuaikan cakupan proyek yang disepakati saat konsultasi.</p>
+        </div>
+        <div class="fade-in overflow-x-auto rounded-2xl bg-card border border-border">
+          <table class="w-full text-left text-sm" role="table">
+            <thead>
+              <tr class="border-b border-border bg-muted/50">
+                <th scope="col" class="px-4 py-4 sm:px-6 font-semibold text-foreground">Aspek</th>
+                <th scope="col" class="px-4 py-4 sm:px-6 font-semibold text-foreground">Website</th>
+                <th scope="col" class="px-4 py-4 sm:px-6 font-semibold text-foreground">Aplikasi Mobile</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-border hover:bg-muted/50">
+                <th scope="row" class="px-4 py-4 sm:px-6 font-medium text-foreground">Akses pengguna</th>
+                <td class="px-4 py-4 sm:px-6 text-muted-foreground">Browser (semua device)</td>
+                <td class="px-4 py-4 sm:px-6 text-muted-foreground">App Store / Play Store</td>
+              </tr>
+              <tr class="border-b border-border hover:bg-muted/50">
+                <th scope="row" class="px-4 py-4 sm:px-6 font-medium text-foreground">Performa</th>
+                <td class="px-4 py-4 sm:px-6 text-muted-foreground">Tergantung jaringan & browser</td>
+                <td class="px-4 py-4 sm:px-6 text-muted-foreground">Native, offline-capable</td>
+              </tr>
+              <tr class="border-b border-border hover:bg-muted/50">
+                <th scope="row" class="px-4 py-4 sm:px-6 font-medium text-foreground">Fitur device</th>
+                <td class="px-4 py-4 sm:px-6 text-muted-foreground">Terbatas (camera, GPS, dll)</td>
+                <td class="px-4 py-4 sm:px-6 text-muted-foreground">Penuh (push notif, biometrik, sensor)</td>
+              </tr>
+              <tr class="border-b border-border hover:bg-muted/50">
+                <th scope="row" class="px-4 py-4 sm:px-6 font-medium text-foreground">Update</th>
+                <td class="px-4 py-4 sm:px-6 text-muted-foreground">Instan (server-side)</td>
+                <td class="px-4 py-4 sm:px-6 text-muted-foreground">Perlu review store / OTA</td>
+              </tr>
+              <tr class="border-b border-border hover:bg-muted/50">
+                <th scope="row" class="px-4 py-4 sm:px-6 font-medium text-foreground">Biaya development</th>
+                <td class="px-4 py-4 sm:px-6 text-muted-foreground">Lebih efisien (single codebase)</td>
+                <td class="px-4 py-4 sm:px-6 text-muted-foreground">Lebih tinggi (iOS + Android)</td>
+              </tr>
+              <tr class="hover:bg-muted/50">
+                <th scope="row" class="px-4 py-4 sm:px-6 font-medium text-foreground">Cocok untuk</th>
+                <td class="px-4 py-4 sm:px-6 text-muted-foreground">Konten, e-commerce, SEO, jangkauan luas</td>
+                <td class="px-4 py-4 sm:px-6 text-muted-foreground">Produk SaaS, engagement tinggi, offline-first</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-6 text-center text-sm text-muted-foreground fade-in">
+          Banyak bisnis memulai dengan website, lalu perluas ke mobile saat butuh engagement lebih dalam.
+          <a href={waLink("Halo Daydev, saya ingin diskusi apakah bisnis saya butuh website, mobile app, atau keduanya.")} target="_blank" rel="noopener noreferrer" class="text-primary font-semibold underline underline-offset-2 hover:no-underline ml-2">Tanyakan ke kami</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Additional Services -->
+    <section class="section-space bg-background" aria-labelledby="additional-services-title">
+      <div class="site-container">
+        <div class="mb-12 text-center max-w-3xl mx-auto fade-in">
+          <h2 id="additional-services-title" class="section-title">Layanan pendukung</h2>
+          <p class="mt-5 text-lg leading-8 text-muted-foreground">
+            Solusi khusus untuk otomatisasi operasional dan momen spesial. Harga dan cakupan disesuaikan kebutuhan.
+          </p>
+        </div>
+
+        <div class="stagger-children grid gap-8 md:gap-10 lg:grid-cols-2">
+          {services
+            .filter(s => s.id === "telegram-bot" || s.id === "undangan-digital")
+            .map((service) => {
+              const IconMap = { Globe, Smartphone, Bot, Mail };
+              const Icon = IconMap[service.icon as keyof typeof IconMap] ?? Globe;
+              return (
+                <article class="relative rounded-2xl bg-card border border-border p-6 sm:p-8 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30 transition-all duration-300">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber/10 flex items-center justify-center">
+                      <Icon className="w-6 h-6 text-amber-600" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <h3 class="text-xl font-bold text-foreground">{service.title}</h3>
+                      <p class="text-sm text-muted-foreground">{service.description}</p>
+                    </div>
+                  </div>
+                  <p class="leading-7 text-muted-foreground mb-6">{service.longDescription.split('\n\n')[0]}</p>
+                  <ul class="space-y-3 mb-6" role="list">
+                    {service.features.slice(0, 4).map((feature) => (
+                      <li class="flex items-start gap-3 leading-7">
+                        <Check className="w-5 h-5 shrink-0 mt-0.5 text-amber-600" aria-hidden="true" />
+                        <span class="text-sm text-foreground">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <a
+                    href={`/services/${service.slug}`}
+                    class="inline-flex items-center gap-2 font-semibold text-amber-600 hover:underline"
+                  >
+                    Detail layanan <ArrowUpRight className="size-4" aria-hidden="true" />
+                  </a>
+                </article>
+              );
+            })}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
     <section class="section-space bg-primary text-white">
       <div class="site-container flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
-        <div><h2 class="section-title">Mulai dari kebutuhan Anda</h2><p class="mt-5 max-w-xl leading-7">Ceritakan tujuan proyek Anda. Kita tentukan layanan dan langkah awalnya bersama.</p></div>
-        <a href={waLink("Halo Daydev, saya ingin konsultasi gratis mengenai pengembangan aplikasi.")} target="_blank" rel="noopener noreferrer" class="button-primary shrink-0">Konsultasi via WhatsApp</a>
+        <div class="fade-in max-w-xl">
+          <h2 class="section-title">Mulai dari kebutuhan Anda</h2>
+          <p class="mt-5 max-w-xl leading-7">
+            Ceritakan tujuan proyek Anda. Kita tentukan layanan dan langkah awalnya bersama lewat konsultasi gratis.
+          </p>
+        </div>
+        <a
+          href={waLink("Halo Daydev, saya ingin konsultasi gratis mengenai pengembangan aplikasi.")}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button-primary shrink-0 fade-in-right"
+        >
+          Konsultasi via WhatsApp
+        </a>
       </div>
     </section>
   </main>

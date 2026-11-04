@@ -1,5 +1,6 @@
 ---
 import { actions } from "astro:actions";
+import ThemeScript from "../components/ThemeScript.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -31,11 +32,11 @@ const nav = [
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
   </head>
   <body class="min-h-screen bg-muted/50 text-foreground antialiased">
-    <a href="#konten-admin" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:p-4">Lewati ke konten</a>
-    <header class="sticky top-0 z-20 border-b border-border bg-[#172033] text-white">
+    <a href="#konten-admin" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-card focus:p-4">Lewati ke konten</a>
+    <header class="sticky top-0 z-20 border-b border-border bg-card text-foreground">
       <div class="site-container grid grid-cols-[1fr_auto] items-center gap-x-4 py-3 lg:grid-cols-[auto_1fr_auto] lg:gap-8">
         <a href="/admin" class="inline-flex min-h-11 items-center text-lg font-bold tracking-tight">
-          Daydev <span class="text-[#ea7b3c]">Admin</span>
+          Daydev <span class="text-accent-ink">Admin</span>
         </a>
         <nav class="order-last col-span-2 mt-2 grid grid-cols-3 gap-1 sm:grid-cols-5 lg:order-none lg:col-span-1 lg:mt-0" aria-label="Navigasi admin">
           {
@@ -45,8 +46,8 @@ const nav = [
                 aria-current={Astro.url.pathname === item.href ? "page" : undefined}
                 class={`flex min-h-11 items-center justify-center rounded-lg px-2 py-2 text-sm font-medium transition-colors ${
                   Astro.url.pathname === item.href
-                    ? "bg-white/10 text-white"
-                    : "text-gray-300 hover:bg-white/5 hover:text-white"
+                    ? "bg-secondary text-foreground"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                 }`}
               >
                 {item.label}
@@ -62,7 +63,7 @@ const nav = [
         >
           <button
             type="submit"
-            class="min-h-11 rounded-lg border border-white/20 px-3 py-2 text-sm font-medium text-gray-200 transition-colors hover:border-accent hover:text-accent"
+            class="min-h-11 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-ink"
           >
             Keluar
           </button>
@@ -70,6 +71,7 @@ const nav = [
       </div>
     </header>
 
+    <ThemeScript />
     <main id="konten-admin" tabindex="-1" class="site-container py-8 lg:py-10">
       <div class="mb-8">
         <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>

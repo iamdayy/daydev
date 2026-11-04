@@ -28,7 +28,13 @@ const published = (posts.data ?? [])
   description="Panduan praktis, perspektif produk, dan strategi teknologi untuk membangun website serta aplikasi yang benar-benar dipakai."
   canonicalPath="/blog"
 >
-  <main class="min-h-dvh bg-background text-foreground">
+  <main>
+    <header class="page-intro">
+      <div class="site-container page-intro-grid">
+        <h1 class="page-title fade-in">Catatan dari studio.</h1>
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">Pengalaman membangun produk dan panduan untuk menentukan langkah digital Anda.</p>
+      </div>
+    </header>
     <BlogBrowser client:load articles={published} loadError={!posts.ok} />
   </main>
 </Base>

@@ -1,7 +1,6 @@
 ---
 import LoginForm from "../../components/admin/LoginForm";
 import "../../styles/global.css";
-
 export const prerender = false;
 
 const pathname = Astro.url.pathname;
@@ -9,7 +8,7 @@ const redirectTo = new URL(pathname, Astro.url).searchParams.get("next") ?? "/ad
 ---
 
 <!doctype html>
-<html lang="id">
+<html lang="id" class="bg-background">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,17 +16,22 @@ const redirectTo = new URL(pathname, Astro.url).searchParams.get("next") ?? "/ad
     <title>Login - Admin Daydev</title>
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
   </head>
-  <body class="flex min-h-screen items-center justify-center bg-[#172033] text-foreground px-4">
-    <div class="w-full max-w-md rounded-3xl border border-white/10 bg-white p-8 shadow-2xl sm:p-10">
+  <body class="site-shell antialiased flex min-h-screen items-center justify-center px-4">
+    <div class="w-full max-w-md rounded-2xl bg-card p-8 shadow-lg sm:p-10">
       <div class="mb-8 text-center">
-        <a href="/" class="text-3xl font-bold tracking-tight text-[#172033]">
-          Daydev <span class="text-[#ea7b3c]">Studio</span>
+        <a href="/" class="inline-flex min-h-11 items-center gap-2">
+          <img src="/logo.png" alt="" width="36" height="36" class="rounded-lg bg-card p-1" />
+          <span class="font-display font-bold text-xl tracking-tight">daydev</span>
         </a>
         <p class="mt-2 text-sm text-muted-foreground">
           Panel admin — masuk untuk mengelola konten.
         </p>
       </div>
       <LoginForm client:load redirectTo={redirectTo} />
+      <p class="mt-6 text-center text-sm text-muted-foreground">
+        Kembali ke{" "}
+        <a href="/" class="text-accent-ink font-semibold underline underline-offset-2 hover:no-underline">beranda Daydev</a>.
+      </p>
     </div>
   </body>
 </html>

@@ -38,7 +38,7 @@ export default function LoginForm({ redirectTo = "/admin" }: LoginFormProps) {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary"
+          className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-accent-ink"
           placeholder="admin@daydev.studio"
         />
       </div>
@@ -54,13 +54,13 @@ export default function LoginForm({ redirectTo = "/admin" }: LoginFormProps) {
           minLength={6}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary"
+          className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-accent-ink"
           placeholder="••••••••"
         />
       </div>
 
       {error && (
-        <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        <p role="alert" className="rounded-xl bg-error-surface px-4 py-3 text-sm font-medium text-error-ink">
           {error}
         </p>
       )}
@@ -68,7 +68,7 @@ export default function LoginForm({ redirectTo = "/admin" }: LoginFormProps) {
       <button
         type="submit"
         disabled={loading || !email || !password}
-        className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-semibold text-white transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+        className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 font-semibold text-accent-foreground transition-all hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
       >
         {loading && <Loader2 className="size-4 animate-spin" aria-hidden="true" />}
         {loading ? "Memeriksa..." : "Masuk"}

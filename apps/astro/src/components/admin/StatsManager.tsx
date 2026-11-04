@@ -121,7 +121,7 @@ export default function StatsManager({ initial }: StatsManagerProps) {
             <button
               type="submit"
               disabled={busy}
-              className="min-h-[46px] w-full rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-all hover:brightness-110 disabled:opacity-60 sm:w-auto"
+              className="min-h-[46px] w-full rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-all hover:bg-accent-hover disabled:opacity-60 sm:w-auto"
             >
               Simpan
             </button>

@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import { ArrowLeft } from "lucide-react";
+import ConsultationCTA from "../components/ConsultationCTA.astro";
 
 export const prerender = true;
 ---
@@ -9,22 +10,18 @@ export const prerender = true;
   title="Halaman Tidak Ditemukan - Daydev Studio"
   description="Halaman yang Anda cari tidak tersedia."
 >
-  <main class="flex min-h-screen items-center justify-center bg-background px-4 py-24 text-center">
-    <div>
-      <p class="text-7xl font-bold text-primary">404</p>
-      <h1 class="mt-6 text-3xl font-bold text-foreground">
-        Halaman tidak ditemukan
-      </h1>
-      <p class="mt-3 max-w-md text-muted-foreground">
+  <main class="min-h-dvh flex flex-col items-center justify-center px-4 text-center">
+    <div class="max-w-2xl">
+      <p class="text-9xl font-bold tracking-tighter text-accent-ink">404</p>
+      <h1 class="mt-6 page-title">Halaman tidak ditemukan</h1>
+      <p class="mt-3 max-w-md leading-7 text-muted-foreground">
         Halaman yang Anda cari mungkin telah dipindahkan atau tidak tersedia.
         Kembali ke beranda untuk melanjutkan.
       </p>
-      <a
-        href="/"
-        class="mt-8 inline-flex min-h-[48px] items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02]"
-      >
+      <a href="/" class="mt-8 inline-flex min-h-[48px] items-center gap-2 rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground transition-transform hover:scale-[1.02]">
         <ArrowLeft className="size-4" aria-hidden="true" />Kembali ke beranda
       </a>
     </div>
+    <ConsultationCTA title="Masih butuh bantuan?" message="Halo Daydev, saya membuka halaman yang tidak tersedia dan ingin konsultasi gratis." />
   </main>
 </Base>

@@ -29,24 +29,22 @@ const formatDate = (iso: string) =>
   canonicalPath={`/blog/${slug}`}
 >
   {post ? (
-  <main class="min-h-dvh bg-background text-foreground">
-    <header class="section-space bg-card">
-      <div class="site-container">
-        <a href="/blog" class="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary">
-          <ArrowLeft className="size-4" aria-hidden="true" />Kembali ke blog
-        </a>
-        <h1 class="page-title mt-6 max-w-4xl break-words">
-          {post.title}
-        </h1>
-        <p class="mt-6 max-w-2xl text-lg leading-8">
-          {post.excerpt}
-        </p>
-        <div class="article-meta mt-8">
-          <span>Oleh {post.author}</span>
-          <time datetime={post.published_at}>{formatDate(post.published_at)}</time>
-          <span>{post.reading_minutes} menit membaca</span>
+  <main>
+    <header class="page-intro">
+      <div class="site-container page-intro-grid">
+        <div class="min-w-0">
+          <a href="/blog" class="inline-flex min-h-11 items-center gap-2 font-semibold text-accent-ink">
+            <ArrowLeft className="size-4" aria-hidden="true" />Kembali ke blog
+          </a>
+          <h1 class="page-title mt-6 max-w-4xl break-words">{post.title}</h1>
+          <p class="mt-6 max-w-2xl text-lg leading-8">{post.excerpt}</p>
+          <div class="article-meta mt-8">
+            <span>Oleh {post.author}</span>
+            <time datetime={post.published_at}>{formatDate(post.published_at)}</time>
+            <span>{post.reading_minutes} menit membaca</span>
+          </div>
         </div>
-        {post.cover_image_url && <div class="article-cover mt-10" data-optional-image>
+        {post.cover_image_url && <div class="article-cover mt-10 min-w-0" data-optional-image>
           <img src={post.cover_image_url} alt={`Sampul artikel ${post.title}`} width="1200" height="800" fetchpriority="high" decoding="async" />
         </div>}
       </div>
@@ -55,7 +53,7 @@ const formatDate = (iso: string) =>
     <div class="reading-container section-space">
       <article class="min-w-0">
         <div class="prose-blog" set:html={html} />
-        <div class="mt-14 rounded-2xl bg-muted p-6 sm:p-8">
+        <div class="mt-14 rounded-2xl bg-secondary p-6 sm:p-8">
           <h2 class="text-2xl font-bold tracking-tight">
             Punya kebutuhan serupa?
           </h2>
@@ -76,10 +74,10 @@ const formatDate = (iso: string) =>
     </div>
   </main>
   ) : (
-    <main class="site-container min-h-[60vh] py-16">
+    <main class="site-container min-h-[60vh] py-16 text-center">
       <h1 class="page-title mb-8">{result.ok ? "Artikel tidak ditemukan" : "Artikel belum tersedia"}</h1>
       {!result.ok ? <DataNotice title="Artikel belum dapat dimuat" /> : <p class="leading-7 text-muted-foreground">Artikel ini belum terbit atau sudah dihapus.</p>}
-      <a href="/blog" class="button-secondary mt-8">Kembali ke blog</a>
+      <a href="/blog" class="button-secondary mt-8 inline-flex">Kembali ke blog</a>
     </main>
   )}
 </Base>

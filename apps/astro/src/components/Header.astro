@@ -1,137 +1,73 @@
 ---
+import { Menu, X } from "lucide-react";
+import { waLink, WHATSAPP } from "@daydev/shared-types";
+import ThemeToggle from "./ThemeToggle.astro";
+
 const navLinks = [
   { label: "Beranda", href: "/" },
   { label: "Layanan", href: "/services" },
   { label: "Harga", href: "/pricing" },
-  { label: "Cerita Pelanggan", href: "/portfolio" },
+  { label: "Cerita pelanggan", href: "/portfolio" },
   { label: "Blog", href: "/blog" },
 ];
-
 const pathname = Astro.url.pathname;
-const waLink = "https://wa.me/6285175284253";
 const isActive = (href: string) => pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 ---
 
-<header id="site-header" class="fixed inset-x-0 top-0 z-50 bg-foreground text-[var(--card-foreground)]">
-  <div class="site-container flex h-[var(--site-header-height)] items-center justify-between">
-    <a href="/" class="flex min-h-11 items-center gap-2 group" aria-label="Daydev Studio - Beranda">
-      <div class="w-9 h-9 bg-[var(--card)] rounded-lg flex items-center justify-center font-bold text-[var(--foreground)] text-lg group-hover:scale-110 transition-transform overflow-hidden">
-        <img src="/logo.png" alt="Daydev Logo" width="20" height="20" class="object-contain" />
-      </div>
-      <span class="font-bold text-xl tracking-tight text-[var(--card-foreground)]">
-        day<span class="text-accent">dev</span>
-      </span>
-    </a>
-
-    <nav class="hidden md:flex items-center gap-8" aria-label="Navigasi utama">
-      {
-        navLinks.map((link) => (
-          <a
-            href={link.href}
-            class:list={[
-               "inline-flex min-h-11 items-center transition-colors font-medium text-sm",
-               isActive(link.href)
-                ? "text-accent"
-                : "text-[var(--muted-foreground)] hover:text-accent",
-            ]}
-            aria-current={isActive(link.href) ? "page" : undefined}
-          >
-            {link.label}
-          </a>
-        ))
-      }
-      <a
-        href={waLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="button-primary text-sm"
-      >
-        Konsultasi Gratis
+<header id="site-header" class="site-header">
+  <div class="site-container">
+    <div class="header-bar glass-surface">
+      <a href="/" class="brand" aria-label="Daydev Studio - Beranda">
+        <img src="/logo.png" alt="" width="36" height="36" />
+        <span>daydev</span>
       </a>
-    </nav>
-
-    <button
-      id="menu-toggle"
-      class="md:hidden text-[var(--card-foreground)] p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
-      aria-label="Buka menu"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-    >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" data-icon="open">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-      <svg class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" data-icon="close">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
+      <nav class="desktop-nav" aria-label="Navigasi utama">
+        {navLinks.map((link) => (
+          <a href={link.href} class="nav-link" aria-current={isActive(link.href) ? "page" : undefined}>{link.label}</a>
+        ))}
+      </nav>
+      <div class="header-actions">
+        <ThemeToggle />
+        <a href={waLink(WHATSAPP.defaultMessage)} target="_blank" rel="noopener noreferrer" class="button-primary header-consultation">Konsultasi gratis</a>
+        <details id="mobile-nav" class="mobile-nav">
+          <summary id="menu-toggle" aria-controls="mobile-menu" aria-expanded="false">
+            Menu
+            <Menu className="menu-open size-5" aria-hidden="true" />
+            <X className="menu-close size-5" aria-hidden="true" />
+          </summary>
+          <nav id="mobile-menu" class="mobile-nav-panel" aria-label="Navigasi mobile">
+            {navLinks.map((link) => (
+              <a href={link.href} class="nav-link" aria-current={isActive(link.href) ? "page" : undefined}>{link.label}</a>
+            ))}
+            <a href={waLink(WHATSAPP.defaultMessage)} target="_blank" rel="noopener noreferrer" class="button-primary mt-4 w-full">Konsultasi gratis</a>
+          </nav>
+        </details>
+      </div>
+    </div>
   </div>
-
-  <nav id="mobile-menu" aria-label="Navigasi mobile" class="md:hidden bg-foreground px-4 pb-4 hidden max-h-[calc(100dvh-var(--site-header-height))] overflow-y-auto" hidden>
-    {
-      navLinks.map((link) => (
-        <a
-          href={link.href}
-          class:list={[
-            "block py-3 min-h-[44px] flex items-center transition-colors font-medium border-b border-[var(--border)]",
-            isActive(link.href) ? "text-accent" : "text-[var(--muted-foreground)] hover:text-accent",
-          ]}
-          aria-current={isActive(link.href) ? "page" : undefined}
-        >
-          {link.label}
-        </a>
-      ))
-    }
-    <a
-      href={waLink}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="mt-4 flex min-h-[48px] items-center justify-center bg-accent text-[var(--accent-foreground)] px-5 py-3 rounded-full font-semibold text-center hover:brightness-110 transition-all"
-    >
-      Konsultasi Gratis
-    </a>
-  </nav>
 </header>
 
 <script>
-  const header = document.getElementById("site-header") as HTMLElement | null;
-  const toggle = document.getElementById("menu-toggle") as HTMLButtonElement | null;
-  const menu = document.getElementById("mobile-menu") as HTMLElement | null;
-  const openIcon = toggle?.querySelector('[data-icon="open"]');
-  const closeIcon = toggle?.querySelector('[data-icon="close"]');
+  const header = document.getElementById("site-header");
+  const menu = document.querySelector<HTMLDetailsElement>("#mobile-nav");
+  const toggle = document.getElementById("menu-toggle");
 
-  const onScroll = () => {
-    if (!header) return;
-    const scrolled = window.scrollY > 20;
-    header.classList.toggle("shadow-lg", scrolled);
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-
-  const setOpen = (openState: boolean) => {
-    if (!menu || !toggle) return;
-    menu.hidden = !openState;
-    menu.classList.toggle("hidden", !openState);
-    toggle.setAttribute("aria-expanded", String(openState));
-    toggle.setAttribute("aria-label", openState ? "Tutup menu" : "Buka menu");
-    openIcon?.classList.toggle("hidden", openState);
-    closeIcon?.classList.toggle("hidden", !openState);
-  };
-
-  toggle?.addEventListener("click", () => setOpen(menu?.hidden === true));
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && menu && !menu.hidden) {
-      setOpen(false);
+  const closeMenu = () => { if (menu) menu.open = false; };
+  menu?.addEventListener("toggle", () => toggle?.setAttribute("aria-expanded", String(menu.open)));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && menu?.open) {
+      closeMenu();
       toggle?.focus();
     }
   });
-  menu?.addEventListener("click", (e) => {
-    if (e.target instanceof Element && e.target.closest("a")) setOpen(false);
+  menu?.addEventListener("click", (event) => {
+    if (event.target instanceof Element && event.target.closest("a")) closeMenu();
   });
-  header?.addEventListener("focusout", (e) => {
-    if (e.relatedTarget instanceof Node && !header.contains(e.relatedTarget)) setOpen(false);
+  header?.addEventListener("focusout", (event) => {
+    if (event.relatedTarget instanceof Node && !header.contains(event.relatedTarget)) closeMenu();
   });
-  document.addEventListener("pointerdown", (e) => {
-    if (e.target instanceof Node && !header?.contains(e.target)) setOpen(false);
+  document.addEventListener("pointerdown", (event) => {
+    if (event.target instanceof Node && !header?.contains(event.target)) closeMenu();
   });
-  window.matchMedia("(min-width: 768px)").addEventListener("change", () => setOpen(false));
+  window.matchMedia("(min-width: 1101px)").addEventListener("change", closeMenu);
 </script>

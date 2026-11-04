@@ -1,0 +1,30 @@
+---
+import { ArrowUpRight } from "lucide-react";
+import { PORTFOLIO_CATEGORY_LABELS, SEGMENT_LABELS, type PortfolioItem } from "@daydev/shared-types";
+import ProjectImage from "./ProjectImage.astro";
+
+interface Props {
+  project: PortfolioItem;
+  featured?: boolean;
+}
+
+const { project, featured = false } = Astro.props;
+const demo = project.demo_url?.trim();
+const ImageWrapper = demo ? "a" : "div";
+---
+
+<article class:list={["project-card story-card fade-in", { "project-featured": featured }]} data-segment={project.segment ?? "all"}>
+  {project.cover_image_url && (
+    <ImageWrapper href={demo || undefined} target={demo ? "_blank" : undefined} rel={demo ? "noopener noreferrer" : undefined} aria-label={demo ? `Buka demo ${project.title}` : undefined} class="project-cover" data-optional-image>
+      <ProjectImage src={project.cover_image_url} title={project.title} portrait={project.category === "mobile"} />
+    </ImageWrapper>
+  )}
+  <div class="project-copy">
+    <h3 class="project-title">{project.title}</h3>
+    <p class="mt-4 leading-7">{project.description}</p>
+    {project.result_highlight && <p class="mt-5 rounded-xl bg-secondary p-4 font-medium leading-7">{project.result_highlight}</p>}
+    {project.client_name && <p class="mt-4 text-sm text-muted-foreground">Untuk {project.client_name}</p>}
+    {project.tech_stack?.length ? <p class="mt-4 text-sm leading-6 text-muted-foreground">{project.tech_stack.join(" · ")}</p> : null}
+    {demo && <a href={demo} target="_blank" rel="noopener noreferrer" class="text-link mt-4">Buka demo <ArrowUpRight className="size-4" aria-hidden="true" /></a>}
+  </div>
+</article>

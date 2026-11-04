@@ -1,6 +1,6 @@
 ---
 import { formatRupiah, waLink, WHATSAPP, type PricingCategory } from "@daydev/shared-types";
-import { ArrowUpRight, Info } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { availablePricing, startingPrice } from "../../lib/pricing";
 
 
@@ -12,7 +12,6 @@ interface Props {
 const { categories, segmentOrder = [] } = Astro.props;
 const publishedCategories = availablePricing(categories);
 
-// Sort by segmentOrder if provided, otherwise by display_order
 const sortedCategories = [...publishedCategories].sort((a, b) => {
   const orderA = segmentOrder.indexOf(a.segment);
   const orderB = segmentOrder.indexOf(b.segment);
@@ -22,33 +21,32 @@ const sortedCategories = [...publishedCategories].sort((a, b) => {
   return a.display_order - b.display_order;
 });
 
-// Separate main segments (UMKM, Mahasiswa, Startup) from additional (Bot Telegram, Undangan Digital)
 const mainSegments = ["umkm", "mahasiswa", "startup"];
 const mainCategories = sortedCategories.filter(c => mainSegments.includes(c.segment));
 const additionalCategories = sortedCategories.filter(c => !mainSegments.includes(c.segment));
 ---
 
-<section id="harga" class="section-space bg-background" aria-labelledby="packages-title">
+<section id="harga" class="section-space" aria-label="Paket layanan utama">
   <div class="site-container">
-    <!-- Main Pricing Categories -->
-    <div class="space-y-16">
-      {mainCategories.length === 0 ? (
-        <div class="rounded-2xl bg-muted p-6 text-center">
-          <p class="leading-7 text-muted-foreground">Paket utama sedang disiapkan.</p>
-          <a href={waLink(WHATSAPP.defaultMessage)} target="_blank" rel="noopener noreferrer" class="button-primary mt-5">Tanyakan harga via WhatsApp</a>
-        </div>
-      ) : (
-        mainCategories.map((category) => (
+    {mainCategories.length === 0 ? (
+      <div class="max-w-xl rounded-2xl bg-secondary p-6 sm:p-10 text-center fade-in">
+        <p class="leading-7 text-muted-foreground">Paket utama sedang disiapkan.</p>
+        <a href={waLink(WHATSAPP.defaultMessage)} target="_blank" rel="noopener noreferrer" class="button-primary mt-5">Tanyakan harga via WhatsApp</a>
+      </div>
+    ) : (
+      <div class="space-y-16">
+        {mainCategories.map((category) => (
           <div id={`harga-${category.segment}`} class="segment-theme" data-segment={category.segment}>
-            <div class="mb-6 flex flex-wrap items-baseline justify-between gap-3">
-              <h3 class="text-2xl font-bold text-[var(--segment)]">{category.label}</h3>
+            <div class="mb-6 flex flex-wrap items-baseline justify-between gap-3 fade-in">
+              <h3 class="text-2xl font-bold">{category.label}</h3>
               <p class="text-muted-foreground">Mulai {formatRupiah(startingPrice(category))}</p>
             </div>
             <div class="pricing-grid" data-count={category.packages.length}>
               {category.packages.map((plan) => (
-                <article class="pricing-plan relative rounded-2xl bg-card border border-border overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30">
+                <article class="pricing-plan relative rounded-2xl bg-card border border-border overflow-hidden fade-in">
                   <div class="pricing-plan-heading">
                     <h4 class="text-lg font-bold">{plan.name}</h4>
+                    {plan.is_recommended && <span class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-accent-ink bg-accent/10 px-2 py-1 rounded-full">Direkomendasikan</span>}
                   </div>
                   <p class="pricing-plan-price">{formatRupiah(plan.price)}</p>
                   {plan.features?.length ? (
@@ -59,38 +57,23 @@ const additionalCategories = sortedCategories.filter(c => !mainSegments.includes
                     <p class="pricing-plan-features px-6 leading-7 text-muted-foreground">Cakupan paket dapat dikonfirmasi saat konsultasi.</p>
                   )}
                   <div class="pricing-plan-actions">
-                    <a
-                      href={waLink(WHATSAPP.messagePlan(plan.name, category.label))}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="button-secondary w-full"
-                    >
-                      Bahas paket ini
-                    </a>
+                    <a href={waLink(WHATSAPP.messagePlan(plan.name, category.label))} target="_blank" rel="noopener noreferrer" class="button-secondary w-full">Bahas paket ini</a>
                     {plan.demo_url && (
-                      <a
-                        href={plan.demo_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="text-link mt-2 w-full justify-center"
-                      >
-                        Buka demo <ArrowUpRight className="size-4" aria-hidden="true" />
-                      </a>
+                      <a href={plan.demo_url} target="_blank" rel="noopener noreferrer" class="text-link mt-2 w-full justify-center">Buka demo <ArrowUpRight className="size-4" aria-hidden="true" /></a>
                     )}
                   </div>
                 </article>
               ))}
             </div>
             {category.packages.length > 1 && (
-              <details class="mt-5 rounded-2xl bg-muted p-5" data-ui>
+              <details class="mt-5 rounded-2xl bg-secondary p-5" data-ui>
                 <summary class="min-h-11 cursor-pointer content-center font-semibold flex items-center gap-2">
-                  <Info className="w-4 h-4" aria-hidden="true" />
                   Bandingkan paket {category.label}
                 </summary>
                 <div role="region" aria-label={`Tabel perbandingan ${category.label}`} tabindex="0" class="mt-4 overflow-x-auto rounded-lg">
                   <table class="w-full min-w-[36rem] text-left text-sm">
                     <caption class="sr-only">Harga dan fitur paket {category.label}</caption>
-                    <thead class="bg-muted"><tr><th scope="col" class="p-4">Paket</th><th scope="col" class="p-4">Harga dasar</th><th scope="col" class="p-4">Fitur tercantum</th></tr></thead>
+                    <thead class="bg-secondary"><tr><th scope="col" class="p-4">Paket</th><th scope="col" class="p-4">Harga dasar</th><th scope="col" class="p-4">Fitur tercantum</th></tr></thead>
                     <tbody>{category.packages.map((plan) => (
                       <tr class="border-b border-border last:border-0 align-top">
                         <th scope="row" class="p-4 font-semibold">{plan.name}</th>
@@ -103,11 +86,10 @@ const additionalCategories = sortedCategories.filter(c => !mainSegments.includes
               </details>
             )}
           </div>
-        ))
-      )}
-    </div>
+        ))}
+      </div>
+    )}
 
-    <!-- Additional Services (Bot Telegram & Undangan Digital) -->
     {additionalCategories.length > 0 && (
       <div class="mt-20 pt-16 border-t border-border">
         <div class="mb-8 text-center max-w-2xl mx-auto fade-in">
@@ -117,13 +99,13 @@ const additionalCategories = sortedCategories.filter(c => !mainSegments.includes
         <div class="space-y-12">
           {additionalCategories.map((category) => (
             <div id={`harga-${category.segment}`} class="segment-theme" data-segment={category.segment}>
-              <div class="mb-6 flex flex-wrap items-baseline justify-between gap-3">
-                <h3 class="text-2xl font-bold text-[var(--segment)]">{category.label}</h3>
+              <div class="mb-6 flex flex-wrap items-baseline justify-between gap-3 fade-in">
+                <h3 class="text-2xl font-bold">{category.label}</h3>
                 <p class="text-muted-foreground">Mulai {formatRupiah(startingPrice(category))}</p>
               </div>
               <div class="pricing-grid" data-count={category.packages.length}>
                 {category.packages.map((plan) => (
-                  <article class="pricing-plan relative rounded-2xl bg-card border border-border overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30">
+                  <article class="pricing-plan relative rounded-2xl bg-card border border-border overflow-hidden fade-in">
                     <div class="pricing-plan-heading">
                       <h4 class="text-lg font-bold">{plan.name}</h4>
                     </div>
@@ -136,23 +118,9 @@ const additionalCategories = sortedCategories.filter(c => !mainSegments.includes
                       <p class="pricing-plan-features px-6 leading-7 text-muted-foreground">Cakupan paket dapat dikonfirmasi saat konsultasi.</p>
                     )}
                     <div class="pricing-plan-actions">
-                      <a
-                        href={waLink(WHATSAPP.messagePlan(plan.name, category.label))}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="button-secondary w-full"
-                      >
-                        Bahas paket ini
-                      </a>
+                      <a href={waLink(WHATSAPP.messagePlan(plan.name, category.label))} target="_blank" rel="noopener noreferrer" class="button-secondary w-full">Bahas paket ini</a>
                       {plan.demo_url && (
-                        <a
-                          href={plan.demo_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="text-link mt-2 w-full justify-center"
-                        >
-                          Buka demo <ArrowUpRight className="size-4" aria-hidden="true" />
-                        </a>
+                        <a href={plan.demo_url} target="_blank" rel="noopener noreferrer" class="text-link mt-2 w-full justify-center">Buka demo <ArrowUpRight className="size-4" aria-hidden="true" /></a>
                       )}
                     </div>
                   </article>

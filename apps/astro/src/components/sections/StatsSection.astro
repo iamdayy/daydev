@@ -22,14 +22,14 @@ const statLabels: Record<string, string> = {
 
 {
   stats.length > 0 && (
-    <section id="statistik" class="bg-foreground py-12 text-white">
+    <section id="statistik" class="bg-card py-12 text-foreground">
       <div class="site-container">
         <h2 class="mb-8 text-2xl font-semibold tracking-tight">Daydev dalam angka</h2>
         <dl class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))] gap-8">
           {
             stats.map((stat) => (
               <div class="min-w-0">
-                <dt class="text-sm text-slate-300">{statLabels[stat.key] ?? stat.key.replace(/[-_]/g, " ")}</dt>
+                <dt class="text-sm text-muted-foreground">{statLabels[stat.key] ?? stat.key.replace(/[-_]/g, " ")}</dt>
                 <dd class="mt-2 break-words text-3xl font-bold tracking-tight tabular-nums sm:text-4xl">
                   {stat.value}
                 </dd>

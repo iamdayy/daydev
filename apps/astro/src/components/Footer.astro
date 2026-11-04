@@ -4,31 +4,32 @@ import { services } from "../lib/services";
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="bg-foreground text-[var(--card-foreground)] pb-24 pt-14 sm:pb-10 sm:pt-16">
+<footer class="site-footer">
   <div class="site-container">
-    <div class="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr]">
+    <div class="footer-grid">
       <div>
-        <a href="/" class="inline-flex min-h-11 items-center gap-3" aria-label="Daydev Studio - Beranda">
-          <img src="/logo.png" alt="" width="40" height="40" class="rounded-lg bg-[var(--card)] p-2" />
-          <span class="text-3xl font-bold tracking-tight">day<span class="text-accent">dev</span></span>
-        </a>
-        <p class="mt-5 max-w-sm leading-7 text-[var(--muted-foreground)]">Website dan aplikasi mobile untuk startup, UMKM, dan mahasiswa.</p>
+        <p class="font-display text-2xl font-semibold tracking-tight">Dari ide menjadi aplikasi.</p>
+        <p class="mt-4 max-w-xs leading-7 text-muted-foreground">Studio pengembangan website dan aplikasi mobile untuk startup, UMKM, dan mahasiswa.</p>
       </div>
       <nav aria-label="Layanan di footer">
-        <h2 class="mb-3 font-semibold text-[var(--card-foreground)]">Layanan</h2>
-        <ul>{services.map((service) => <li><a href={`/services/${service.slug}`} class="inline-flex min-h-11 items-center text-sm text-[var(--muted-foreground)] hover:text-[var(--card-foreground)]">{service.title}</a></li>)}</ul>
+        <h2 class="mb-3 font-semibold">Layanan</h2>
+        <ul>{services.map((service) => <li><a href={`/services/${service.slug}`} class="footer-link">{service.title}</a></li>)}</ul>
       </nav>
       <div>
-        <h2 class="mb-3 font-semibold text-[var(--card-foreground)]">Hubungi Daydev</h2>
-        <a href={waLink(WHATSAPP.defaultMessage)} target="_blank" rel="noopener noreferrer" class="flex min-h-11 items-center text-sm text-[var(--muted-foreground)] hover:text-[var(--card-foreground)]">WhatsApp {WHATSAPP.displayNumber}</a>
-        <a href="https://instagram.com/daydev__" target="_blank" rel="noopener noreferrer" class="flex min-h-11 items-center text-sm text-[var(--muted-foreground)] hover:text-[var(--card-foreground)]">Instagram @daydev__</a>
-        <nav aria-label="Halaman di footer" class="mt-4 flex flex-wrap gap-x-5">
-          <a href="/portfolio" class="inline-flex min-h-11 items-center text-sm text-[var(--muted-foreground)] hover:text-[var(--card-foreground)]">Cerita Pelanggan</a>
-          <a href="/pricing" class="inline-flex min-h-11 items-center text-sm text-[var(--muted-foreground)] hover:text-[var(--card-foreground)]">Harga</a>
-          <a href="/blog" class="inline-flex min-h-11 items-center text-sm text-[var(--muted-foreground)] hover:text-[var(--card-foreground)]">Blog</a>
+        <h2 class="mb-3 font-semibold">Hubungi studio</h2>
+        <a href={waLink(WHATSAPP.defaultMessage)} target="_blank" rel="noopener noreferrer" class="footer-link">WhatsApp {WHATSAPP.displayNumber}</a>
+        <a href="https://instagram.com/daydev__" target="_blank" rel="noopener noreferrer" class="footer-link">Instagram @daydev__</a>
+        <nav aria-label="Halaman di footer" class="mt-3 flex flex-wrap gap-x-5">
+          <a href="/portfolio" class="footer-link">Portofolio</a>
+          <a href="/pricing" class="footer-link">Harga</a>
+          <a href="/blog" class="footer-link">Blog</a>
         </nav>
       </div>
     </div>
-    <p class="mt-10 text-sm text-[var(--muted-foreground)]">&copy; {currentYear} Daydev. Semua hak dilindungi.</p>
+    <a href="/" class="footer-wordmark block" aria-label="Daydev Studio - Beranda">daydev</a>
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-2 text-sm text-muted-foreground">
+      <p>&copy; {currentYear} Daydev Studio</p>
+      <p>Website & aplikasi mobile</p>
+    </div>
   </div>
 </footer>

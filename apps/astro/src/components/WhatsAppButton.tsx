@@ -107,7 +107,7 @@ export default function WhatsAppButton({ hideWhile }: { hideWhile?: string }) {
   return (
     <div
       ref={ref}
-      className={`fixed right-20 top-2.5 z-50 flex flex-col items-end gap-3 xl:bottom-6 xl:right-6 xl:top-auto ${!open && !focused ? "md:hidden xl:flex" : ""} ${heroVisible && !open && !focused ? "invisible pointer-events-none" : ""}`}
+      className={`fixed right-4 bottom-6 z-50 flex flex-col items-end gap-3 xl:right-6 ${!open && !focused ? "md:hidden xl:flex" : ""} ${heroVisible && !open && !focused ? "invisible pointer-events-none" : ""}`}
       onFocusCapture={() => setFocused(true)}
       onBlurCapture={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null)) { setOpen(false); setFocused(false); }
@@ -151,7 +151,7 @@ export default function WhatsAppButton({ hideWhile }: { hideWhile?: string }) {
         ref={triggerRef}
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`w-14 h-14 text-white rounded-full shadow-lg flex items-center justify-center transition-transform duration-200 hover:scale-105 group ${
+        className={`w-14 h-14 text-white rounded-full flex items-center justify-center transition-transform duration-200 hover:scale-105 group ${
           open
             ? "bg-muted-foreground hover:bg-muted-foreground/80"
             : "bg-green-700 hover:bg-green-800"

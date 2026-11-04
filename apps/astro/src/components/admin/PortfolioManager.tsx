@@ -168,7 +168,7 @@ export default function PortfolioManager({ initial }: PortfolioManagerProps) {
       <button
         type="button"
         onClick={startCreate}
-        className="inline-flex min-h-[46px] items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white transition-all hover:brightness-110"
+        className="inline-flex min-h-[46px] items-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition-all hover:bg-accent-hover"
       >
         <Plus className="size-4" aria-hidden="true" /> Tambah proyek
       </button>
@@ -325,7 +325,7 @@ export default function PortfolioManager({ initial }: PortfolioManagerProps) {
         <button
           type="submit"
           disabled={busy}
-          className="mt-6 min-h-[46px] w-full rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-all hover:brightness-110 disabled:opacity-60 sm:w-auto"
+          className="mt-6 min-h-[46px] w-full rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-all hover:bg-accent-hover disabled:opacity-60 sm:w-auto"
         >
           {busy ? "Menyimpan..." : editing ? "Simpan perubahan" : "Buat proyek"}
         </button>
@@ -395,7 +395,7 @@ export default function PortfolioManager({ initial }: PortfolioManagerProps) {
                       type="button"
                       onClick={() => remove(item)}
                       aria-label={`Hapus ${item.title}`}
-                      className="inline-flex min-h-[44px] items-center rounded-lg border border-border px-3 py-2 text-red-600 transition-colors hover:border-red-300 hover:bg-red-50"
+                      className="inline-flex min-h-[44px] items-center rounded-lg border border-border px-3 py-2 text-error-ink transition-colors hover:border-error-ink hover:bg-error-surface"
                     >
                       <Trash2 className="size-4" aria-hidden="true" />
                     </button>

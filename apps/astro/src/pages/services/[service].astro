@@ -3,6 +3,7 @@ import Base from "../../layouts/Base.astro";
 import { getAllServiceSlugs, getServiceBySlug, services } from "../../lib/services";
 import { waLink } from "@daydev/shared-types";
 import { ChevronDown } from "lucide-react";
+import ConsultationCTA from "../../components/ConsultationCTA.astro";
 
 export const prerender = true;
 
@@ -23,12 +24,12 @@ const descriptionParagraphs = service.longDescription.split(/\n\s*\n/).filter((p
 const faqs = [
   {
     question: "Berapa lama waktu pengerjaan?",
-    answer: `Waktu pengerjaan tergantung kompleksitas project. Estimasi untuk ${service.title.toLowerCase()} bisa dilihat di halaman layanan. Kami memberikan timeline detail setelah konsultasi awal.`,
+    answer: "Waktu pengerjaan mengikuti fitur, integrasi, dan kesiapan konten. Kami menyusun estimasi jadwal setelah cakupan proyek dibahas saat konsultasi awal.",
   },
   {
     question: "Apakah ada paket yang tersedia?",
     answer:
-      "Ya, kami menyediakan berbagai paket sesuai kebutuhan dan budget, dari basic hingga lengkap. Silakan lihat halaman harga untuk detail paket.",
+      "Paket yang tersedia dapat dilihat di halaman harga. Kebutuhan di luar cakupan paket bisa dibahas saat konsultasi.",
   },
   {
     question: "Apakah ada dukungan setelah project selesai?",
@@ -49,22 +50,29 @@ const faqs = [
   canonicalPath={`/services/${service.slug}`}
 >
   <main class="flex min-h-dvh flex-col bg-background text-foreground">
-    <header class="section-space bg-card">
+    <header class="page-intro">
       <div class="site-container">
         <nav class="mb-6 flex flex-wrap items-center text-sm text-muted-foreground" aria-label="Breadcrumb">
           <a href="/" class="inline-flex min-h-11 items-center hover:text-foreground">Beranda</a>
           <span class="mx-2" aria-hidden="true">/</span>
           <a href="/services" class="inline-flex min-h-11 items-center hover:text-foreground">Layanan</a>
         </nav>
-        <h1 class="page-title max-w-3xl">{service.title}</h1>
-        <p class="mt-6 max-w-2xl whitespace-pre-line text-lg leading-8">{service.description}</p>
-        <a href={waLink(`Halo Daydev, saya ingin konsultasi tentang ${service.title}.`)} target="_blank" rel="noopener noreferrer" class="button-primary mt-8">Konsultasi via WhatsApp</a>
+        <div class="page-intro-grid">
+          <h1 class="page-title">{service.title}</h1>
+          <div>
+            <p class="max-w-lg text-lg leading-8">{service.description}</p>
+            <div class="mt-6 flex flex-wrap items-center gap-5">
+              <a href={waLink(`Halo Daydev, saya ingin konsultasi tentang ${service.title}.`)} target="_blank" rel="noopener noreferrer" class="button-primary">Konsultasi gratis</a>
+              <a href="/pricing" class="text-link">Lihat paket harga</a>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
 
     <section class:list={["site-container section-space grid gap-10 lg:gap-16", { "lg:grid-cols-[1.5fr_1fr]": service.targetAudience.length > 0 }]}>
       <div class="min-w-0 max-w-2xl">
-        <h2 class="section-title">Tentang layanan</h2>
+        <h2 class="section-title fade-in">Tentang layanan</h2>
         <div class="mt-6 space-y-5 text-lg leading-8">{descriptionParagraphs.map((paragraph) => <p class="whitespace-pre-line">{paragraph}</p>)}</div>
       </div>
       {service.targetAudience.length > 0 && <div class="min-w-0 self-start rounded-2xl bg-muted p-6 sm:p-8">
@@ -75,7 +83,7 @@ const faqs = [
 
     {service.benefits.length > 0 && <section class="section-space bg-muted">
       <div class="site-container grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
-        <h2 class="section-title">
+        <h2 class="section-title fade-in">
           Manfaat layanan
         </h2>
         <ul class="service-points">
@@ -89,7 +97,7 @@ const faqs = [
     </section>}
 
     {service.features.length > 0 && <section class="site-container section-space grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
-      <h2 class="section-title">Fitur utama</h2>
+      <h2 class="section-title fade-in">Fitur utama</h2>
       <ul class="service-points">
         {
           service.features.map((feature) => (
@@ -100,48 +108,20 @@ const faqs = [
     </section>}
 
     <section class="section-space bg-muted">
-      <div class="site-container">
-        <h2 class="section-title">Pertanyaan umum</h2>
-        <div class="mt-10 space-y-4">
+      <div class="site-container faq-layout">
+        <h2 class="section-title fade-in">Tentang pengerjaan</h2>
+        <div class="space-y-4">
           {
             faqs.map((faq) => (
-              <details class="group rounded-2xl bg-card px-5 sm:px-7">
+              <details class="group rounded-2xl bg-card px-5 sm:px-7 fade-in">
                 <summary class="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold [&::-webkit-details-marker]:hidden">
                   {faq.question}
-                  <ChevronDown className="size-5 shrink-0 text-primary transition-transform group-open:rotate-180" aria-hidden="true" />
+                  <ChevronDown className="size-5 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" aria-hidden="true" />
                 </summary>
                 <p class="max-w-3xl pb-6 leading-7">{faq.answer}</p>
               </details>
             ))
           }
-        </div>
-      </div>
-    </section>
-
-    <section class="section-space bg-primary text-white">
-      <div class="site-container flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
-        <div>
-          <h2 class="section-title">Bahas proyek Anda</h2>
-          <p class="mt-5 max-w-xl leading-7">
-            Hubungi kami untuk konsultasi gratis dan dapatkan penawaran yang sesuai
-            kebutuhan.
-          </p>
-        </div>
-        <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-          <a
-            href={waLink(`Halo Daydev, saya ingin konsultasi tentang ${service.title}.`)}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="button-primary"
-          >
-            Chat via WhatsApp
-          </a>
-          <a
-            href="/pricing"
-            class="button-secondary"
-          >
-            Lihat paket harga
-          </a>
         </div>
       </div>
     </section>
@@ -155,7 +135,7 @@ const faqs = [
                 href={`/services/${item.slug}`}
                 class="group block min-w-0 rounded-lg focus-visible:outline-offset-8"
               >
-                <h3 class="text-xl font-semibold group-hover:text-primary">{item.title}</h3>
+                <h3 class="text-xl font-semibold group-hover:text-accent-ink">{item.title}</h3>
                 <p class="mt-3 leading-7">{item.description}</p>
                 <span class="text-link mt-3">Detail layanan</span>
               </a>
@@ -163,5 +143,6 @@ const faqs = [
         }
       </div>
     </section>
+    <ConsultationCTA message={`Halo Daydev, saya ingin konsultasi tentang ${service.title}.`} />
   </main>
 </Base>

@@ -1,0 +1,25 @@
+---
+import { waLink } from "@daydev/shared-types";
+
+interface Props {
+  title?: string;
+  description?: string;
+  message?: string;
+}
+
+const {
+  title = "Ceritakan ide Anda.",
+  description = "Bagikan kebutuhan, anggaran, dan target waktu Anda. Kita tentukan langkah awalnya lewat konsultasi gratis.",
+  message = "Halo Daydev, saya ingin konsultasi gratis mengenai proyek saya.",
+} = Astro.props;
+---
+
+<section class="consultation-section" aria-label={title}>
+  <div class="site-container consultation-inner">
+    <div>
+      <h2 class="section-title fade-in">{title}</h2>
+      <p class="mt-5 max-w-xl text-lg leading-8 fade-in">{description}</p>
+    </div>
+    <a href={waLink(message)} target="_blank" rel="noopener noreferrer" class="button-primary shrink-0 fade-in">Konsultasi via WhatsApp</a>
+  </div>
+</section>

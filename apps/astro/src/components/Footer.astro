@@ -8,17 +8,42 @@ const currentYear = new Date().getFullYear();
   <div class="site-container">
     <div class="footer-grid">
       <div>
-        <p class="font-display text-2xl font-semibold tracking-tight">Dari ide menjadi aplikasi.</p>
-        <p class="mt-4 max-w-xs leading-7 text-muted-foreground">Studio pengembangan website dan aplikasi mobile untuk startup, UMKM, dan mahasiswa.</p>
+        <p class="font-display text-2xl font-semibold tracking-tight">
+          Dari ide menjadi aplikasi.
+        </p>
+        <p class="mt-4 max-w-xs leading-7 text-muted-foreground">
+          Studio pengembangan website dan aplikasi mobile untuk startup, UMKM,
+          dan mahasiswa.
+        </p>
       </div>
       <nav aria-label="Layanan di footer">
         <h2 class="mb-3 font-semibold">Layanan</h2>
-        <ul>{services.map((service) => <li><a href={`/services/${service.slug}`} class="footer-link">{service.title}</a></li>)}</ul>
+        <ul>
+          {
+            services.map((service) => (
+              <li>
+                <a href={`/services/${service.slug}`} class="footer-link">
+                  {service.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
       </nav>
-      <div>
+      <div class="flex flex-col">
         <h2 class="mb-3 font-semibold">Hubungi studio</h2>
-        <a href={waLink(WHATSAPP.defaultMessage)} target="_blank" rel="noopener noreferrer" class="footer-link">WhatsApp {WHATSAPP.displayNumber}</a>
-        <a href="https://instagram.com/daydev__" target="_blank" rel="noopener noreferrer" class="footer-link">Instagram @daydev__</a>
+        <a
+          href={waLink(WHATSAPP.defaultMessage)}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer-link">WhatsApp {WHATSAPP.displayNumber}</a
+        >
+        <a
+          href="https://instagram.com/daydev__"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer-link">Instagram @daydev__</a
+        >
         <nav aria-label="Halaman di footer" class="mt-3 flex flex-wrap gap-x-5">
           <a href="/portfolio" class="footer-link">Portofolio</a>
           <a href="/pricing" class="footer-link">Harga</a>
@@ -26,8 +51,25 @@ const currentYear = new Date().getFullYear();
         </nav>
       </div>
     </div>
-    <a href="/" class="footer-wordmark block" aria-label="Daydev Studio - Beranda">daydev</a>
-    <div class="mt-6 flex flex-wrap items-center justify-between gap-2 text-sm text-muted-foreground">
+    <a href="/" class="brand" aria-label="Daydev Studio - Beranda">
+      <img
+        src="/long-logo---dark.png"
+        alt="Logo Daydev"
+        height="36"
+        width="240"
+        class="dark-logo"
+      />
+      <img
+        src="/long-logo---light.png"
+        alt="Logo Daydev"
+        height="36"
+        width="240"
+        class="light-logo"
+      />
+    </a>
+    <div
+      class="mt-6 flex flex-wrap items-center justify-between gap-2 text-sm text-muted-foreground"
+    >
       <p>&copy; {currentYear} Daydev Studio</p>
       <p>Website & aplikasi mobile</p>
     </div>

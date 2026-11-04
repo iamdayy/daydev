@@ -11,35 +11,82 @@ const navLinks = [
   { label: "Blog", href: "/blog" },
 ];
 const pathname = Astro.url.pathname;
-const isActive = (href: string) => pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
+const isActive = (href: string) =>
+  pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 ---
 
 <header id="site-header" class="site-header">
   <div class="site-container">
     <div class="header-bar glass-surface">
       <a href="/" class="brand" aria-label="Daydev Studio - Beranda">
-        <img src="/logo.png" alt="" width="36" height="36" />
-        <span>daydev</span>
+        <img
+          src="/long-logo---dark.png"
+          alt="Logo Daydev"
+          height="36"
+          width="120"
+          class="dark-logo"
+        />
+        <img
+          src="/long-logo---light.png"
+          alt="Logo Daydev"
+          height="36"
+          width="120"
+          class="light-logo"
+        />
       </a>
       <nav class="desktop-nav" aria-label="Navigasi utama">
-        {navLinks.map((link) => (
-          <a href={link.href} class="nav-link" aria-current={isActive(link.href) ? "page" : undefined}>{link.label}</a>
-        ))}
+        {
+          navLinks.map((link) => (
+            <a
+              href={link.href}
+              class="nav-link"
+              aria-current={isActive(link.href) ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          ))
+        }
       </nav>
       <div class="header-actions">
         <ThemeToggle />
-        <a href={waLink(WHATSAPP.defaultMessage)} target="_blank" rel="noopener noreferrer" class="button-primary header-consultation">Konsultasi gratis</a>
+        <a
+          href={waLink(WHATSAPP.defaultMessage)}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button-primary header-consultation">Konsultasi gratis</a
+        >
         <details id="mobile-nav" class="mobile-nav">
-          <summary id="menu-toggle" aria-controls="mobile-menu" aria-expanded="false">
+          <summary
+            id="menu-toggle"
+            aria-controls="mobile-menu"
+            aria-expanded="false"
+          >
             Menu
             <Menu className="menu-open size-5" aria-hidden="true" />
             <X className="menu-close size-5" aria-hidden="true" />
           </summary>
-          <nav id="mobile-menu" class="mobile-nav-panel" aria-label="Navigasi mobile">
-            {navLinks.map((link) => (
-              <a href={link.href} class="nav-link" aria-current={isActive(link.href) ? "page" : undefined}>{link.label}</a>
-            ))}
-            <a href={waLink(WHATSAPP.defaultMessage)} target="_blank" rel="noopener noreferrer" class="button-primary mt-4 w-full">Konsultasi gratis</a>
+          <nav
+            id="mobile-menu"
+            class="mobile-nav-panel"
+            aria-label="Navigasi mobile"
+          >
+            {
+              navLinks.map((link) => (
+                <a
+                  href={link.href}
+                  class="nav-link"
+                  aria-current={isActive(link.href) ? "page" : undefined}
+                >
+                  {link.label}
+                </a>
+              ))
+            }
+            <a
+              href={waLink(WHATSAPP.defaultMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="button-primary mt-4 w-full">Konsultasi gratis</a
+            >
           </nav>
         </details>
       </div>
@@ -52,8 +99,12 @@ const isActive = (href: string) => pathname === href || (href !== "/" && pathnam
   const menu = document.querySelector<HTMLDetailsElement>("#mobile-nav");
   const toggle = document.getElementById("menu-toggle");
 
-  const closeMenu = () => { if (menu) menu.open = false; };
-  menu?.addEventListener("toggle", () => toggle?.setAttribute("aria-expanded", String(menu.open)));
+  const closeMenu = () => {
+    if (menu) menu.open = false;
+  };
+  menu?.addEventListener("toggle", () =>
+    toggle?.setAttribute("aria-expanded", String(menu.open)),
+  );
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && menu?.open) {
       closeMenu();
@@ -61,13 +112,21 @@ const isActive = (href: string) => pathname === href || (href !== "/" && pathnam
     }
   });
   menu?.addEventListener("click", (event) => {
-    if (event.target instanceof Element && event.target.closest("a")) closeMenu();
+    if (event.target instanceof Element && event.target.closest("a"))
+      closeMenu();
   });
   header?.addEventListener("focusout", (event) => {
-    if (event.relatedTarget instanceof Node && !header.contains(event.relatedTarget)) closeMenu();
+    if (
+      event.relatedTarget instanceof Node &&
+      !header.contains(event.relatedTarget)
+    )
+      closeMenu();
   });
   document.addEventListener("pointerdown", (event) => {
-    if (event.target instanceof Node && !header?.contains(event.target)) closeMenu();
+    if (event.target instanceof Node && !header?.contains(event.target))
+      closeMenu();
   });
-  window.matchMedia("(min-width: 1101px)").addEventListener("change", closeMenu);
+  window
+    .matchMedia("(min-width: 1101px)")
+    .addEventListener("change", closeMenu);
 </script>

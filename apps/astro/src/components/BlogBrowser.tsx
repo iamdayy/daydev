@@ -21,7 +21,7 @@ export default function BlogBrowser({ articles, loadError = false }: BlogBrowser
       <header className="section-space bg-card">
         <div className="site-container grid items-end gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:gap-16">
           <div>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">Pengalaman membangun produk dan panduan untuk menentukan langkah digital Anda.</p>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">Gunakan catatan ini untuk memahami proses, trade-off, dan langkah awal sebelum memulai proyek digital.</p>
           </div>
           <div>
             <label htmlFor="article-search" className="font-semibold">Cari artikel</label>

@@ -3,13 +3,24 @@ import { Menu, X } from "lucide-react";
 import { waLink, WHATSAPP } from "@daydev/shared-types";
 import ThemeToggle from "./ThemeToggle.astro";
 
-const navLinks = [
-  { label: "Beranda", href: "/" },
-  { label: "Layanan", href: "/services" },
-  { label: "Harga", href: "/pricing" },
-  { label: "Cerita pelanggan", href: "/portfolio" },
-  { label: "Blog", href: "/blog" },
+const navGroups = [
+  {
+    label: "Studio",
+    links: [
+      { label: "Beranda", href: "/" },
+      { label: "Layanan", href: "/services" },
+      { label: "Cerita pelanggan", href: "/portfolio" },
+    ],
+  },
+  {
+    label: "Mulai proyek",
+    links: [
+      { label: "Konsultasi & harga", href: "/pricing" },
+      { label: "Catatan studio", href: "/blog" },
+    ],
+  },
 ];
+const navLinks = navGroups.flatMap((group) => group.links);
 const pathname = Astro.url.pathname;
 const isActive = (href: string) =>
   pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
@@ -34,18 +45,21 @@ const isActive = (href: string) =>
           class="light-logo"
         />
       </a>
+      <div class="sidebar-intro">
+        <p class="sidebar-kicker">Founder-led digital product studio</p>
+        <p class="sidebar-description">Daydev membantu mengubah kebutuhan bisnis menjadi produk digital yang bisa dipakai.</p>
+      </div>
       <nav class="desktop-nav" aria-label="Navigasi utama">
-        {
-          navLinks.map((link) => (
-            <a
-              href={link.href}
-              class="nav-link"
-              aria-current={isActive(link.href) ? "page" : undefined}
-            >
-              {link.label}
-            </a>
-          ))
-        }
+        {navGroups.map((group) => (
+          <div class="nav-group">
+            <p class="nav-group-label">{group.label}</p>
+            {group.links.map((link) => (
+              <a href={link.href} class="nav-link" aria-current={isActive(link.href) ? "page" : undefined}>
+                {link.label}
+              </a>
+            ))}
+          </div>
+        ))}
       </nav>
       <div class="header-actions">
         <ThemeToggle />
@@ -70,17 +84,11 @@ const isActive = (href: string) =>
             class="mobile-nav-panel"
             aria-label="Navigasi mobile"
           >
-            {
-              navLinks.map((link) => (
-                <a
-                  href={link.href}
-                  class="nav-link"
-                  aria-current={isActive(link.href) ? "page" : undefined}
-                >
-                  {link.label}
-                </a>
-              ))
-            }
+          {navLinks.map((link) => (
+            <a href={link.href} class="nav-link" aria-current={isActive(link.href) ? "page" : undefined}>
+              {link.label}
+            </a>
+          ))}
             <a
               href={waLink(WHATSAPP.defaultMessage)}
               target="_blank"

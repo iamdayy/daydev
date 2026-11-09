@@ -26,14 +26,15 @@ const featuredPosts = (posts.data ?? [])
   <main id="beranda">
     <section id="hero" class="hero-section" aria-labelledby="hero-title">
       <div class="site-container hero-grid">
-        <h1 id="hero-title" class="hero-heading">Dari ide jadi aplikasi.</h1>
+        <div class="hero-kicker">Daydev Studio · founder-led digital product studio</div>
+        <h1 id="hero-title" class="hero-heading">Produk digital yang terasa masuk akal.</h1>
         <div class="hero-copy">
-          <p>Website dan aplikasi mobile untuk UMKM, mahasiswa, dan startup. Kami membantu Anda merancang, membangun, hingga meluncurkannya.</p>
+          <p>Web, mobile, dan AI / machine learning untuk UMKM, mahasiswa, dan startup. Saya membantu Anda merancang, membangun, dan meluncurkan produk yang sesuai kebutuhan nyata.</p>
           <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
             <a href={waLink("Halo Daydev, saya ingin konsultasi gratis mengenai ide aplikasi saya.")} target="_blank" rel="noopener noreferrer" class="button-primary">Konsultasi gratis</a>
             <a href="#cerita-pelanggan" class="text-link">Lihat karya kami</a>
           </div>
-          <p class="mt-5 text-sm text-muted-foreground">Mulai dari percakapan di WhatsApp.</p>
+          <p class="mt-5 text-sm text-muted-foreground">Founder-led, langsung dari percakapan pertama sampai produk digunakan.</p>
         </div>
         <div class="hero-visual">
           <HeroComputer client:load />

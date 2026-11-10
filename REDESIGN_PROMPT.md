@@ -31,6 +31,8 @@ Approved direction:
 - Keep the three capabilities together: web development, mobile development, and AI / machine learning.
 - Primary business goal: qualified freelance project inquiries.
 - Primary proof: real projects and honest case studies.
+- Reference adaptation: adapt all relevant modules from both supplied screen recordings: founder/profile sidebar, studio dashboard, skills/kreasi, achievements, project showcase, GitHub activity and pinned repositories, guestbook, contact cards, and social links. Do not copy the reference creator's content, metrics, or exact styling.
+- Pricing policy: owner-approved starting-price presentation. Show verified "Mulai dari" prices where current offers are confirmed; final quote remains consultation-based.
 
 ## Important repository constraints
 
@@ -68,8 +70,12 @@ Create a short file-by-file plan. Separate:
 - Homepage.
 - Portfolio and case studies.
 - Services and pricing.
-- About and development activity.
-- Blog and contact.
+- Founder profile and About.
+- Skills / Kreasi and achievements.
+- GitHub dashboard, repositories, and development activity.
+- Social links and contact.
+- Optional guestbook with moderation/security.
+- Blog and insights.
 - Regression testing.
 
 Identify risks and any missing content that requires owner input.
@@ -108,11 +114,26 @@ Prioritize:
 8. Development activity only when real data integration exists.
 9. Blog improvements using the current API-backed content flow.
 
-Use real Daydev Studio content. SISKU may be presented as a case study only to the extent that project details and current status are verified. Never invent metrics, testimonials, clients, usage counts, or outcomes.
+Use real Daydev Studio and founder content. SISKU may be presented as a case study only to the extent that project details and current status are verified. Never invent metrics, testimonials, clients, follower counts, achievements, skill proficiency, repository statistics, or outcomes. Clearly distinguish client work, personal projects, experiments, and collaborative work.
 
-Do not expose fixed public pricing before consultation. Preserve the existing /pricing route and make its purpose consistent with the consultation-led sales process.
+Follow the approved starting-price policy. Preserve /pricing and show "Mulai dari" amounts only after verifying the current package data and owner-approved validity. Never invent or silently reuse stale prices. Clearly state inclusions, exclusions, assumptions, and factors that change the final quote. The final quote must be consultation-based. If no amount can be verified, show a non-numeric consultation state and flag the missing owner input.
 
-## Phase 5 — Quality
+## Phase 5 — Reference-inspired modules and content integrity
+
+Adapt the supplied recordings as follows:
+- Founder profile in sidebar and About page.
+- Studio dashboard with real project/activity summary.
+- Skills and Kreasi grouped by actual capabilities and genuine output.
+- Achievements from verifiable credentials/milestones.
+- Projects and detailed case studies.
+- GitHub contribution/activity and pinned repositories only from real accessible data, with source/last-updated context.
+- Guestbook only if moderation, spam protection, privacy notice, and deletion process are implemented.
+- Contact cards and curated social/external links.
+- Mobile profile/navigation presentation.
+
+Do not create empty pages or navigation items for modules that lack content. Do not copy the reference person's personal information, social metrics, or content.
+
+## Phase 6 — Quality
 
 Run:
 - bun run typecheck

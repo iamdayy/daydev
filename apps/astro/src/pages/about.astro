@@ -1,7 +1,7 @@
 ---
-import Base from "../layouts/Base.astro";
+import { Code, Layers, Shield, Target, Users, Zap } from "lucide-react";
 import ConsultationCTA from "../components/ConsultationCTA.astro";
-import { Layers, Target, Code, Users, Zap, Shield } from "lucide-react";
+import Base from "../layouts/Base.astro";
 ---
 
 <Base
@@ -13,121 +13,273 @@ import { Layers, Target, Code, Users, Zap, Shield } from "lucide-react";
     <header class="page-intro">
       <div class="site-container page-intro-grid">
         <h1 class="page-title">Tentang Daydev.</h1>
-        <p>Studio produk digital founder-led yang berfokus pada membangun solusi yang masuk akal untuk bisnis dan individu. Dari ide hingga produk yang digunakan.</p>
+        <p>
+          Studio produk digital founder-led yang berfokus pada membangun solusi
+          yang masuk akal untuk bisnis dan individu. Dari ide hingga produk yang
+          digunakan.
+        </p>
       </div>
     </header>
 
-    <section id="philosophy" class="section-space" aria-labelledby="philosophy-title">
+    <section
+      id="philosophy"
+      class="section-space"
+      aria-labelledby="philosophy-title"
+    >
       <div class="site-container">
         <div class="max-w-3xl fade-in">
-          <h2 id="philosophy-title" class="section-title">Filosofi pengembangan kami.</h2>
+          <h2 id="philosophy-title" class="section-title">
+            Filosofi pengembangan kami.
+          </h2>
           <div class="mt-8 space-y-6 text-lg leading-8">
-            <p>Setiap proyek dimulai dari pemahaman mendalam tentang masalah yang ingin diselesaikan. Kami tidak hanya menulis kode—kami merancang produk yang benar-benar dipakai.</p>
-            <p>Pendekatan kami menggabungkan pemikiran produk, desain yang fungsional, dan teknologi yang tepat. Kami percaya solusi terbaik lahir dari kolaborasi jujur antara pemilik visi dan tim teknis yang peduli pada detail.</p>
+            <p>
+              Setiap proyek dimulai dari pemahaman mendalam tentang masalah yang
+              ingin diselesaikan. Kami tidak hanya menulis kode—kami merancang
+              produk yang benar-benar dipakai.
+            </p>
+            <p>
+              Pendekatan kami menggabungkan pemikiran produk, desain yang
+              fungsional, dan teknologi yang tepat. Kami percaya solusi terbaik
+              lahir dari kolaborasi jujur antara pemilik visi dan tim teknis
+              yang peduli pada detail.
+            </p>
             <p>Daydev dibangun atas tiga prinsip:</p>
           </div>
           <ul class="mt-8 space-y-4" role="list">
-            {[
-              { title: "Masuk akal", description: "Setiap keputusan teknis didasarkan pada kebutuhan nyata, bukan tren atau ego teknologi.", icon: Target },
-              { title: "Transparan", description: "Proses, biaya, dan risiko dikomunikasikan jujur sejak awal. Tidak ada biaya tersembunyi.", icon: Shield },
-              { title: "Berkelanjutan", description: "Kode yang tertulis rapi, terdokumentasi, dan siap dikembangkan tim Anda di masa depan.", icon: Code },
-            ].map((principle) => (
-              <li class="flex items-start gap-4 fade-in">
-                <principle.icon className="size-6 shrink-0 text-accent-ink" strokeWidth={1.75} aria-hidden="true" />
-                <div>
-                  <h3 class="text-lg font-semibold">{principle.title}</h3>
-                  <p class="mt-1 text-muted-foreground">{principle.description}</p>
-                </div>
-              </li>
-            ))}
+            {
+              [
+                {
+                  title: "Masuk akal",
+                  description:
+                    "Setiap keputusan teknis didasarkan pada kebutuhan nyata, bukan tren atau ego teknologi.",
+                  icon: Target,
+                },
+                {
+                  title: "Transparan",
+                  description:
+                    "Proses, biaya, dan risiko dikomunikasikan jujur sejak awal. Tidak ada biaya tersembunyi.",
+                  icon: Shield,
+                },
+                {
+                  title: "Berkelanjutan",
+                  description:
+                    "Kode yang tertulis rapi, terdokumentasi, dan siap dikembangkan tim Anda di masa depan.",
+                  icon: Code,
+                },
+              ].map((principle) => (
+                <li class="flex items-start gap-4 fade-in">
+                  <principle.icon
+                    className="size-6 shrink-0 text-accent-ink"
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                  />
+                  <div>
+                    <h3 class="text-lg font-semibold">{principle.title}</h3>
+                    <p class="mt-1 text-muted-foreground">
+                      {principle.description}
+                    </p>
+                  </div>
+                </li>
+              ))
+            }
           </ul>
         </div>
       </div>
     </section>
 
-    <section id="capabilities" class="section-space bg-muted" aria-labelledby="capabilities-title">
+    <section
+      id="capabilities"
+      class="section-space bg-muted"
+      aria-labelledby="capabilities-title"
+    >
       <div class="site-container">
         <div class="section-heading">
-          <h2 id="capabilities-title" class="section-title fade-in">Kemampuan terintegrasi.</h2>
-          <p class="fade-in">Tiga domain teknis yang bekerja sama, tidak terpisah.</p>
+          <h2 id="capabilities-title" class="section-title fade-in">
+            Kemampuan terintegrasi.
+          </h2>
+          <p class="fade-in">
+            Tiga domain teknis yang bekerja sama, tidak terpisah.
+          </p>
         </div>
         <div class="capability-panel">
           <div>
             <p class="eyebrow">Kemampuan inti</p>
             <h3 class="section-title mt-3">Web Development</h3>
-            <p class="mt-4 leading-7">Website profil bisnis, toko online, sistem informasi, dashboard admin, dan aplikasi SaaS. Teknologi: Astro, React, Node.js, PostgreSQL, Tailwind CSS.</p>
-            <a href="/services/web-development" class="text-link mt-4">Detail web development</a>
+            <p class="mt-4 leading-7">
+              Website profil bisnis, toko online, sistem informasi, dashboard
+              admin, dan aplikasi SaaS. Teknologi: Astro, React, Node.js,
+              PostgreSQL, Tailwind CSS.
+            </p>
+            <a href="/services/web-development" class="text-link mt-4"
+              >Detail web development</a
+            >
           </div>
           <div class="space-y-6">
             <div class="rounded-2xl bg-card p-6 border border-border">
-              <h4 class="text-lg font-semibold flex items-center gap-2"><Layers className="size-5 text-accent-ink" aria-hidden="true" />Mobile Development</h4>
-              <p class="mt-3 leading-7">Aplikasi iOS dan Android native maupun cross-platform. Notifikasi push, sinkronisasi offline, integrasi pembayaran, dan publikasi ke App Store/Play Store.</p>
+              <h4 class="text-lg font-semibold flex items-center gap-2">
+                <Layers
+                  className="size-5 text-accent-ink"
+                  aria-hidden="true"
+                />Mobile Development
+              </h4>
+              <p class="mt-3 leading-7">
+                Aplikasi iOS dan Android native maupun cross-platform.
+                Notifikasi push, sinkronisasi offline, integrasi pembayaran, dan
+                publikasi ke App Store/Play Store.
+              </p>
             </div>
             <div class="rounded-2xl bg-card p-6 border border-border">
-              <h4 class="text-lg font-semibold flex items-center gap-2"><Zap className="size-5 text-accent-ink" aria-hidden="true" />AI / Machine Learning</h4>
-              <p class="mt-3 leading-7">Eksplorasi otomasi cerdas, klasifikasi data, pencarian semantik, dan integrasi LLM. Dimulai dari validasi data dan kelayakan, bukan hype.</p>
+              <h4 class="text-lg font-semibold flex items-center gap-2">
+                <Zap className="size-5 text-accent-ink" aria-hidden="true" />AI
+                / Machine Learning
+              </h4>
+              <p class="mt-3 leading-7">
+                Eksplorasi otomasi cerdas, klasifikasi data, pencarian semantik,
+                dan integrasi LLM. Dimulai dari validasi data dan kelayakan,
+                bukan hype.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="audience" class="section-space" aria-labelledby="audience-title">
+    <section
+      id="audience"
+      class="section-space"
+      aria-labelledby="audience-title"
+    >
       <div class="site-container">
         <div class="section-heading">
-          <h2 id="audience-title" class="section-title fade-in">Siapa yang kami bantu.</h2>
-          <p class="fade-in">Fokus pada tiga segmen dengan kebutuhan yang jelas.</p>
+          <h2 id="audience-title" class="section-title fade-in">
+            Siapa yang kami bantu.
+          </h2>
+          <p class="fade-in">
+            Fokus pada tiga segmen dengan kebutuhan yang jelas.
+          </p>
         </div>
         <div class="audience-list">
-          {[
-            { segment: "UMKM", icon: Users, needs: "Website toko online, sistem pengelolaan stok dan keuangan, serta otomatisasi layanan pelanggan melalui chat bot." },
-            { segment: "Mahasiswa", icon: Users, needs: "Sistem informasi untuk tugas akhir, bimbingan teknis pengembangan, dan dokumentasi proyek yang terstruktur." },
-            { segment: "Startup", icon: Layers, needs: "MVP untuk validasi ide, integrasi layanan pihak ketiga, dan pengembangan produk bertahap sesuai traksi." },
-          ].map((item) => (
-            <div class="fade-in rounded-2xl bg-card p-6 sm:p-8 border border-border">
-              <h3 class="flex items-center gap-3 text-xl font-semibold"><item.icon className="size-5 shrink-0" strokeWidth={1.75} aria-hidden="true" />{item.segment}</h3>
-              <p class="mt-4 leading-7 text-muted-foreground">{item.needs}</p>
-            </div>
-          ))}
+          {
+            [
+              {
+                segment: "UMKM",
+                icon: Users,
+                needs:
+                  "Website toko online, sistem pengelolaan stok dan keuangan, serta otomatisasi layanan pelanggan melalui chat bot.",
+              },
+              {
+                segment: "Mahasiswa",
+                icon: Users,
+                needs:
+                  "Sistem informasi untuk tugas akhir, bimbingan teknis pengembangan, dan dokumentasi proyek yang terstruktur.",
+              },
+              {
+                segment: "Startup",
+                icon: Layers,
+                needs:
+                  "MVP untuk validasi ide, integrasi layanan pihak ketiga, dan pengembangan produk bertahap sesuai traksi.",
+              },
+            ].map((item) => (
+              <div class="fade-in rounded-2xl bg-card p-6 sm:p-8 border border-border audience-item">
+                <h3 class="flex items-center gap-3 text-xl font-semibold">
+                  <item.icon
+                    className="size-5 shrink-0"
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                  />
+                  {item.segment}
+                </h3>
+                <p class="mt-4 leading-7 text-muted-foreground">{item.needs}</p>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
 
-    <section id="process" class="section-space bg-muted" aria-labelledby="process-title">
+    <section
+      id="process"
+      class="section-space bg-muted"
+      aria-labelledby="process-title"
+    >
       <div class="site-container">
         <div class="section-heading">
-          <h2 id="process-title" class="section-title fade-in">Cara kami bekerja.</h2>
-          <p class="fade-in">Proses yang terstruktur untuk mengurangi risiko dan ketidakpastian.</p>
+          <h2 id="process-title" class="section-title fade-in">
+            Cara kami bekerja.
+          </h2>
+          <p class="fade-in">
+            Proses yang terstruktur untuk mengurangi risiko dan ketidakpastian.
+          </p>
         </div>
         <ol class="space-y-8" role="list">
-          {[
-            { step: "01", title: "Diskusi & Penemuan", desc: "Memahami visi, kendala, anggaran, dan timeline. Gratis dan tanpa komitmen." },
-            { step: "02", title: "Perencanaan Produk", desc: "Menentukan cakupan MVP, arsitektur teknis, dan estimasi biaya serta jadwal." },
-            { step: "03", title: "Desain & Prototipe", desc: "Membuat alur pengguna, wireframe, dan desain antarmuka yang siap dibangun." },
-            { step: "04", title: "Pengembangan", desc: "Membangun dengan praktik modern: code review, testing, dan deploy otomatis." },
-            { step: "05", title: "Peluncuran & Iterasi", desc: "Rilis ke pengguna nyata, mengumpulkan masukan, dan mengembangkan fitur lanjutan." },
-          ].map((phase) => (
-            <li class="flex gap-6 fade-in">
-              <span class="shrink-0 text-3xl font-bold font-display text-accent/30">{phase.step}</span>
-              <div>
-                <h3 class="text-xl font-semibold">{phase.title}</h3>
-                <p class="mt-2 leading-7 text-muted-foreground">{phase.desc}</p>
-              </div>
-            </li>
-          ))}
+          {
+            [
+              {
+                step: "01",
+                title: "Diskusi & Penemuan",
+                desc: "Memahami visi, kendala, anggaran, dan timeline. Gratis dan tanpa komitmen.",
+              },
+              {
+                step: "02",
+                title: "Perencanaan Produk",
+                desc: "Menentukan cakupan MVP, arsitektur teknis, dan estimasi biaya serta jadwal.",
+              },
+              {
+                step: "03",
+                title: "Desain & Prototipe",
+                desc: "Membuat alur pengguna, wireframe, dan desain antarmuka yang siap dibangun.",
+              },
+              {
+                step: "04",
+                title: "Pengembangan",
+                desc: "Membangun dengan praktik modern: code review, testing, dan deploy otomatis.",
+              },
+              {
+                step: "05",
+                title: "Peluncuran & Iterasi",
+                desc: "Rilis ke pengguna nyata, mengumpulkan masukan, dan mengembangkan fitur lanjutan.",
+              },
+            ].map((phase) => (
+              <li class="flex gap-6 fade-in">
+                <span class="shrink-0 text-3xl font-bold font-display text-accent/30">
+                  {phase.step}
+                </span>
+                <div>
+                  <h3 class="text-xl font-semibold">{phase.title}</h3>
+                  <p class="mt-2 leading-7 text-muted-foreground">
+                    {phase.desc}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
         </ol>
       </div>
     </section>
 
-    <section id="founder-note" class="section-space" aria-labelledby="founder-note-title">
+    <section
+      id="founder-note"
+      class="section-space"
+      aria-labelledby="founder-note-title"
+    >
       <div class="site-container">
         <div class="max-w-3xl fade-in">
-          <h2 id="founder-note-title" class="section-title">Catatan dari founder.</h2>
-          <div class="mt-8 space-y-6 text-lg leading-8 border-l-4 border-accent-ink pl-6">
-            <p>"Daydev lahir dari kebutuhan nyata: banyak ide bagus yang tidak terealisasi karena keterbatasan teknis atau mitra yang tidak memahami sisi bisnis. Kami ada untuk menjembatani kesenjangan itu."</p>
+          <h2 id="founder-note-title" class="section-title">
+            Catatan dari founder.
+          </h2>
+          <div
+            class="mt-8 space-y-6 text-lg leading-8 border-l-4 border-accent-ink pl-6"
+          >
+            <p>
+              "Daydev lahir dari kebutuhan nyata: banyak ide bagus yang tidak
+              terealisasi karena keterbatasan teknis atau mitra yang tidak
+              memahami sisi bisnis. Kami ada untuk menjembatani kesenjangan
+              itu."
+            </p>
             <p>— Founder, Daydev Studio</p>
           </div>
-          <a href="/founder" class="text-link mt-6">Kenal founder lebih dekat</a>
+          <a href="/founder" class="text-link mt-6">Kenal founder lebih dekat</a
+          >
         </div>
       </div>
     </section>

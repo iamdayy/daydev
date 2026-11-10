@@ -24,41 +24,35 @@ const pathname = Astro.url.pathname;
           width="120"
           class="light-logo"
         />
+        <img
+          src="/Short-Logo.png"
+          alt=""
+          height="36"
+          width="36"
+          class="mobile-logo"
+        />
       </a>
 
-      <div class="sidebar-intro">
-        <p class="sidebar-kicker">Founder-led digital product studio</p>
-        <p class="sidebar-description">Daydev membantu mengubah kebutuhan bisnis menjadi produk digital yang bisa dipakai.</p>
-      </div>
-
-      <div class="founder-sidebar">
-        <a href="/founder" class="flex items-center gap-3" aria-label="Lihat profil founder">
-          <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-secondary font-display text-lg font-bold text-foreground" aria-hidden="true">
-            D
-          </div>
-          <div>
-            <p class="founder-name">Daydev Founder</p>
-            <p class="founder-role">Software Engineer & Product Builder</p>
-          </div>
-        </a>
-      </div>
-
       <nav class="desktop-nav" aria-label="Navigasi utama">
-        {navigationGroups.map((group) => (
-          <div class="nav-group">
-            <p class="nav-group-label">{group.label}</p>
-            {group.items.map((link) => (
-              <a
-                href={link.href}
-                class="nav-link"
-                aria-current={isActive(pathname, link.href) ? "page" : undefined}
-                data-group={group.label}
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-        ))}
+        {
+          navigationGroups.map((group) => (
+            <div class="nav-group">
+              <p class="nav-group-label">{group.label}</p>
+              {group.items.map((link) => (
+                <a
+                  href={link.href}
+                  class="nav-link"
+                  aria-current={
+                    isActive(pathname, link.href) ? "page" : undefined
+                  }
+                  data-group={group.label}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          ))
+        }
       </nav>
 
       <div class="header-actions">
@@ -69,8 +63,16 @@ const pathname = Astro.url.pathname;
           aria-label="Aktifkan tema gelap"
           aria-pressed="false"
         >
-          <Sun className="theme-sun size-5" strokeWidth={1.75} aria-hidden="true" />
-          <Moon className="theme-moon size-5" strokeWidth={1.75} aria-hidden="true" />
+          <Sun
+            className="theme-sun size-5"
+            strokeWidth={1.75}
+            aria-hidden="true"
+          />
+          <Moon
+            className="theme-moon size-5"
+            strokeWidth={1.75}
+            aria-hidden="true"
+          />
         </button>
 
         <a
@@ -97,21 +99,25 @@ const pathname = Astro.url.pathname;
             class="mobile-nav-panel"
             aria-label="Navigasi mobile"
           >
-            {navigationGroups.map((group) => (
-              <div class="nav-group mb-4">
-                <p class="nav-group-label mb-2">{group.label}</p>
-                {group.items.map((link) => (
-                  <a
-                    href={link.href}
-                    class="nav-link"
-                    aria-current={isActive(pathname, link.href) ? "page" : undefined}
-                    data-group={group.label}
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            ))}
+            {
+              navigationGroups.map((group) => (
+                <div class="nav-group mb-4">
+                  <p class="nav-group-label mb-2">{group.label}</p>
+                  {group.items.map((link) => (
+                    <a
+                      href={link.href}
+                      class="nav-link"
+                      aria-current={
+                        isActive(pathname, link.href) ? "page" : undefined
+                      }
+                      data-group={group.label}
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              ))
+            }
             <a
               href={waLink(WHATSAPP.defaultMessage)}
               target="_blank"

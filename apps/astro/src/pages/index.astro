@@ -1,16 +1,29 @@
 ---
-import Base from "../layouts/Base.astro";
-import HeroComputer from "../components/HeroComputer";
+import { waLink } from "@daydev/shared-types";
+import {
+  ArrowRight,
+  Code2,
+  Layers,
+  Shield,
+  Target,
+  Users,
+  Zap,
+} from "lucide-react";
 import ArticlePreview from "../components/ArticlePreview";
-import DataNotice from "../components/DataNotice.astro";
 import ConsultationCTA from "../components/ConsultationCTA.astro";
+import DataNotice from "../components/DataNotice.astro";
+import HeroComputer from "../components/HeroComputer";
 import CustomerStories from "../components/sections/CustomerStories.astro";
 import SolutionsTable from "../components/sections/SolutionsTable.astro";
 import Testimonials from "../components/sections/Testimonials.astro";
-import { getBlogPosts, getPortfolio, getTestimonials, loadData } from "../lib/api";
-import { waLink } from "@daydev/shared-types";
+import Base from "../layouts/Base.astro";
+import {
+  getBlogPosts,
+  getPortfolio,
+  getTestimonials,
+  loadData,
+} from "../lib/api";
 import { HERO_PROJECTS } from "../lib/project-images";
-import { ArrowRight, Target, Users, Layers, Zap, Shield, Code2 } from "lucide-react";
 
 const [portfolio, testimonials, posts] = await Promise.all([
   loadData(getPortfolio()),
@@ -19,26 +32,51 @@ const [portfolio, testimonials, posts] = await Promise.all([
 ]);
 const featuredPosts = (posts.data ?? [])
   .filter((post) => post.is_published)
-  .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
+  .sort(
+    (a, b) =>
+      new Date(b.published_at).getTime() - new Date(a.published_at).getTime(),
+  )
   .slice(0, 2);
 ---
 
-<Base title="Daydev Studio - Dari Ide Menjadi Aplikasi" description="Kami membangun website dan aplikasi mobile untuk UMKM, mahasiswa, dan startup. Ceritakan ide Anda, kami bantu wujudkan lewat konsultasi gratis via WhatsApp.">
+<Base
+  title="Daydev Studio - Dari Ide Menjadi Aplikasi"
+  description="Kami membangun website dan aplikasi mobile untuk UMKM, mahasiswa, dan startup. Ceritakan ide Anda, kami bantu wujudkan lewat konsultasi gratis via WhatsApp."
+>
   <main id="beranda">
     <section id="hero" class="hero-section" aria-labelledby="hero-title">
       <div class="site-container hero-grid">
-        <div class="hero-kicker">Daydev Studio · founder-led digital product studio</div>
-        <h1 id="hero-title" class="hero-heading">Produk digital yang terasa masuk akal.</h1>
+        <div class="hero-kicker">
+          Daydev Studio · founder-led digital product studio
+        </div>
+        <h1 id="hero-title" class="hero-heading">
+          Produk digital yang terasa masuk akal.
+        </h1>
         <div class="hero-copy">
-          <p>Web, mobile, dan AI/ML untuk UMKM, mahasiswa, dan startup. Saya membantu Anda merancang, membangun, dan meluncurkan produk yang sesuai kebutuhan nyata—dari percakapan pertama sampai produk digunakan.</p>
+          <p>
+            Web, mobile, dan AI/ML untuk UMKM, mahasiswa, dan startup. Saya
+            membantu Anda merancang, membangun, dan meluncurkan produk yang
+            sesuai kebutuhan nyata—dari percakapan pertama sampai produk
+            digunakan.
+          </p>
           <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <a href={waLink("Halo Daydev, saya ingin konsultasi gratis mengenai ide aplikasi saya.")} target="_blank" rel="noopener noreferrer" class="button-primary">
+            <a
+              href={waLink(
+                "Halo Daydev, saya ingin konsultasi gratis mengenai ide aplikasi saya.",
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="button-primary"
+            >
               Konsultasi gratis
               <ArrowRight className="size-4" aria-hidden="true" />
             </a>
             <a href="#cerita-pelanggan" class="text-link">Lihat karya kami</a>
           </div>
-          <p class="mt-5 text-sm text-muted-foreground">Founder-led, langsung dari percakapan pertama sampai produk digunakan.</p>
+          <p class="mt-5 text-sm text-muted-foreground">
+            Founder-led, langsung dari percakapan pertama sampai produk
+            digunakan.
+          </p>
         </div>
         <div class="hero-visual">
           <HeroComputer client:load />
@@ -46,139 +84,327 @@ const featuredPosts = (posts.data ?? [])
       </div>
     </section>
 
-    <section id="intro" class="section-space bg-muted" aria-labelledby="intro-title">
+    <section id="intro" class="section-space/30" aria-labelledby="intro-title">
       <div class="site-container">
         <div class="max-w-3xl fade-in">
-          <h2 id="intro-title" class="section-title">Studio produk digital founder-led.</h2>
-          <p class="mt-6 text-lg leading-8">Daydev Studio dibangun oleh seorang software engineer yang percaya produk terbaik lahir dari pemahaman mendalam tentang masalah, bukan sekadar eksekusi teknis. Kami tidak memisahkan desain, pengembangan, dan strategi produk—semua menjadi satu alur kerja yang koheren.</p>
-          <p class="mt-6 text-lg leading-8">Kami melayani tiga segmen dengan kebutuhan berbeda tapi prinsip sama: membangun solusi yang benar-benar dipakai, bukan hanya diluncurkan.</p>
+          <h2 id="intro-title" class="section-title">
+            Studio produk digital founder-led.
+          </h2>
+          <p class="mt-6 text-lg leading-8">
+            Daydev Studio dibangun oleh seorang software engineer yang percaya
+            produk terbaik lahir dari pemahaman mendalam tentang masalah, bukan
+            sekadar eksekusi teknis. Kami tidak memisahkan desain, pengembangan,
+            dan strategi produk—semua menjadi satu alur kerja yang koheren.
+          </p>
+          <p class="mt-6 text-lg leading-8">
+            Kami melayani tiga segmen dengan kebutuhan berbeda tapi prinsip
+            sama: membangun solusi yang benar-benar dipakai, bukan hanya
+            diluncurkan.
+          </p>
           <div class="mt-10 grid gap-6 md:grid-cols-3">
-            {[
-              { icon: Users, title: "UMKM", desc: "Toko online, sistem stok & keuangan, otomatisasi layanan pelanggan" },
-              { icon: Layers, title: "Mahasiswa", desc: "Sistem informasi skripsi, bimbingan teknis, dokumentasi proyek" },
-              { icon: Zap, title: "Startup", desc: "MVP validasi ide, integrasi layanan, pengembangan bertahap" },
-            ].map((segment) => (
-              <div class="rounded-2xl bg-card p-6 border border-border">
-                <segment.icon className="size-6 text-accent-ink" aria-hidden="true" />
-                <h3 class="mt-3 font-semibold">{segment.title}</h3>
-                <p class="mt-2 text-sm text-muted-foreground">{segment.desc}</p>
-              </div>
-            ))}
+            {
+              [
+                {
+                  icon: Users,
+                  title: "UMKM",
+                  desc: "Toko online, sistem stok & keuangan, otomatisasi layanan pelanggan",
+                },
+                {
+                  icon: Layers,
+                  title: "Mahasiswa",
+                  desc: "Sistem informasi skripsi, bimbingan teknis, dokumentasi proyek",
+                },
+                {
+                  icon: Zap,
+                  title: "Startup",
+                  desc: "MVP validasi ide, integrasi layanan, pengembangan bertahap",
+                },
+              ].map((segment) => (
+                <div class="rounded-2xl bg-card p-6 border border-border">
+                  <segment.icon
+                    className="size-6 text-accent-ink"
+                    aria-hidden="true"
+                  />
+                  <h3 class="mt-3 font-semibold">{segment.title}</h3>
+                  <p class="mt-2 text-sm text-muted-foreground">
+                    {segment.desc}
+                  </p>
+                </div>
+              ))
+            }
           </div>
         </div>
       </div>
     </section>
 
-    <section id="capabilities" class="section-space" aria-labelledby="capabilities-title">
+    <section
+      id="capabilities"
+      class="section-space"
+      aria-labelledby="capabilities-title"
+    >
       <div class="site-container">
         <div class="section-heading">
-          <h2 id="capabilities-title" class="section-title fade-in">Kemampuan terintegrasi.</h2>
-          <p class="fade-in">Tiga domain teknis yang bekerja sama untuk membangun produk utuh.</p>
+          <h2 id="capabilities-title" class="section-title fade-in">
+            Kemampuan terintegrasi.
+          </h2>
+          <p class="fade-in">
+            Tiga domain teknis yang bekerja sama untuk membangun produk utuh.
+          </p>
         </div>
         <div class="solutions-layout">
           <ul class="solution-list">
-            {[
-              { name: "Web Development", href: "/services/web-development", description: "Website profil, toko online, sistem informasi, dashboard admin, dan aplikasi SaaS." },
-              { name: "Mobile Development", href: "/services/mobile-development", description: "Aplikasi iOS & Android dengan notifikasi, sinkronisasi offline, dan integrasi pembayaran." },
-              { name: "AI / Machine Learning", href: "/services", description: "Eksplorasi otomasi cerdas, klasifikasi data, pencarian semantik, dan integrasi LLM." },
-              { name: "Bot Telegram", href: "/services/telegram-bot", description: "Otomatisasi layanan pelanggan, pesan terjadwal, dan notifikasi terhubung ke sistem Anda." },
-              { name: "Undangan Digital", href: "/services/undangan-digital", description: "Undangan interaktif dengan RSVP, galeri, peta lokasi, dan pengelolaan tamu." },
-            ].map((solution) => (
-              <li class="fade-in">
-                <a href={solution.href} class="solution-row">
-                  <h3 class="text-2xl font-semibold tracking-tight">{solution.name}</h3>
-                  <p class="mt-3 leading-7 text-muted-foreground">{solution.description}</p>
-                </a>
-              </li>
-            ))}
+            {
+              [
+                {
+                  name: "Web Development",
+                  href: "/services/web-development",
+                  description:
+                    "Website profil, toko online, sistem informasi, dashboard admin, dan aplikasi SaaS.",
+                },
+                {
+                  name: "Mobile Development",
+                  href: "/services/mobile-development",
+                  description:
+                    "Aplikasi iOS & Android dengan notifikasi, sinkronisasi offline, dan integrasi pembayaran.",
+                },
+                {
+                  name: "AI / Machine Learning",
+                  href: "/services",
+                  description:
+                    "Eksplorasi otomasi cerdas, klasifikasi data, pencarian semantik, dan integrasi LLM.",
+                },
+                {
+                  name: "Bot Telegram",
+                  href: "/services/telegram-bot",
+                  description:
+                    "Otomatisasi layanan pelanggan, pesan terjadwal, dan notifikasi terhubung ke sistem Anda.",
+                },
+                {
+                  name: "Undangan Digital",
+                  href: "/services/undangan-digital",
+                  description:
+                    "Undangan interaktif dengan RSVP, galeri, peta lokasi, dan pengelolaan tamu.",
+                },
+              ].map((solution) => (
+                <li class="fade-in">
+                  <a href={solution.href} class="solution-row">
+                    <h3 class="text-2xl font-semibold tracking-tight">
+                      {solution.name}
+                    </h3>
+                    <p class="mt-3 leading-7 text-muted-foreground">
+                      {solution.description}
+                    </p>
+                  </a>
+                </li>
+              ))
+            }
           </ul>
           <div class="audience-list">
-            {[
-              { segment: "UMKM", icon: Users, needs: "Toko online, pengelolaan stok dan keuangan, serta layanan pelanggan otomatis." },
-              { segment: "Mahasiswa", icon: Users, needs: "Sistem informasi untuk tugas akhir, bimbingan teknis, dan dokumentasi proyek." },
-              { segment: "Startup", icon: Layers, needs: "MVP untuk validasi ide, integrasi layanan, dan pengembangan produk bertahap." },
-            ].map((item) => (
-              <div class="fade-in rounded-2xl bg-card p-6 sm:p-8 border border-border">
-                <h3 class="flex items-center gap-3 text-xl font-semibold"><item.icon className="size-5 shrink-0" strokeWidth={1.75} aria-hidden="true" />{item.segment}</h3>
-                <p class="mt-4 leading-7 text-muted-foreground">{item.needs}</p>
-              </div>
-            ))}
+            {
+              [
+                {
+                  segment: "UMKM",
+                  icon: Users,
+                  needs:
+                    "Toko online, pengelolaan stok dan keuangan, serta layanan pelanggan otomatis.",
+                },
+                {
+                  segment: "Mahasiswa",
+                  icon: Users,
+                  needs:
+                    "Sistem informasi untuk tugas akhir, bimbingan teknis, dan dokumentasi proyek.",
+                },
+                {
+                  segment: "Startup",
+                  icon: Layers,
+                  needs:
+                    "MVP untuk validasi ide, integrasi layanan, dan pengembangan produk bertahap.",
+                },
+              ].map((item) => (
+                <div class="fade-in rounded-2xl bg-card p-6 sm:p-8 border border-border">
+                  <h3 class="flex items-center gap-3 text-xl font-semibold">
+                    <item.icon
+                      className="size-5 shrink-0"
+                      strokeWidth={1.75}
+                      aria-hidden="true"
+                    />
+                    {item.segment}
+                  </h3>
+                  <p class="mt-4 leading-7 text-muted-foreground">
+                    {item.needs}
+                  </p>
+                </div>
+              ))
+            }
           </div>
         </div>
       </div>
     </section>
 
-    <CustomerStories projects={portfolio.data ?? []} loadError={!portfolio.ok} />
+    <CustomerStories
+      projects={portfolio.data ?? []}
+      loadError={!portfolio.ok}
+    />
 
-    <section id="philosophy" class="section-space bg-muted" aria-labelledby="philosophy-title">
+    <section
+      id="philosophy"
+      class="section-space/30"
+      aria-labelledby="philosophy-title"
+    >
       <div class="site-container">
         <div class="max-w-4xl mx-auto text-center fade-in">
-          <h2 id="philosophy-title" class="section-title">Cara kami membangun produk.</h2>
-          <p class="mt-6 text-lg leading-8">Proses yang terstruktur untuk mengurangi risiko dan memastikan hasil yang masuk akal.</p>
+          <h2 id="philosophy-title" class="section-title">
+            Cara kami membangun produk.
+          </h2>
+          <p class="mt-6 text-lg leading-8">
+            Proses yang terstruktur untuk mengurangi risiko dan memastikan hasil
+            yang masuk akal.
+          </p>
         </div>
         <ol class="mt-16 space-y-10" role="list">
-          {[
-            { step: "01", title: "Diskusi & Penemuan", desc: "Memahami visi, kendala, anggaran, dan timeline. Gratis dan tanpa komitmen.", icon: Target },
-            { step: "02", title: "Perencanaan Produk", desc: "Menentukan cakupan MVP, arsitektur teknis, dan estimasi biaya serta jadwal.", icon: Code2 },
-            { step: "03", title: "Desain & Prototipe", desc: "Membuat alur pengguna, wireframe, dan desain antarmuka yang siap dibangun.", icon: Shield },
-            { step: "04", title: "Pengembangan", desc: "Membangun dengan praktik modern: code review, testing, dan deploy otomatis.", icon: Layers },
-            { step: "05", title: "Peluncuran & Iterasi", desc: "Rilis ke pengguna nyata, mengumpulkan masukan, dan mengembangkan fitur lanjutan.", icon: Zap },
-          ].map((phase) => (
-            <li class="flex gap-6 text-left fade-in">
-              <span class="shrink-0 text-3xl font-bold font-display text-accent/30">{phase.step}</span>
-              <div class="flex-1">
-                <div class="flex items-center gap-3">
-                  <phase.icon className="size-6 text-accent-ink" aria-hidden="true" />
-                  <h3 class="text-xl font-semibold">{phase.title}</h3>
+          {
+            [
+              {
+                step: "01",
+                title: "Diskusi & Penemuan",
+                desc: "Memahami visi, kendala, anggaran, dan timeline. Gratis dan tanpa komitmen.",
+                icon: Target,
+              },
+              {
+                step: "02",
+                title: "Perencanaan Produk",
+                desc: "Menentukan cakupan MVP, arsitektur teknis, dan estimasi biaya serta jadwal.",
+                icon: Code2,
+              },
+              {
+                step: "03",
+                title: "Desain & Prototipe",
+                desc: "Membuat alur pengguna, wireframe, dan desain antarmuka yang siap dibangun.",
+                icon: Shield,
+              },
+              {
+                step: "04",
+                title: "Pengembangan",
+                desc: "Membangun dengan praktik modern: code review, testing, dan deploy otomatis.",
+                icon: Layers,
+              },
+              {
+                step: "05",
+                title: "Peluncuran & Iterasi",
+                desc: "Rilis ke pengguna nyata, mengumpulkan masukan, dan mengembangkan fitur lanjutan.",
+                icon: Zap,
+              },
+            ].map((phase) => (
+              <li class="flex gap-6 text-left fade-in">
+                <span class="shrink-0 text-3xl font-bold font-display text-accent/30">
+                  {phase.step}
+                </span>
+                <div class="flex-1">
+                  <div class="flex items-center gap-3">
+                    <phase.icon
+                      className="size-6 text-accent-ink"
+                      aria-hidden="true"
+                    />
+                    <h3 class="text-xl font-semibold">{phase.title}</h3>
+                  </div>
+                  <p class="mt-3 leading-7 text-muted-foreground">
+                    {phase.desc}
+                  </p>
                 </div>
-                <p class="mt-3 leading-7 text-muted-foreground">{phase.desc}</p>
-              </div>
-            </li>
-          ))}
+              </li>
+            ))
+          }
         </ol>
       </div>
     </section>
 
     <SolutionsTable />
 
-    <Testimonials testimonials={testimonials.data ?? []} loadError={!testimonials.ok} />
+    <Testimonials
+      testimonials={testimonials.data ?? []}
+      loadError={!testimonials.ok}
+    />
 
-    <section id="artikel" class="section-space" aria-labelledby="articles-title">
+    <section
+      id="artikel"
+      class="section-space"
+      aria-labelledby="articles-title"
+    >
       <div class="site-container">
         <div class="section-heading">
           <div>
-            <h2 id="articles-title" class="section-title fade-in">Catatan dari studio</h2>
-            <p class="mt-5 max-w-xl leading-7 fade-in">Pengalaman membangun produk dan panduan untuk langkah digital Anda.</p>
+            <h2 id="articles-title" class="section-title fade-in">
+              Catatan dari studio
+            </h2>
+            <p class="mt-5 max-w-xl leading-7 fade-in">
+              Pengalaman membangun produk dan panduan untuk langkah digital
+              Anda.
+            </p>
           </div>
-          <a href="/blog" class="text-link fade-in ml-auto">Baca semua artikel</a>
+          <a href="/blog" class="text-link fade-in ml-auto"
+            >Baca semua artikel</a
+          >
         </div>
-        {!posts.ok ? (
-          <DataNotice title="Artikel belum dapat dimuat" />
-        ) : featuredPosts.length === 0 ? (
-          <p class="max-w-xl leading-7 text-muted-foreground fade-in">Belum ada artikel yang diterbitkan. Kebutuhan proyek tetap bisa Anda diskusikan melalui WhatsApp.</p>
-        ) : (
-          <div class="article-list article-list-home" data-count={featuredPosts.length}>
-            {featuredPosts.map((article) => <ArticlePreview article={article} />)}
-          </div>
-        )}
+        {
+          !posts.ok ? (
+            <DataNotice title="Artikel belum dapat dimuat" />
+          ) : featuredPosts.length === 0 ? (
+            <p class="max-w-xl leading-7 text-muted-foreground fade-in">
+              Belum ada artikel yang diterbitkan. Kebutuhan proyek tetap bisa
+              Anda diskusikan melalui WhatsApp.
+            </p>
+          ) : (
+            <div
+              class="article-list article-list-home"
+              data-count={featuredPosts.length}
+            >
+              {featuredPosts.map((article) => (
+                <ArticlePreview article={article} />
+              ))}
+            </div>
+          )
+        }
       </div>
     </section>
 
-    <section id="contoh" class="section-space bg-muted" aria-labelledby="samples-title">
+    <section
+      id="contoh"
+      class="section-space/30"
+      aria-labelledby="samples-title"
+    >
       <div class="site-container">
         <div class="section-heading">
-          <h2 id="samples-title" class="section-title fade-in">Contoh antarmuka kami.</h2>
-          <p class="fade-in">Layar yang kami bangun untuk UMKM, mahasiswa, dan startup.</p>
+          <h2 id="samples-title" class="section-title fade-in">
+            Contoh antarmuka kami.
+          </h2>
+          <p class="fade-in">
+            Layar yang kami bangun untuk UMKM, mahasiswa, dan startup.
+          </p>
         </div>
         <div class="projects-grid">
-          {HERO_PROJECTS.map((p) => (
-            <article class="fade-in">
-              <a href={p.link} target="_blank" rel="noopener noreferrer" class="block aspect-[4/3] overflow-hidden rounded-xl bg-secondary p-4 sm:p-6">
-                <img src={p.image} alt={`Antarmuka ${p.title}`} width="800" height="600" loading="lazy" decoding="async" class="block w-full h-full object-cover" />
-              </a>
-              <h3 class="mt-4 text-xl font-bold tracking-tight">{p.title}</h3>
-            </article>
-          ))}
+          {
+            HERO_PROJECTS.map((p) => (
+              <article class="fade-in">
+                <a
+                  href={p.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block aspect-[4/3] overflow-hidden rounded-xl bg-secondary p-4 sm:p-6"
+                >
+                  <img
+                    src={p.image}
+                    alt={`Antarmuka ${p.title}`}
+                    width="800"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                    class="block w-full h-full object-cover"
+                  />
+                </a>
+                <h3 class="mt-4 text-xl font-bold tracking-tight">{p.title}</h3>
+              </article>
+            ))
+          }
         </div>
       </div>
     </section>

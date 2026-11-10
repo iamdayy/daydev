@@ -10,6 +10,14 @@ import * as THREE from "three";
 import { HERO_PROJECTS } from "../lib/project-images";
 
 const CROSSFADE_S = 0.6;
+const DAYDEV_COLORS = {
+  charcoal: "#242426",
+  black: "#09090a",
+  cream: "#fff8f1",
+  orange: "#f97316",
+  peach: "#fdba74",
+  burntOrange: "#c2410c",
+} as const;
 
 function smoothstep(t: number) {
   return t * t * (3 - 2 * t);
@@ -114,54 +122,183 @@ function ScreenSlides({ current, animate, onReady }: { current: number; animate:
 }
 
 function Chassis({ dark }: { dark: boolean }) {
-  const material = (
+  const shellColor = dark ? "#171719" : "#f1ede8";
+  const shellMaterial = (
     <meshStandardMaterial
-      color={dark ? "#555b63" : "#aab0b5"}
-      roughness={0.32}
-      metalness={0.55}
-      envMapIntensity={1.1}
+      color={shellColor}
+      roughness={0.46}
+      metalness={0.08}
+      envMapIntensity={0.7}
     />
   );
 
   return (
     <>
-      {(
-        [
-          { p: [0, 1.14, 0], s: [4.3, 0.22, 0.14] },
-          { p: [0, -1.14, 0], s: [4.3, 0.22, 0.14] },
-          { p: [-2.04, 0, 0], s: [0.22, 2.5, 0.14] },
-          { p: [2.04, 0, 0], s: [0.22, 2.5, 0.14] },
-        ] as { p: [number, number, number]; s: [number, number, number] }[]
-      ).map((strip, i) => (
-        <RoundedBox
-          key={i}
-          args={strip.s}
-          radius={0.05}
-          smoothness={4}
-          position={strip.p}
-        >
-          {material}
-        </RoundedBox>
-      ))}
-      <RoundedBox args={[4.0, 2.26, 0.1]} radius={0.06} smoothness={4} position={[0, 0, -0.04]}>
-        <meshStandardMaterial color="#151619" roughness={0.55} metalness={0.45} />
+      <RoundedBox args={[4.28, 2.48, 0.16]} radius={0.12} smoothness={6} position={[0, 0, -0.04]}>
+        {shellMaterial}
+      </RoundedBox>
+      <RoundedBox args={[4.02, 2.22, 0.1]} radius={0.08} smoothness={6} position={[0, 0, 0.035]}>
+        <meshStandardMaterial color={dark ? "#09090a" : "#242426"} roughness={0.58} metalness={0.18} />
       </RoundedBox>
       <mesh position={[0, -1.49, 0]}>
-        <boxGeometry args={[0.26, 0.5, 0.24]} />
-        {material}
+        <boxGeometry args={[0.22, 0.5, 0.2]} />
+        {shellMaterial}
       </mesh>
       <RoundedBox args={[1.6, 0.14, 0.8]} radius={0.07} smoothness={4} position={[0, -1.81, 0]}>
-        {material}
+        {shellMaterial}
       </RoundedBox>
-      <mesh position={[0, 1.14, 0.085]}>
-        <sphereGeometry args={[0.04, 16, 16]} />
-        <meshStandardMaterial color="#0a0a0a" roughness={0.4} metalness={0.6} />
+      <mesh position={[0, 1.23, 0.09]}>
+        <boxGeometry args={[0.42, 0.025, 0.018]} />
+        <meshStandardMaterial
+          color={DAYDEV_COLORS.orange}
+          emissive={DAYDEV_COLORS.orange}
+          emissiveIntensity={0.3}
+          roughness={0.4}
+        />
       </mesh>
-      <mesh position={[1.98, -1.14, 0.085]}>
-        <sphereGeometry args={[0.028, 16, 16]} />
-        <meshStandardMaterial color="#22d3ee" emissive="#22d3ee" emissiveIntensity={1.2} />
+      <mesh position={[1.9, -1.08, 0.09]}>
+        <sphereGeometry args={[0.025, 16, 16]} />
+        <meshStandardMaterial
+          color={DAYDEV_COLORS.orange}
+          emissive={DAYDEV_COLORS.orange}
+          emissiveIntensity={0.7}
+        />
       </mesh>
     </>
+  );
+}
+
+function SoftGlow({
+  position,
+  scale,
+  color,
+  opacity,
+}: {
+  position: [number, number, number];
+  scale: [number, number, number];
+  color: string;
+  opacity: number;
+}) {
+  return (
+    <mesh position={position} scale={scale} renderOrder={-2}>
+      <sphereGeometry args={[1, 32, 24]} />
+      <meshBasicMaterial
+        color={color}
+        transparent
+        opacity={opacity}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </mesh>
+  );
+}
+
+function FloatingPanel({
+  position,
+  rotation,
+  dark,
+  accent = false,
+}: {
+  position: [number, number, number];
+  rotation: [number, number, number];
+  dark: boolean;
+  accent?: boolean;
+}) {
+  const panelColor = dark ? "#1b1a1b" : "#fff8f1";
+  const lineColor = accent ? DAYDEV_COLORS.orange : dark ? "#6d6864" : "#d8cfc8";
+
+  return (
+    <group position={position} rotation={rotation}>
+      <RoundedBox args={[1.45, 0.9, 0.08]} radius={0.1} smoothness={5}>
+        <meshStandardMaterial
+          color={panelColor}
+          roughness={0.62}
+          metalness={0.02}
+          transparent
+          opacity={0.9}
+        />
+      </RoundedBox>
+      <RoundedBox args={[0.95, 0.08, 0.02]} radius={0.03} smoothness={3} position={[-0.1, 0.2, 0.06]}>
+        <meshBasicMaterial color={lineColor} />
+      </RoundedBox>
+      <RoundedBox args={[0.62, 0.08, 0.02]} radius={0.03} smoothness={3} position={[-0.27, 0.02, 0.06]}>
+        <meshBasicMaterial
+          color={dark ? DAYDEV_COLORS.cream : DAYDEV_COLORS.charcoal}
+          transparent
+          opacity={0.7}
+        />
+      </RoundedBox>
+      <RoundedBox args={[0.28, 0.08, 0.02]} radius={0.03} smoothness={3} position={[0.2, -0.2, 0.06]}>
+        <meshBasicMaterial color={lineColor} />
+      </RoundedBox>
+    </group>
+  );
+}
+
+function SupportingObjects({ active, reduced, dark }: { active: boolean; reduced: boolean; dark: boolean }) {
+  const groupRef = useRef<THREE.Group>(null);
+  const elapsed = useRef(0);
+
+  useFrame((_, delta) => {
+    if (!active || reduced || !groupRef.current) return;
+    elapsed.current += Math.min(delta, 0.05);
+    const phase = elapsed.current * (Math.PI * 2 / 7);
+    groupRef.current.position.y = Math.sin(phase) * 0.045;
+    groupRef.current.rotation.z = Math.sin(phase * 0.5) * 0.012;
+  });
+
+  return (
+    <group ref={groupRef}>
+      <SoftGlow
+        position={[-2.35, 0.75, -0.8]}
+        scale={[1.35, 1, 0.12]}
+        color={DAYDEV_COLORS.orange}
+        opacity={0.1}
+      />
+      <SoftGlow
+        position={[2.35, -0.3, -0.75]}
+        scale={[1.15, 0.9, 0.1]}
+        color={DAYDEV_COLORS.peach}
+        opacity={0.08}
+      />
+      <group scale={0.82}>
+        <FloatingPanel
+          position={[3.55, 1.22, -0.3]}
+          rotation={[0.04, -0.2, 0.12]}
+          dark={dark}
+          accent
+        />
+        <FloatingPanel
+          position={[-3.55, -1.08, -0.2]}
+          rotation={[-0.05, 0.18, -0.1]}
+          dark={dark}
+        />
+      </group>
+      <mesh position={[2.78, -1.08, 0.05]}>
+        <sphereGeometry args={[0.16, 24, 16]} />
+        <meshStandardMaterial
+          color={DAYDEV_COLORS.orange}
+          roughness={0.3}
+          metalness={0.05}
+        />
+      </mesh>
+      <mesh position={[-2.7, 1.38, 0.05]}>
+        <sphereGeometry args={[0.11, 24, 16]} />
+        <meshStandardMaterial
+          color={dark ? DAYDEV_COLORS.cream : DAYDEV_COLORS.charcoal}
+          roughness={0.42}
+          metalness={0.08}
+        />
+      </mesh>
+      <mesh position={[2.35, 1.58, -0.1]} rotation={[0.2, 0.1, 0.3]}>
+        <torusGeometry args={[0.18, 0.028, 12, 32]} />
+        <meshStandardMaterial
+          color={DAYDEV_COLORS.burntOrange}
+          roughness={0.35}
+          metalness={0.05}
+        />
+      </mesh>
+    </group>
   );
 }
 
@@ -216,14 +353,14 @@ export default function HeroMonitor({ current, reduced, active, dark, onReady, o
             dpr={[1, 1.5]}
             frameloop={active && !reduced ? "always" : "demand"}
             gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
-            camera={{ position: [0, 0, 5.7], fov: 40 }}
+            camera={{ position: [0, 0, 7.25], fov: 42 }}
             style={{ pointerEvents: "none" }}
             aria-hidden="true"
             fallback={null}
           >
-            <ambientLight intensity={dark ? 0.9 : 1.3} color="#ffffff" />
-            <directionalLight position={[3, 4, 5]} intensity={2} color="#ffffff" />
-            <directionalLight position={[-4, -1, 3]} intensity={0.65} color="#67e8f9" />
+            <ambientLight intensity={dark ? 0.72 : 1.05} color={DAYDEV_COLORS.cream} />
+            <directionalLight position={[3, 4, 5]} intensity={1.55} color={DAYDEV_COLORS.cream} />
+            <directionalLight position={[-4, -1, 3]} intensity={0.32} color={DAYDEV_COLORS.orange} />
             <Suspense fallback={null}>
               <Environment resolution={256} frames={1}>
                 <Lightformer
@@ -231,7 +368,7 @@ export default function HeroMonitor({ current, reduced, active, dark, onReady, o
                   intensity={3}
                   position={[0, 5, -9]}
                   scale={2}
-                  color="#ffffff"
+                  color={DAYDEV_COLORS.cream}
                 />
                 <Lightformer
                   form="rect"
@@ -239,7 +376,7 @@ export default function HeroMonitor({ current, reduced, active, dark, onReady, o
                   position={[6, 1, -2]}
                   rotation={[0, -Math.PI / 2, 0]}
                   scale={[6, 1.2, 1]}
-                   color="#ffffff"
+                  color={DAYDEV_COLORS.cream}
                 />
                 <Lightformer
                   form="rect"
@@ -247,9 +384,10 @@ export default function HeroMonitor({ current, reduced, active, dark, onReady, o
                   position={[-6, 0, -1]}
                   rotation={[0, Math.PI / 2, 0]}
                   scale={[5, 1, 1]}
-                   color="#67e8f9"
+                  color={DAYDEV_COLORS.orange}
                 />
               </Environment>
+              <SupportingObjects active={active} reduced={reduced} dark={dark} />
               <MonitorRig current={current} reduced={reduced} active={active} dark={dark} onReady={onReady} onFailure={onFailure} />
             </Suspense>
             <ContactShadows
@@ -259,7 +397,7 @@ export default function HeroMonitor({ current, reduced, active, dark, onReady, o
               scale={8}
               blur={2.6}
               far={3}
-              color="#0a0a0a"
+              color="#7c2d12"
             />
           </Canvas>
   );

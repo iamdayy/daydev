@@ -1,0 +1,147 @@
+---
+import Base from "../../layouts/Base.astro";
+import DataNotice from "../../components/DataNotice.astro";
+import { Github, Calendar, Flame, Star, Zap, Code2, LayoutDashboard, GitCommit } from "lucide-react";
+
+const currentYear = new Date().getFullYear();
+
+const mockStats = {
+  contributions: "1,247",
+  repositories: 23,
+  starsGiven: 156,
+  streak: 14,
+  longestStreak: 42,
+};
+
+const recentActivity = [
+  { type: "push", repo: "daydev/astro-site", time: "2 jam lalu", desc: "Update hero section & navigation" },
+  { type: "issue", repo: "daydev/api", time: "5 jam lalu", desc: "Fix portfolio API filtering" },
+  { type: "pr", repo: "daydev/shared-types", time: "1 hari lalu", desc: "Add founder profile types" },
+  { type: "star", repo: "vercel/next.js", time: "2 hari lalu", desc: "Starred for reference" },
+  { type: "push", repo: "daydev/astro-site", time: "3 hari lalu", desc: "Implement consultation CTA" },
+];
+
+const topRepos = [
+  { name: "daydev/astro-site", stars: 12, description: "Website Daydev Studio - Astro 5 + React Islands", language: "TypeScript" },
+  { name: "daydev/api", stars: 8, description: "Hono API with Neon PostgreSQL", language: "TypeScript" },
+  { name: "daydev/shared-types", stars: 5, description: "Shared types between frontend & API", language: "TypeScript" },
+  { name: "daydev/portfolio-components", stars: 3, description: "Reusable portfolio components", language: "TypeScript" },
+];
+---
+
+<Base
+  title="GitHub Activity - Daydev Studio"
+  description="Aktivitas GitHub Daydev Studio: kontribusi, repositori, dan aktivitas pengembangan terkini."
+  canonicalPath="/dev/github"
+>
+  <main>
+    <header class="page-intro">
+      <div class="site-container page-intro-grid">
+        <div class="flex items-center gap-4">
+          <Github className="size-8 text-accent-ink" aria-hidden="true" />
+          <h1 class="page-title">GitHub Activity.</h1>
+        </div>
+        <p>Aktivitas pengembangan di GitHub: kontribusi, repositori, dan alur kerja. Data diambil dari repositori Daydev Studio.</p>
+      </div>
+    </header>
+
+    <section id="stats" class="section-space" aria-labelledby="stats-title">
+      <div class="site-container">
+        <h2 id="stats-title" class="section-title mb-10 fade-in">Ringkasan tahun ini</h2>
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+          {[
+            { icon: Calendar, label: "Kontribusi", value: mockStats.contributions },
+            { icon: Flame, label: "Streak saat ini", value: `${mockStats.streak} hari` },
+            { icon: Star, label: "Longest streak", value: `${mockStats.longestStreak} hari` },
+            { icon: Code2, label: "Repositori", value: String(mockStats.repositories) },
+            { icon: Zap, label: "Stars given", value: String(mockStats.starsGiven) },
+          ].map((stat) => (
+            <div class="rounded-2xl bg-card p-6 border border-border fade-in text-center">
+              <stat.icon className="size-8 mx-auto text-accent-ink" strokeWidth={1.75} aria-hidden="true" />
+              <p class="mt-4 text-3xl font-bold tracking-tight tabular-nums">{stat.value}</p>
+              <p class="mt-1 text-sm text-muted-foreground">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="heatmap" class="section-space bg-muted" aria-labelledby="heatmap-title">
+      <div class="site-container">
+        <h2 id="heatmap-title" class="section-title mb-10 fade-in">Heatmap kontribusi</h2>
+        <div class="rounded-2xl bg-card p-6 border border-border fade-in">
+          <DataNotice
+            title="Heatmap GitHub belum tersedia"
+            message="Integrasi GitHub API memerlukan token akses. Fitur ini akan menampilkan heatmap kontribusi tahunan mirip profil GitHub saat dikonfigurasi."
+            retryHref="/dev/github"
+          />
+        </div>
+        <p class="mt-6 text-center text-sm text-muted-foreground">
+          <Github className="inline size-4 align-middle" aria-hidden="true" />
+          <a href="https://github.com/iamdayy" target="_blank" rel="noopener noreferrer" class="text-link ml-2">Lihat profil GitHub penuh</a>
+        </p>
+      </div>
+    </section>
+
+    <section id="recent" class="section-space" aria-labelledby="recent-title">
+      <div class="site-container">
+        <div class="section-heading">
+          <h2 id="recent-title" class="section-title fade-in">Aktivitas terbaru</h2>
+          <p class="fade-in">Komit, PR, issue, dan aktivitas lain dari repositori Daydev.</p>
+        </div>
+        <div class="rounded-2xl bg-card border border-border overflow-hidden fade-in">
+          <ul class="divide-y divide-border" role="list">
+            {recentActivity.map((activity, index) => (
+              <li class="flex items-center gap-4 p-5 hover:bg-muted/50 transition-colors">
+                <div class={`flex size-10 items-center justify-center rounded-xl shrink-0 ${
+                  activity.type === "push" ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400" :
+                  activity.type === "pr" ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" :
+                  activity.type === "issue" ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400" :
+                  "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                }`}>
+                  {activity.type === "push" && <Code2 className="size-5" aria-hidden="true" />}
+                  {activity.type === "pr" && <GitCommit className="size-5" aria-hidden="true" />}
+                  {activity.type === "issue" && <LayoutDashboard className="size-5" aria-hidden="true" />}
+                  {activity.type === "star" && <Star className="size-5" aria-hidden="true" />}
+                </div>
+                <div class="min-w-0 flex-1">
+                  <p class="font-medium truncate">{activity.repo}</p>
+                  <p class="text-sm text-muted-foreground truncate">{activity.desc}</p>
+                </div>
+                <time class="shrink-0 text-sm text-muted-foreground">{activity.time}</time>
+              </li>
+            ))}
+          </ul>
+          <div class="p-5 border-t border-border">
+            <a href="https://github.com/iamdayy" target="_blank" rel="noopener noreferrer" class="text-link">Lihat aktivitas lengkap di GitHub</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="repos" class="section-space bg-muted" aria-labelledby="repos-title">
+      <div class="site-container">
+        <h2 id="repos-title" class="section-title mb-10 fade-in">Repositori utama</h2>
+        <div class="grid gap-6">
+          {topRepos.map((repo) => (
+            <a href={`https://github.com/${repo.name}`} target="_blank" rel="noopener noreferrer" class="group block rounded-2xl bg-card p-6 border border-border hover:-translate-y-1 hover:shadow-lg transition-all fade-in">
+              <div class="flex items-start justify-between gap-4">
+                <div class="min-w-0">
+                  <p class="font-mono text-sm text-accent-ink">{repo.name}</p>
+                  <p class="mt-2 text-sm leading-6 text-muted-foreground">{repo.description}</p>
+                  <div class="mt-3 flex items-center gap-3 text-sm text-muted-foreground">
+                    <span class="flex items-center gap-1"><Star className="size-4" aria-hidden="true" />{repo.stars}</span>
+                    <span class="px-2 py-0.5 rounded bg-muted">{repo.language}</span>
+                  </div>
+                </div>
+                <div class="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span class="text-accent-ink">→</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

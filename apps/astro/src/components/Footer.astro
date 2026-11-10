@@ -1,12 +1,51 @@
 ---
 import { waLink, WHATSAPP } from "@daydev/shared-types";
-import { services } from "../lib/services";
+import { Github, Instagram, Linkedin, Mail } from "lucide-react";
 const currentYear = new Date().getFullYear();
+
+const footerGroups = [
+  {
+    label: "Studio",
+    links: [
+      { label: "Beranda", href: "/" },
+      { label: "Tentang Daydev", href: "/about" },
+      { label: "Founder", href: "/founder" },
+      { label: "Kreasi", href: "/kreasi" },
+    ],
+  },
+  {
+    label: "Eksplorasi",
+    links: [
+      { label: "Portfolio", href: "/portfolio" },
+      { label: "Layanan", href: "/services" },
+      { label: "Insights", href: "/blog" },
+      { label: "Harga", href: "/pricing" },
+    ],
+  },
+  {
+    label: "Development",
+    links: [
+      { label: "Dashboard", href: "/dev/dashboard" },
+      { label: "GitHub Activity", href: "/dev/github" },
+      { label: "Skills", href: "/dev/skills" },
+      { label: "Achievements", href: "/dev/achievements" },
+    ],
+  },
+  {
+    label: "Hubungi",
+    links: [
+      { label: "Contact", href: "/contact" },
+      { label: "Buku Tamu", href: "/guestbook" },
+      { label: "Links", href: "/links" },
+      { label: "Konsultasi", href: waLink(WHATSAPP.defaultMessage), external: true },
+    ],
+  },
+];
 ---
 
 <footer class="site-footer">
   <div class="site-container">
-    <div class="footer-grid">
+    <div class="footer-grid footer-grid-4">
       <div>
         <p class="font-display text-2xl font-semibold tracking-tight">
           Dari ide menjadi aplikasi.
@@ -15,41 +54,40 @@ const currentYear = new Date().getFullYear();
           Studio produk digital founder-led untuk web, mobile, dan eksplorasi AI.
           Berangkat dari kebutuhan nyata startup, UMKM, dan mahasiswa.
         </p>
+        <div class="mt-6 flex gap-3">
+          <a href="https://github.com/iamdayy" target="_blank" rel="noopener noreferrer" aria-label="GitHub Daydev" class="footer-social">
+            <Github className="size-5" aria-hidden="true" />
+          </a>
+          <a href="https://instagram.com/daydev__" target="_blank" rel="noopener noreferrer" aria-label="Instagram Daydev" class="footer-social">
+            <Instagram className="size-5" aria-hidden="true" />
+          </a>
+          <a href="https://linkedin.com/in/daydev" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Daydev" class="footer-social">
+            <Linkedin className="size-5" aria-hidden="true" />
+          </a>
+          <a href={waLink(WHATSAPP.defaultMessage)} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Daydev" class="footer-social">
+            <Mail className="size-5" aria-hidden="true" />
+          </a>
+        </div>
       </div>
-      <nav aria-label="Layanan di footer">
-        <h2 class="mb-3 font-semibold">Layanan</h2>
-        <ul>
-          {
-            services.map((service) => (
+      {footerGroups.map((group) => (
+        <nav aria-label={group.label}>
+          <h2 class="mb-3 font-semibold">{group.label}</h2>
+          <ul>
+            {group.links.map((link) => (
               <li>
-                <a href={`/services/${service.slug}`} class="footer-link">
-                  {service.title}
+                <a
+                  href={link.href}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
+                  class="footer-link"
+                >
+                  {link.label}
                 </a>
               </li>
-            ))
-          }
-        </ul>
-      </nav>
-      <div class="flex flex-col">
-        <h2 class="mb-3 font-semibold">Hubungi studio</h2>
-        <a
-          href={waLink(WHATSAPP.defaultMessage)}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="footer-link">WhatsApp {WHATSAPP.displayNumber}</a
-        >
-        <a
-          href="https://instagram.com/daydev__"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="footer-link">Instagram @daydev__</a
-        >
-        <nav aria-label="Halaman di footer" class="mt-3 flex flex-wrap gap-x-5">
-          <a href="/portfolio" class="footer-link">Portofolio</a>
-          <a href="/pricing" class="footer-link">Harga</a>
-          <a href="/blog" class="footer-link">Blog</a>
+            ))}
+          </ul>
         </nav>
-      </div>
+      ))}
     </div>
     <a href="/" class="brand" aria-label="Daydev Studio - Beranda">
       <img
@@ -75,3 +113,41 @@ const currentYear = new Date().getFullYear();
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-grid-4 {
+    grid-template-columns: 1.2fr repeat(4, 0.8fr);
+  }
+
+  .footer-social {
+    display: inline-flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--muted-foreground);
+    transition: color 180ms ease, background-color 180ms ease;
+  }
+
+  .footer-social:hover {
+    color: var(--accent-ink);
+    background: var(--secondary);
+  }
+
+  @media (max-width: 1100px) {
+    .footer-grid-4 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 767px) {
+    .footer-grid-4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+    }
+    .footer-grid-4 > :first-child {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

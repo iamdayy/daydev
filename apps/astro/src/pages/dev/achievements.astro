@@ -1,0 +1,167 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getStats, loadData } from "../../lib/api";
+import { Trophy, Award, Target, TrendingUp, Star, Users, Briefcase, Zap } from "lucide-react";
+
+const stats = await loadData(getStats());
+
+// Achievements hanya ditampilkan jika ada data terverifikasi dari API
+const verifiedStats = (stats.data ?? []).filter((s) => s.value.trim());
+
+const achievementCategories = [
+  {
+    icon: Briefcase,
+    title: "Pengalaman proyek",
+    items: verifiedStats
+      .filter((s) => ["proyek-selesai", "total_proyek", "klien-bisnis", "klien"].includes(s.key))
+      .map((s) => ({
+        label: s.key.replace(/[-_]/g, " "),
+        value: s.value,
+      })),
+  },
+  {
+    icon: Star,
+    title: "Kepuasan klien",
+    items: verifiedStats
+      .filter((s) => ["rating-klien", "review"].includes(s.key))
+      .map((s) => ({
+        label: s.key.replace(/[-_]/g, " "),
+        value: s.value,
+      })),
+  },
+  {
+    icon: TrendingUp,
+    title: "Pengembangan studio",
+    items: verifiedStats
+      .filter((s) => ["tahun_pengalaman", "topik-konsultasi"].includes(s.key))
+      .map((s) => ({
+        label: s.key.replace(/[-_]/g, " "),
+        value: s.value,
+      })),
+  },
+];
+
+const milestones = [
+  {
+    icon: Trophy,
+    title: "Studio berdiri",
+    description: "Daydev Studio didirikan sebagai studio produk digital founder-led untuk membantu UMKM, mahasiswa, dan startup.",
+    year: "2023",
+  },
+  {
+    icon: Award,
+    title: "Stack modern diadopsi",
+    description: "Migrasi ke stack modern: Astro 5, React Islands, Hono API, Neon PostgreSQL, dan Cloudflare R2.",
+    year: "2024",
+  },
+  {
+    icon: Target,
+    title: "Fokus integrasi AI/ML",
+    description: "Eksplorasi kemampuan AI/ML sebagai bagian dari layanan pengembangan produk digital.",
+    year: "2025",
+  },
+];
+---
+
+<Base
+  title="Achievements - Daydev Studio"
+  description="Pencapaian dan statistik terverifikasi Daydev Studio. Hanya menampilkan data yang tersedia dari sistem studio."
+  canonicalPath="/dev/achievements"
+>
+  <main>
+    <header class="page-intro">
+      <div class="site-container page-intro-grid">
+        <div class="flex items-center gap-4">
+          <Trophy className="size-8 text-accent-ink" aria-hidden="true" />
+          <h1 class="page-title">Achievements.</h1>
+        </div>
+        <p>Pencapaian terverifikasi dari Daydev Studio. Kami hanya menampilkan angka yang benar-benar ada di sistem, bukan klaim pemasaran.</p>
+      </div>
+    </header>
+
+    {stats.ok && verifiedStats.length > 0 ? (
+      <section id="verified-stats" class="section-space" aria-labelledby="verified-stats-title">
+        <div class="site-container">
+          <h2 id="verified-stats-title" class="section-title mb-10 fade-in">Statistik terverifikasi</h2>
+          <div class="grid gap-8 lg:grid-cols-3">
+            {achievementCategories.filter((c) => c.items.length > 0).map((category) => (
+              <div class="rounded-2xl bg-card p-6 sm:p-8 border border-border fade-in">
+                <div class="flex items-center gap-3 mb-6">
+                  <category.icon className="size-6 text-accent-ink" strokeWidth={1.75} aria-hidden="true" />
+                  <h3 class="text-xl font-semibold">{category.title}</h3>
+                </div>
+                <dl class="space-y-4">
+                  {category.items.map((item) => (
+                    <div class="flex items-baseline justify-between gap-4 border-b border-border pb-4 last:border-0 last:pb-0">
+                      <dt class="text-sm text-muted-foreground capitalize">{item.label}</dt>
+                      <dd class="text-2xl font-bold tracking-tight tabular-nums">{item.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    ) : (
+      <section class="section-space">
+        <div class="site-container">
+          <div class="rounded-2xl bg-muted p-8 text-center max-w-2xl mx-auto fade-in">
+            <Trophy className="size-12 mx-auto text-muted-foreground" strokeWidth={1.5} aria-hidden="true" />
+            <h2 class="mt-6 text-2xl font-semibold">Belum ada statistik yang dipublikasikan</h2>
+            <p class="mt-3 text-muted-foreground leading-7">Statistik akan muncul di sini setelah data diverifikasi dan dimasukkan ke sistem studio. Kami tidak menampilkan angka yang belum terbukti.</p>
+            <a href="/portfolio" class="button-secondary mt-6 inline-flex">Lihat proyek yang sudah dipublikasikan</a>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section id="milestones" class="section-space bg-muted" aria-labelledby="milestones-title">
+      <div class="site-container">
+        <div class="section-heading">
+          <h2 id="milestones-title" class="section-title fade-in">Milestone studio</h2>
+          <p class="fade-in">Perjalanan Daydev Studio dari awal berdiri hingga saat ini.</p>
+        </div>
+        <ol class="space-y-8" role="list">
+          {milestones.map((milestone, index) => (
+            <li class="flex gap-6 fade-in" style={{ transitionDelay: `${index * 100}ms` }}>
+              <div class="flex flex-col items-center">
+                <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-accent/10 border border-accent/20">
+                  <milestone.icon className="size-6 text-accent-ink" strokeWidth={1.75} aria-hidden="true" />
+                </div>
+                {index < milestones.length - 1 && <div class="mt-2 w-px flex-1 bg-border" aria-hidden="true" />}
+              </div>
+              <div class="pb-8">
+                <p class="font-mono text-sm text-accent-ink">{milestone.year}</p>
+                <h3 class="mt-1 text-xl font-semibold">{milestone.title}</h3>
+                <p class="mt-2 leading-7 text-muted-foreground">{milestone.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section id="principles" class="section-space" aria-labelledby="principles-title">
+      <div class="site-container">
+        <div class="max-w-3xl fade-in">
+          <h2 id="principles-title" class="section-title">Prinsip yang kami pegang</h2>
+          <div class="mt-8 space-y-6 text-lg leading-8">
+            <div class="flex items-start gap-4">
+              <Users className="size-6 shrink-0 text-accent-ink mt-1" aria-hidden="true" />
+              <p><strong>Hanya angka terverifikasi.</strong> Kami tidak menampilkan "100+ klien puas" jika belum ada datanya. Kredibilitas dibangun dari fakta, bukan klaim.</p>
+            </div>
+            <div class="flex items-start gap-4">
+              <Zap className="size-6 shrink-0 text-accent-ink mt-1" aria-hidden="true" />
+              <p><strong>Fokus pada hasil.</strong> Yang penting bukan seberapa banyak proyek, tapi seberapa baik produk tersebut membantu klien mencapai tujuan mereka.</p>
+            </div>
+            <div class="flex items-start gap-4">
+              <Target className="size-6 shrink-0 text-accent-ink mt-1" aria-hidden="true" />
+              <p><strong>Peningkatan berkelanjutan.</strong> Setiap proyek adalah kesempatan untuk belajar dan meningkatkan kualitas pengerjaan berikutnya.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

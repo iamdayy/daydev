@@ -1,0 +1,150 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getStats, getPortfolio, getBlogPosts, loadData } from "../../lib/api";
+import DataNotice from "../../components/DataNotice.astro";
+import ConsultationCTA from "../../components/ConsultationCTA.astro";
+import { Activity, Code2, GitCommit, Star, FileText, Briefcase, Zap } from "lucide-react";
+
+const [stats, portfolio, posts] = await Promise.all([
+  loadData(getStats()),
+  loadData(getPortfolio()),
+  loadData(getBlogPosts()),
+]);
+
+const publishedProjects = (portfolio.data ?? []).filter((p) => p.is_published);
+const publishedPosts = (posts.data ?? []).filter((p) => p.is_published);
+
+const dashboardCards = [
+  {
+    icon: Briefcase,
+    label: "Proyek dipublikasikan",
+    value: String(publishedProjects.length),
+    href: "/portfolio",
+  },
+  {
+    icon: FileText,
+    label: "Artikel diterbitkan",
+    value: String(publishedPosts.length),
+    href: "/blog",
+  },
+  {
+    icon: Code2,
+    label: "Stack utama",
+    value: "Astro · React · Hono · Neon",
+    href: "/dev/skills",
+  },
+  {
+    icon: Zap,
+    label: "Fokus saat ini",
+    value: "Produk digital untuk UMKM & mahasiswa",
+    href: "/services",
+  },
+];
+
+const statLabels: Record<string, string> = {
+  "proyek-selesai": "Proyek selesai",
+  "klien-bisnis": "Klien bisnis",
+  "rating-klien": "Rating klien",
+  "total_proyek": "Total proyek",
+  "klien": "Klien terbantu",
+  "tahun_pengalaman": "Tahun pengalaman",
+};
+---
+
+<Base
+  title="Development Dashboard - Daydev Studio"
+  description="Dashboard aktivitas pengembangan Daydev Studio: statistik proyek, artikel, dan fokus teknis terkini."
+  canonicalPath="/dev/dashboard"
+>
+  <main>
+    <header class="page-intro">
+      <div class="site-container page-intro-grid">
+        <h1 class="page-title">Dashboard.</h1>
+        <p>Aktivitas dan statistik pengembangan terkini dari Daydev Studio. Data diambil langsung dari API studio.</p>
+      </div>
+    </header>
+
+    <section id="overview" class="section-space" aria-labelledby="overview-title">
+      <div class="site-container">
+        <h2 id="overview-title" class="section-title mb-10 fade-in">Overview</h2>
+        <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+          {dashboardCards.map((card) => (
+            <a href={card.href} class="group rounded-2xl bg-card p-6 border border-border transition-all hover:-translate-y-1 hover:shadow-lg fade-in">
+              <card.icon className="size-6 text-accent-ink" strokeWidth={1.75} aria-hidden="true" />
+              <p class="mt-4 text-sm text-muted-foreground">{card.label}</p>
+              <p class="mt-2 text-2xl font-bold tracking-tight tabular-nums group-hover:text-accent-ink transition-colors">{card.value}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {stats.ok && stats.data && stats.data.length > 0 && (
+      <section id="stats" class="section-space bg-muted" aria-labelledby="stats-title">
+        <div class="site-container">
+          <h2 id="stats-title" class="section-title mb-10 fade-in">Statistik studio</h2>
+          <dl class="grid grid-cols-2 gap-8 lg:grid-cols-4">
+            {stats.data.filter((s) => s.value.trim()).map((stat) => (
+              <div class="fade-in">
+                <dt class="text-sm text-muted-foreground">{statLabels[stat.key] ?? stat.key.replace(/[-_]/g, " ")}</dt>
+                <dd class="mt-2 text-3xl font-bold tracking-tight tabular-nums sm:text-4xl">{stat.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+    )}
+
+    <section id="recent" class="section-space" aria-labelledby="recent-title">
+      <div class="site-container">
+        <div class="section-heading">
+          <h2 id="recent-title" class="section-title fade-in">Proyek terbaru</h2>
+          <a href="/portfolio" class="text-link fade-in ml-auto">Semua proyek</a>
+        </div>
+        {!portfolio.ok ? (
+          <DataNotice title="Data proyek belum dapat dimuat" />
+        ) : publishedProjects.length === 0 ? (
+          <p class="text-muted-foreground">Belum ada proyek yang dipublikasikan.</p>
+        ) : (
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {publishedProjects.slice(0, 6).map((project) => (
+              <a href={project.demo_url ?? "/portfolio"} target={project.demo_url ? "_blank" : undefined} rel={project.demo_url ? "noopener noreferrer" : undefined} class="group block rounded-2xl bg-card border border-border overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all fade-in">
+                {project.cover_image_url && (
+                  <div class="aspect-[16/10] overflow-hidden bg-muted" data-optional-image>
+                    <img src={project.cover_image_url} alt={`Tampilan ${project.title}`} loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  </div>
+                )}
+                <div class="p-6">
+                  <p class="text-xs font-mono uppercase tracking-wider text-accent-ink">{project.category}</p>
+                  <h3 class="mt-2 text-lg font-semibold group-hover:text-accent-ink transition-colors">{project.title}</h3>
+                  <p class="mt-2 text-sm leading-6 text-muted-foreground line-clamp-2">{project.description}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+
+    <section id="quick-links" class="section-space bg-muted" aria-labelledby="quick-links-title">
+      <div class="site-container">
+        <h2 id="quick-links-title" class="section-title mb-10 fade-in">Akses cepat</h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { icon: Activity, label: "GitHub Activity", href: "/dev/github" },
+            { icon: Code2, label: "Skills & Tools", href: "/dev/skills" },
+            { icon: Star, label: "Achievements", href: "/dev/achievements" },
+            { icon: GitCommit, label: "Lihat semua proyek", href: "/portfolio" },
+          ].map((link) => (
+            <a href={link.href} class="flex items-center gap-4 rounded-2xl bg-card p-5 border border-border hover:-translate-y-1 hover:shadow-md transition-all fade-in">
+              <link.icon className="size-6 text-accent-ink shrink-0" strokeWidth={1.75} aria-hidden="true" />
+              <span class="font-medium">{link.label}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <ConsultationCTA />
+  </main>
+</Base>

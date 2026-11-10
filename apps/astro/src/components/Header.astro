@@ -1,29 +1,9 @@
 ---
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { waLink, WHATSAPP } from "@daydev/shared-types";
-import ThemeToggle from "./ThemeToggle.astro";
+import { navigationGroups, isActive } from "./navigation";
 
-const navGroups = [
-  {
-    label: "Studio",
-    links: [
-      { label: "Beranda", href: "/" },
-      { label: "Layanan", href: "/services" },
-      { label: "Cerita pelanggan", href: "/portfolio" },
-    ],
-  },
-  {
-    label: "Mulai proyek",
-    links: [
-      { label: "Konsultasi & harga", href: "/pricing" },
-      { label: "Catatan studio", href: "/blog" },
-    ],
-  },
-];
-const navLinks = navGroups.flatMap((group) => group.links);
 const pathname = Astro.url.pathname;
-const isActive = (href: string) =>
-  pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 ---
 
 <header id="site-header" class="site-header">
@@ -45,30 +25,63 @@ const isActive = (href: string) =>
           class="light-logo"
         />
       </a>
+
       <div class="sidebar-intro">
         <p class="sidebar-kicker">Founder-led digital product studio</p>
         <p class="sidebar-description">Daydev membantu mengubah kebutuhan bisnis menjadi produk digital yang bisa dipakai.</p>
       </div>
+
+      <div class="founder-sidebar">
+        <a href="/founder" class="flex items-center gap-3" aria-label="Lihat profil founder">
+          <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-secondary font-display text-lg font-bold text-foreground" aria-hidden="true">
+            D
+          </div>
+          <div>
+            <p class="founder-name">Daydev Founder</p>
+            <p class="founder-role">Software Engineer & Product Builder</p>
+          </div>
+        </a>
+      </div>
+
       <nav class="desktop-nav" aria-label="Navigasi utama">
-        {navGroups.map((group) => (
+        {navigationGroups.map((group) => (
           <div class="nav-group">
             <p class="nav-group-label">{group.label}</p>
-            {group.links.map((link) => (
-              <a href={link.href} class="nav-link" aria-current={isActive(link.href) ? "page" : undefined}>
+            {group.items.map((link) => (
+              <a
+                href={link.href}
+                class="nav-link"
+                aria-current={isActive(pathname, link.href) ? "page" : undefined}
+                data-group={group.label}
+              >
                 {link.label}
               </a>
             ))}
           </div>
         ))}
       </nav>
+
       <div class="header-actions">
-        <ThemeToggle />
+        <button
+          type="button"
+          class="icon-button theme-toggle"
+          data-theme-toggle
+          aria-label="Aktifkan tema gelap"
+          aria-pressed="false"
+        >
+          <Sun className="theme-sun size-5" strokeWidth={1.75} aria-hidden="true" />
+          <Moon className="theme-moon size-5" strokeWidth={1.75} aria-hidden="true" />
+        </button>
+
         <a
           href={waLink(WHATSAPP.defaultMessage)}
           target="_blank"
           rel="noopener noreferrer"
-          class="button-primary header-consultation">Konsultasi gratis</a
+          class="button-primary header-consultation"
         >
+          Konsultasi gratis
+        </a>
+
         <details id="mobile-nav" class="mobile-nav">
           <summary
             id="menu-toggle"
@@ -84,17 +97,29 @@ const isActive = (href: string) =>
             class="mobile-nav-panel"
             aria-label="Navigasi mobile"
           >
-          {navLinks.map((link) => (
-            <a href={link.href} class="nav-link" aria-current={isActive(link.href) ? "page" : undefined}>
-              {link.label}
-            </a>
-          ))}
+            {navigationGroups.map((group) => (
+              <div class="nav-group mb-4">
+                <p class="nav-group-label mb-2">{group.label}</p>
+                {group.items.map((link) => (
+                  <a
+                    href={link.href}
+                    class="nav-link"
+                    aria-current={isActive(pathname, link.href) ? "page" : undefined}
+                    data-group={group.label}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            ))}
             <a
               href={waLink(WHATSAPP.defaultMessage)}
               target="_blank"
               rel="noopener noreferrer"
-              class="button-primary mt-4 w-full">Konsultasi gratis</a
+              class="button-primary mt-4 w-full"
             >
+              Konsultasi gratis
+            </a>
           </nav>
         </details>
       </div>
@@ -110,19 +135,23 @@ const isActive = (href: string) =>
   const closeMenu = () => {
     if (menu) menu.open = false;
   };
+
   menu?.addEventListener("toggle", () =>
     toggle?.setAttribute("aria-expanded", String(menu.open)),
   );
+
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && menu?.open) {
       closeMenu();
       toggle?.focus();
     }
   });
+
   menu?.addEventListener("click", (event) => {
     if (event.target instanceof Element && event.target.closest("a"))
       closeMenu();
   });
+
   header?.addEventListener("focusout", (event) => {
     if (
       event.relatedTarget instanceof Node &&
@@ -130,11 +159,29 @@ const isActive = (href: string) =>
     )
       closeMenu();
   });
+
   document.addEventListener("pointerdown", (event) => {
     if (event.target instanceof Node && !header?.contains(event.target))
       closeMenu();
   });
+
   window
     .matchMedia("(min-width: 1101px)")
     .addEventListener("change", closeMenu);
 </script>
+
+<style is:global>
+  .theme-toggle {
+    display: none;
+  }
+  [data-theme-ready] .theme-toggle {
+    display: inline-flex;
+  }
+  .theme-sun,
+  [data-theme="dark"] .theme-moon {
+    display: none;
+  }
+  [data-theme="dark"] .theme-sun {
+    display: block;
+  }
+</style>

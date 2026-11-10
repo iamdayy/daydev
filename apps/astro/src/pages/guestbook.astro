@@ -1,0 +1,180 @@
+---
+import Base from "../layouts/Base.astro";
+import { waLink } from "@daydev/shared-types";
+import { MessageSquare, Send, User, Calendar, Heart, Star } from "lucide-react";
+
+const mockEntries = [
+  {
+    name: "Ahmad R.",
+    role: "Founder, Startup Fintech",
+    message: "Daydev bantu kami bangun MVP dalam 6 minggu. Komunikasi jelas, kode rapi, dan support pasca-launch sangat membantu. Recommended untuk startup early-stage.",
+    rating: 5,
+    date: "2025-01-15",
+  },
+  {
+    name: "Siti N.",
+    role: "Mahasiswa Sistem Informasi",
+    message: "Bimbingan teknis skripsi sangat terstruktur. Pak Daydev tidak hanya bantu coding, tapi juga ajarkan best practice dokumentasi dan arsitektur. Terima kasih!",
+    rating: 5,
+    date: "2024-11-20",
+  },
+  {
+    name: "Budi S.",
+    role: "Owner, UMKM Kuliner",
+    message: "Website toko online kami jadi lebih cepat dan mudah dikelola. Fitur WhatsApp order langsung membantu pelanggan. Harga transparan dari awal.",
+    rating: 5,
+    date: "2024-09-08",
+  },
+];
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+---
+
+<Base
+  title="Buku Tamu - Daydev Studio"
+  description="Buku tamu Daydev Studio: kesan pesan dari klien, kolaborator, dan pengunjung. Bagikan pengalaman Anda bekerja dengan Daydev."
+  canonicalPath="/guestbook"
+>
+  <main>
+    <header class="page-intro">
+      <div class="site-container page-intro-grid">
+        <div class="flex items-center gap-4">
+          <MessageSquare className="size-8 text-accent-ink" aria-hidden="true" />
+          <h1 class="page-title">Buku Tamu.</h1>
+        </div>
+        <p>Kesan, saran, dan pengalaman dari klien, kolaborator, dan pengunjung yang sudah berinteraksi dengan Daydev Studio.</p>
+      </div>
+    </header>
+
+    <section id="entries" class="section-space" aria-labelledby="entries-title">
+      <div class="site-container">
+        <div class="section-heading">
+          <h2 id="entries-title" class="section-title fade-in">Pesan tamu</h2>
+          <p class="fade-in">Testimoni dan pesan dari mereka yang sudah bekerja sama atau berinteraksi dengan Daydev.</p>
+        </div>
+        <div class="space-y-6">
+          {mockEntries.map((entry, index) => (
+            <article class="rounded-2xl bg-card p-6 sm:p-8 border border-border fade-in" style={{ transitionDelay: `${index * 100}ms` }}>
+              <div class="flex items-start gap-4">
+                <div class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-secondary font-display text-xl font-bold text-foreground" aria-hidden="true">
+                  {entry.name.charAt(0).toUpperCase()}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-baseline justify-between gap-4">
+                    <div>
+                      <h3 class="text-lg font-semibold">{entry.name}</h3>
+                      <p class="text-sm text-muted-foreground">{entry.role}</p>
+                    </div>
+                    <time class="shrink-0 text-sm text-muted-foreground">{formatDate(entry.date)}</time>
+                  </div>
+                  <div class="mt-4 flex gap-1" role="img" aria-label={`Rating ${entry.rating} dari 5`}>
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star className={`size-5 ${i < entry.rating ? "fill-current text-amber-500" : "text-muted-foreground"}`} aria-hidden="true" />
+                    ))}
+                  </div>
+                  <blockquote class="mt-4 leading-7">&ldquo;{entry.message}&rdquo;</blockquote>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="write" class="section-space bg-muted" aria-labelledby="write-title">
+      <div class="site-container">
+        <div class="max-w-2xl mx-auto fade-in">
+          <h2 id="write-title" class="section-title text-center">Tinggalkan pesan</h2>
+          <p class="mt-5 text-center leading-7 text-muted-foreground">Pengalaman Anda membantu kami tumbuh dan memberikan gambaran jujur bagi pengunjung lain.</p>
+
+          <form id="guestbook-form" class="mt-8 space-y-6" action="https://wa.me/6285175284253" method="get" target="_blank">
+            <input type="hidden" name="text" id="guestbook-message" value="" />
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label for="guest-name" class="block mb-2 font-medium">Nama</label>
+                <input type="text" id="guest-name" name="name" placeholder="Nama Anda" class="w-full rounded-xl bg-card px-4 py-3 border border-border focus:outline-none focus:ring-2 focus:ring-accent-ink" required />
+              </div>
+              <div>
+                <label for="guest-role" class="block mb-2 font-medium">Peran / Hubungan</label>
+                <input type="text" id="guest-role" name="role" placeholder="Contoh: Founder, Mahasiswa, Owner UMKM" class="w-full rounded-xl bg-card px-4 py-3 border border-border focus:outline-none focus:ring-2 focus:ring-accent-ink" />
+              </div>
+            </div>
+            <div>
+              <label for="guest-rating" class="block mb-2 font-medium">Rating</label>
+              <div class="flex gap-2" role="radiogroup" aria-label="Rating 1-5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <label class="flex-1 cursor-pointer">
+                    <input type="radio" name="rating" value={i + 1} class="sr-only" required />
+                    <div class="flex justify-center gap-1 p-3 rounded-xl border border-border hover:bg-muted transition-colors has-[:checked]:border-accent-ink has-[:checked]:bg-accent/10">
+                      {Array.from({ length: 5 }).map((_, j) => (
+                        <Star className={`size-5 ${j <= i ? "fill-current text-amber-500" : "text-muted-foreground"}`} aria-hidden="true" />
+                      ))}
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label for="guest-message" class="block mb-2 font-medium">Pesan</label>
+              <textarea id="guest-message" name="message" rows={5} placeholder="Ceritakan pengalaman, saran, atau kesan Anda..." class="w-full rounded-xl bg-card px-4 py-3 border border-border focus:outline-none focus:ring-2 focus:ring-accent-ink resize-none" required></textarea>
+            </div>
+            <button type="submit" class="button-primary w-full" id="guestbook-submit">
+              <Send className="size-4 mr-2" aria-hidden="true" />
+              Kirim via WhatsApp
+            </button>
+            <p class="text-center text-sm text-muted-foreground">Pesan akan dikirim ke WhatsApp Daydev untuk ditinjau dan dipublikasikan (dengan izin Anda).</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="guidelines" class="section-space" aria-labelledby="guidelines-title">
+      <div class="site-container">
+        <div class="max-w-2xl mx-auto fade-in">
+          <h2 id="guidelines-title" class="section-title text-center">Panduan buku tamu</h2>
+          <div class="mt-8 space-y-4 text-lg leading-8">
+            <div class="flex items-start gap-4">
+              <Heart className="size-6 shrink-0 text-accent-ink mt-1" aria-hidden="true" />
+              <p><strong>Jujur & konstruktif.</strong> Kritik membangun lebih berharga dari pujian kosong. Kami terima masukan apa pun selama disampaikan dengan hormat.</p>
+            </div>
+            <div class="flex items-start gap-4">
+              <User className="size-6 shrink-0 text-accent-ink mt-1" aria-hidden="true" />
+              <p><strong>Identitas nyata.</strong> Gunakan nama asli dan peran yang relevan. Pesan anonim tidak akan dipublikasikan.</p>
+            </div>
+            <div class="flex items-start gap-4">
+              <Calendar className="size-6 shrink-0 text-accent-ink mt-1" aria-hidden="true" />
+              <p><strong>Konteks waktu.</strong> Sebutkan kapan Anda berinteraksi dengan Daydev (proyek, konsultasi, atau event).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<script>
+  const form = document.getElementById("guestbook-form") as HTMLFormElement | null;
+  const hiddenInput = document.getElementById("guestbook-message") as HTMLInputElement | null;
+  const submitBtn = document.getElementById("guestbook-submit");
+
+  submitBtn?.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (!form || !hiddenInput) return;
+    const name = (form.querySelector("#guest-name") as HTMLInputElement)?.value;
+    const role = (form.querySelector("#guest-role") as HTMLInputElement)?.value;
+    const rating = (form.querySelector('input[name="rating"]:checked') as HTMLInputElement)?.value;
+    const message = (form.querySelector("#guest-message") as HTMLTextAreaElement)?.value;
+    if (!name || !rating || !message) {
+      alert("Nama, rating, dan pesan wajib diisi.");
+      return;
+    }
+    const text = `Buku Tamu Daydev\nNama: ${name}\nPeran: ${role || "-"}\nRating: ${rating}/5\nPesan: ${message}`;
+    hiddenInput.value = text;
+    form.submit();
+  });
+</script>

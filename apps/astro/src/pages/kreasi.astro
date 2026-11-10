@@ -1,0 +1,115 @@
+---
+import Base from "../layouts/Base.astro";
+import { waLink } from "@daydev/shared-types";
+import DataNotice from "../components/DataNotice.astro";
+import { getPortfolio, loadData } from "../lib/api";
+import ProjectCard from "../components/ProjectCard.astro";
+import ConsultationCTA from "../components/ConsultationCTA.astro";
+import { Palette, Code2, Zap, Sparkles, Lightbulb, GitBranch } from "lucide-react";
+
+const projects = await loadData(getPortfolio());
+const allPublished = (projects.data ?? []).filter((project) => project.is_published).sort((a, b) => a.display_order - b.display_order);
+
+// Filter proyek internal & eksperimen
+const kreasiProjects = allPublished.filter((p) =>
+  ["web", "mobile", "bot-telegram", "undangan-digital"].includes(p.category) &&
+  (p.segment === null || ["startup", "mahasiswa"].includes(p.segment ?? ""))
+);
+
+const categories = [
+  { label: "Eksperimen UI", icon: Palette, description: "Eksplorasi antarmuka dan interaksi baru" },
+  { label: "Internal Tools", icon: Code2, description: "Alat bantu pengembangan internal" },
+  { label: "AI Experiments", icon: Zap, description: "Eksperimen fitur berbasis AI/ML" },
+  { label: "Side Projects", icon: Lightbulb, description: "Proyek sampingan & eksplorasi teknologi" },
+];
+---
+
+<Base
+  title="Kreasi - Daydev Studio"
+  description="Kreasi Daydev Studio: eksperimen UI, internal tools, AI experiments, dan side projects. Eksplorasi teknologi di luar proyek klien."
+  canonicalPath="/kreasi"
+>
+  <main>
+    <header class="page-intro">
+      <div class="site-container page-intro-grid">
+        <div class="flex items-center gap-4">
+          <Sparkles className="size-8 text-accent-ink" aria-hidden="true" />
+          <h1 class="page-title">Kreasi.</h1>
+        </div>
+        <p>Eksplorasi teknologi, eksperimen UI, internal tools, dan side projects. Ruang untuk belajar, mencoba hal baru, dan membangun hal-hal yang tidak masuk dalam cakupan proyek klien.</p>
+      </div>
+    </header>
+
+    <section id="philosophy" class="section-space bg-muted" aria-labelledby="philosophy-title">
+      <div class="site-container">
+        <div class="max-w-3xl fade-in">
+          <h2 id="philosophy-title" class="section-title">Mengapa kreasi penting.</h2>
+          <div class="mt-8 space-y-6 text-lg leading-8">
+            <p>Proyek klien memiliki batasan: deadline, budget, dan kebutuhan spesifik. Kreasi adalah ruang bebas untuk:</p>
+            <ul class="space-y-3 pl-6 list-disc">
+              <li>Mencoba teknologi baru tanpa risiko proyek</li>
+              <li>Membangun tools yang mempercepat alur kerja</li>
+              <li>Eksplorasi desain & interaksi yang tidak konvensional</li>
+              <li>Validasi ide sebelum ditawarkan ke klien</li>
+            </ul>
+            <p>Hasil kreasi sering kali menjadi fondasi fitur di proyek klien mendatang.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="categories" class="section-space" aria-labelledby="categories-title">
+      <div class="site-container">
+        <div class="section-heading">
+          <h2 id="categories-title" class="section-title fade-in">Kategori kreasi</h2>
+          <p class="fade-in">Jenis eksplorasi yang sering dilakukan.</p>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {categories.map((cat) => (
+            <div class="rounded-2xl bg-card p-6 sm:p-8 border border-border fade-in hover:-translate-y-1 hover:shadow-lg transition-all">
+              <cat.icon className="size-8 text-accent-ink" strokeWidth={1.5} aria-hidden="true" />
+              <h3 class="mt-4 text-xl font-semibold">{cat.label}</h3>
+              <p class="mt-2 leading-7 text-muted-foreground">{cat.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="showcase" class="section-space bg-muted" aria-labelledby="showcase-title">
+      <div class="site-container">
+        <div class="section-heading">
+          <h2 id="showcase-title" class="section-title fade-in">Proyek eksperimen</h2>
+          <p class="fade-in">Proyek yang dipublikasikan dengan kategori eksperimental atau internal.</p>
+        </div>
+        {!projects.ok ? (
+          <DataNotice title="Data proyek belum dapat dimuat" />
+        ) : kreasiProjects.length === 0 ? (
+          <div class="rounded-2xl bg-card p-8 text-center max-w-xl mx-auto fade-in">
+            <GitBranch className="size-12 mx-auto text-muted-foreground" strokeWidth={1.5} aria-hidden="true" />
+            <h3 class="mt-6 text-xl font-semibold">Belum ada kreasi yang dipublikasikan</h3>
+            <p class="mt-3 text-muted-foreground leading-7">Kreasi internal dan eksperimen akan muncul di sini saat dipublikasikan.</p>
+          </div>
+        ) : (
+          <div class="projects-grid">
+            {kreasiProjects.map((project, index) => (
+              <ProjectCard project={project} featured={index === 0} />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+
+    <section id="cta" class="section-space" aria-labelledby="cta-title">
+      <div class="site-container">
+        <div class="max-w-2xl mx-auto text-center fade-in">
+          <h2 id="cta-title" class="section-title">Punya ide eksperimen?</h2>
+          <p class="mt-5 leading-7 text-muted-foreground">Ceritakan ide eksperimen atau eksplorasi teknologi yang ingin Anda bahas. Kami terbuka untuk kolaborasi penelitian atau validasi konsep.</p>
+          <a href={waLink("Halo Daydev, saya punya ide eksperimen/riset teknologi dan ingin berdiskusi.")} target="_blank" rel="noopener noreferrer" class="button-primary mt-6">
+            Diskusikan via WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

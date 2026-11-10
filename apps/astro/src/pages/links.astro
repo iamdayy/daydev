@@ -1,0 +1,123 @@
+---
+import Base from "../layouts/Base.astro";
+import { Github, Instagram, Mail, Globe, Code2, FileText, ExternalLink, Linkedin as LinkedinIcon } from "lucide-react";
+import { waLink, WHATSAPP } from "@daydev/shared-types";
+
+const linkCategories = [
+  {
+    label: "Profil & Sosial",
+    icon: Globe,
+    links: [
+      { icon: Github, label: "GitHub", href: "https://github.com/iamdayy", description: "Repositori publik & kontribusi open source" },
+      { icon: Instagram, label: "Instagram", href: "https://instagram.com/daydev__", description: "Update visual & behind the scenes" },
+      { icon: LinkedinIcon, label: "LinkedIn", href: "https://linkedin.com/in/daydev", description: "Profil profesional & jaringan" },
+      { icon: Mail, label: "WhatsApp", href: waLink(WHATSAPP.defaultMessage), description: "Komunikasi langsung untuk konsultasi" },
+    ],
+  },
+  {
+    label: "Produk & Proyek",
+    icon: Code2,
+    links: [
+      { icon: Globe, label: "SISKU", href: "https://sisku.daydev.studio", description: "Sistem Informasi Sekolah" },
+      { icon: Globe, label: "EcoWarn", href: "https://ecowarn.daydev.studio", description: "Smart Hub Monitoring Lingkungan" },
+      { icon: Globe, label: "HIMATIKA", href: "https://himatika-itsnupekalongan.com", description: "Ecosystem Mahasiswa Matematika" },
+      { icon: Globe, label: "Invitation Demo", href: "https://invitation-interactive-storyboard.daydev.studio", description: "Undangan Digital Interaktif" },
+    ],
+  },
+  {
+    label: "Dokumentasi & Sumber Daya",
+    icon: FileText,
+    links: [
+      { icon: FileText, label: "Blog Daydev", href: "/blog", description: "Artikel teknis & wawasan produk" },
+      { icon: FileText, label: "Portfolio", href: "/portfolio", description: "Cerita pelanggan & case study" },
+      { icon: FileText, label: "Layanan", href: "/services", description: "Detail layanan & paket" },
+      { icon: FileText, label: "Harga", href: "/pricing", description: "Paket harga & kalkulator estimasi" },
+    ],
+  },
+  {
+    label: "Teknologi yang Dipakai",
+    icon: Code2,
+    links: [
+      { icon: ExternalLink, label: "Astro", href: "https://astro.build", description: "Framework web modern untuk performa" },
+      { icon: ExternalLink, label: "React", href: "https://react.dev", description: "Library UI untuk komponen interaktif" },
+      { icon: ExternalLink, label: "Hono", href: "https://hono.dev", description: "Framework API cepat & ringan" },
+      { icon: ExternalLink, label: "Neon", href: "https://neon.tech", description: "PostgreSQL serverless" },
+      { icon: ExternalLink, label: "Tailwind CSS", href: "https://tailwindcss.com", description: "Utility-first CSS framework" },
+      { icon: ExternalLink, label: "Bun", href: "https://bun.sh", description: "JavaScript runtime cepat" },
+      { icon: ExternalLink, label: "Cloudflare R2", href: "https://r2.cloudflare.com", description: "Object storage kompatibel S3" },
+      { icon: ExternalLink, label: "Vercel", href: "https://vercel.com", description: "Platform deployment frontend" },
+    ],
+  },
+];
+---
+
+<Base
+  title="Links - Daydev Studio"
+  description="Kumpulan tautan penting Daydev Studio: profil sosial, produk, dokumentasi, dan teknologi yang digunakan."
+  canonicalPath="/links"
+>
+  <main>
+    <header class="page-intro">
+      <div class="site-container page-intro-grid">
+        <div class="flex items-center gap-4">
+          <Code2 className="size-8 text-accent-ink" aria-hidden="true" />
+          <h1 class="page-title">Links.</h1>
+        </div>
+        <p>Semua tautan penting Daydev Studio dalam satu halaman. Profil, produk, dokumentasi, dan teknologi yang mendukung studio.</p>
+      </div>
+    </header>
+
+    <section id="links" class="section-space" aria-labelledby="links-title">
+      <div class="site-container">
+        {linkCategories.map((category, catIndex) => (
+          <div class="fade-in" style={{ transitionDelay: `${catIndex * 100}ms` }}>
+            <div class="mb-6 flex items-center gap-3">
+              <category.icon className="size-6 text-accent-ink" strokeWidth={1.75} aria-hidden="true" />
+              <h2 class="text-2xl font-semibold">{category.label}</h2>
+            </div>
+            <div class="space-y-3">
+              {category.links.map((link, linkIndex) => (
+                <a
+                  href={link.href}
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  class="group flex items-center gap-4 rounded-2xl bg-card p-4 border border-border hover:-translate-x-1 hover:shadow-md transition-all"
+                  style={{ transitionDelay: `${catIndex * 100 + linkIndex * 30}ms` }}
+                >
+                  <div class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted text-accent-ink">
+                    <link.icon className="size-5" aria-hidden="true" />
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <p class="font-medium group-hover:text-accent-ink transition-colors">{link.label}</p>
+                    <p class="text-sm text-muted-foreground truncate">{link.description}</p>
+                  </div>
+                  {link.href.startsWith("http") && (
+                    <ExternalLink className="size-5 shrink-0 text-muted-foreground group-hover:text-accent-ink transition-colors" aria-hidden="true" />
+                  )}
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="qr" class="section-space bg-muted" aria-labelledby="qr-title">
+      <div class="site-container">
+        <div class="max-w-xl mx-auto text-center fade-in">
+          <h2 id="qr-title" class="section-title">Bagikan profil Daydev</h2>
+          <p class="mt-5 leading-7 text-muted-foreground">Gunakan tautan ini untuk mengarahkan orang ke halaman links ini atau profil utama.</p>
+          <div class="mt-8 space-y-4">
+            <div class="rounded-xl bg-card p-6 border border-border">
+              <code class="text-sm break-all text-foreground">https://daydev.studio/links</code>
+            </div>
+            <div class="flex items-center justify-center gap-4 text-sm text-muted-foreground">
+              <kbd class="px-2 py-1 rounded bg-muted border border-border">Cmd+C</kbd>
+              <span>Salin tautan</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

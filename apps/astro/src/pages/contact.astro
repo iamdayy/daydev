@@ -1,0 +1,165 @@
+---
+import Base from "../layouts/Base.astro";
+import { waLink, WHATSAPP } from "@daydev/shared-types";
+import { Mail, MapPin, Clock, MessageCircle, Calendar, Zap, Phone } from "lucide-react";
+
+const contactMethods = [
+  {
+    icon: MessageCircle,
+    label: "WhatsApp",
+    value: WHATSAPP.displayNumber,
+    href: waLink(WHATSAPP.defaultMessage),
+    description: "Cara tercepat untuk konsultasi. Biasanya dibalas dalam beberapa jam kerja.",
+    primary: true,
+  },
+  {
+    icon: Mail,
+    label: "Instagram",
+    value: "@daydev__",
+    href: "https://instagram.com/daydev__",
+    description: "DM untuk pertanyaan singkat atau ingin melihat update visual studio.",
+    primary: false,
+  },
+  {
+    icon: Phone,
+    label: "Telepon (via WhatsApp)",
+    value: WHATSAPP.displayNumber,
+    href: `tel:+${WHATSAPP.phoneNumber}`,
+    description: "Panggilan suara tersedia melalui WhatsApp untuk diskusi lebih detail.",
+    primary: false,
+  },
+];
+
+const infoItems = [
+  { icon: MapPin, label: "Lokasi", value: "Indonesia (remote-first)" },
+  { icon: Clock, label: "Jam respons", value: "09.00 - 18.00 WIB, Senin-Jumat" },
+  { icon: Calendar, label: "Konsultasi", value: "Gratis, tanpa komitmen awal" },
+  { icon: Zap, label: "Estimasi balasan", value: "Kurang dari 24 jam kerja" },
+];
+
+const faqs = [
+  {
+    question: "Apakah konsultasi pertama benar-benar gratis?",
+    answer: "Ya. Konsultasi pertama membahas kebutuhan, kemungkinan solusi, dan estimasi kasar—tanpa biaya dan tanpa kewajiban melanjutkan proyek.",
+  },
+  {
+    question: "Berapa lama biasanya proyek selesai?",
+    answer: "Tergantung cakupan. Website sederhana bisa 2-4 minggu, aplikasi mobile 1-3 bulan. Estimasi detail diberikan setelah konsultasi pertama.",
+  },
+  {
+    question: "Bagaimana cara memulai proyek?",
+    answer: "Hubungi via WhatsApp dengan menjelaskan ide atau kebutuhan Anda. Kami akan menjadwalkan panggilan singkat untuk mendalami sebelum memberikan proposal.",
+  },
+  {
+    question: "Apakah bisa untuk proyek skripsi/tugas akhir?",
+    answer: "Bisa. Kami sering membantu mahasiswa membangun sistem untuk skripsi dengan bimbingan teknis dan dokumentasi yang terstruktur.",
+  },
+];
+
+const whatToPrepare = [
+  "Gambaran masalah atau ide yang ingin diselesaikan",
+  "Target pengguna (siapa yang akan menggunakan produk)",
+  "Contoh produk serupa yang disukai (jika ada)",
+  "Rentang anggaran kasar (opsional, untuk rekomendasi paket)",
+  "Target waktu peluncuran (opsional)",
+];
+---
+
+<Base
+  title="Contact - Daydev Studio"
+  description="Hubungi Daydev Studio untuk konsultasi gratis via WhatsApp, Instagram, atau telepon. Kami biasanya membalas dalam beberapa jam kerja."
+  canonicalPath="/contact"
+>
+  <main>
+    <header class="page-intro">
+      <div class="site-container page-intro-grid">
+        <div class="flex items-center gap-4">
+          <MessageCircle className="size-8 text-accent-ink" aria-hidden="true" />
+          <h1 class="page-title">Contact.</h1>
+        </div>
+        <p>Siap memulai percakapan? Hubungi Daydev Studio melalui saluran yang paling nyaman untuk Anda. Konsultasi pertama selalu gratis.</p>
+      </div>
+    </header>
+
+    <section id="methods" class="section-space" aria-labelledby="methods-title">
+      <div class="site-container">
+        <h2 id="methods-title" class="section-title mb-10 fade-in">Cara menghubungi</h2>
+        <div class="grid gap-6 lg:grid-cols-3">
+          {contactMethods.map((method, index) => (
+            <a
+              href={method.href}
+              target={method.href.startsWith("http") ? "_blank" : undefined}
+              rel={method.href.startsWith("http") ? "noopener noreferrer" : undefined}
+              class={`group rounded-2xl p-6 sm:p-8 border transition-all hover:-translate-y-1 hover:shadow-lg fade-in ${method.primary ? "bg-accent/5 border-accent/20" : "bg-card border-border"}`}
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <method.icon className={`size-8 ${method.primary ? "text-accent-ink" : "text-accent-ink"}`} strokeWidth={1.5} aria-hidden="true" />
+              <h3 class="mt-4 text-xl font-semibold">{method.label}</h3>
+              <p class={`mt-1 font-medium ${method.primary ? "text-accent-ink" : "text-foreground"}`}>{method.value}</p>
+              <p class="mt-3 text-sm leading-6 text-muted-foreground">{method.description}</p>
+              {method.primary && (
+                <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent-ink">
+                  Mulai chat sekarang <span aria-hidden="true">→</span>
+                </span>
+              )}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="info" class="section-space bg-muted" aria-labelledby="info-title">
+      <div class="site-container">
+        <h2 id="info-title" class="section-title mb-10 fade-in">Informasi</h2>
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {infoItems.map((item, index) => (
+            <div class="rounded-2xl bg-card p-6 border border-border fade-in" style={{ transitionDelay: `${index * 80}ms` }}>
+              <item.icon className="size-6 text-accent-ink" strokeWidth={1.75} aria-hidden="true" />
+              <p class="mt-4 text-sm text-muted-foreground">{item.label}</p>
+              <p class="mt-1 font-medium">{item.value}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="prepare" class="section-space" aria-labelledby="prepare-title">
+      <div class="site-container">
+        <div class="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div class="fade-in">
+            <h2 id="prepare-title" class="section-title">Yang bisa disiapkan sebelum konsultasi</h2>
+            <p class="mt-5 leading-7 text-muted-foreground">Tidak wajib lengkap—bahkan sekadar ide kasar sudah cukup untuk memulai. Semakin jelas gambaran Anda, semakin tajam rekomendasi kami.</p>
+            <a href={waLink("Halo Daydev, saya ingin konsultasi gratis. Berikut gambaran singkat kebutuhan saya...")} target="_blank" rel="noopener noreferrer" class="button-primary mt-6">
+              Mulai konsultasi
+            </a>
+          </div>
+          <ul class="space-y-4" role="list">
+            {whatToPrepare.map((item, index) => (
+              <li class="flex items-start gap-4 rounded-2xl bg-card p-5 border border-border fade-in" style={{ transitionDelay: `${index * 60}ms` }}>
+                <span class="flex size-8 shrink-0 items-center justify-center rounded-full bg-accent/10 text-sm font-bold text-accent-ink">{index + 1}</span>
+                <p class="leading-7">{item}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section-space bg-muted" aria-labelledby="faq-title">
+      <div class="site-container faq-layout">
+        <h2 id="faq-title" class="section-title fade-in">Pertanyaan umum sebelum menghubungi</h2>
+        <div class="space-y-4">
+          {faqs.map((faq) => (
+            <details class="group rounded-2xl bg-card p-6 sm:p-8 fade-in">
+              <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 font-semibold [&::-webkit-details-marker]:hidden">
+                {faq.question}
+                <span class="text-accent-ink text-xl transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p class="mt-4 leading-7 text-muted-foreground">{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

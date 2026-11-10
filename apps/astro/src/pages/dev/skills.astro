@@ -1,0 +1,181 @@
+---
+import Base from "../../layouts/Base.astro";
+import { Code2, Database, Server, Globe, Smartphone, Brain, Terminal, TestTube, Zap } from "lucide-react";
+
+const skillCategories = [
+  {
+    label: "Frontend",
+    icon: Globe,
+    skills: [
+      { name: "Astro", level: 95, years: 2 },
+      { name: "React", level: 90, years: 4 },
+      { name: "TypeScript", level: 92, years: 4 },
+      { name: "Tailwind CSS", level: 95, years: 3 },
+      { name: "Next.js", level: 80, years: 2 },
+      { name: "Vue.js", level: 65, years: 1 },
+    ],
+  },
+  {
+    label: "Backend",
+    icon: Server,
+    skills: [
+      { name: "Node.js", level: 90, years: 4 },
+      { name: "Hono", level: 88, years: 1 },
+      { name: "PostgreSQL", level: 85, years: 3 },
+      { name: "Neon (Serverless)", level: 82, years: 1 },
+      { name: "Drizzle ORM", level: 85, years: 1 },
+      { name: "REST API Design", level: 90, years: 4 },
+    ],
+  },
+  {
+    label: "Mobile",
+    icon: Smartphone,
+    skills: [
+      { name: "React Native", level: 80, years: 2 },
+      { name: "Expo", level: 85, years: 2 },
+      { name: "iOS (Swift basics)", level: 45, years: 1 },
+      { name: "Android (Kotlin basics)", level: 40, years: 1 },
+      { name: "App Store Deployment", level: 75, years: 2 },
+    ],
+  },
+  {
+    label: "AI / ML",
+    icon: Brain,
+    skills: [
+      { name: "LLM Integration", level: 75, years: 1 },
+      { name: "Python", level: 70, years: 2 },
+      { name: "Data Processing", level: 72, years: 2 },
+      { name: "Prompt Engineering", level: 80, years: 1 },
+      { name: "Vector Databases", level: 60, years: 1 },
+      { name: "ML Model Deployment", level: 55, years: 1 },
+    ],
+  },
+  {
+    label: "DevOps & Tools",
+    icon: Terminal,
+    skills: [
+      { name: "Git & GitHub", level: 95, years: 5 },
+      { name: "Vercel", level: 90, years: 3 },
+      { name: "Cloudflare (R2, Workers)", level: 80, years: 2 },
+      { name: "Docker", level: 70, years: 2 },
+      { name: "CI/CD (GitHub Actions)", level: 85, years: 3 },
+      { name: "Bun", level: 88, years: 1 },
+    ],
+  },
+  {
+    label: "Database & CMS",
+    icon: Database,
+    skills: [
+      { name: "PostgreSQL", level: 85, years: 3 },
+      { name: "Drizzle ORM", level: 85, years: 1 },
+      { name: "Neon HTTP", level: 82, years: 1 },
+      { name: "SQL Design", level: 88, years: 4 },
+      { name: "File-based CMS (Keystatic)", level: 60, years: 1 },
+    ],
+  },
+];
+
+const currentFocus = [
+  { icon: Brain, title: "AI-powered features", desc: "Integrasi LLM untuk fitur produk nyata" },
+  { icon: Zap, title: "Developer experience", desc: "Tooling & otomatisasi alur kerja" },
+  { icon: TestTube, title: "Experimental tech", desc: "Eksplorasi teknologi baru secara selektif" },
+];
+---
+
+<Base
+  title="Skills & Tools - Daydev Studio"
+  description="Keahlian teknis dan teknologi yang digunakan Daydev Studio: frontend, backend, mobile, AI/ML, DevOps, dan database."
+  canonicalPath="/dev/skills"
+>
+  <main>
+    <header class="page-intro">
+      <div class="site-container page-intro-grid">
+        <div class="flex items-center gap-4">
+          <Code2 className="size-8 text-accent-ink" aria-hidden="true" />
+          <h1 class="page-title">Skills & Tools.</h1>
+        </div>
+        <p>Teknologi dan keahlian yang digunakan dalam proyek nyata. Fokus pada kedalaman di stack utama, lebar di area pendukung.</p>
+      </div>
+    </header>
+
+    <section id="categories" class="section-space" aria-labelledby="categories-title">
+      <div class="site-container">
+        <h2 id="categories-title" class="section-title mb-10 fade-in">Kategori keahlian</h2>
+        <div class="space-y-8">
+          {skillCategories.map((category, catIndex) => (
+            <div class="fade-in" style={{ transitionDelay: `${catIndex * 100}ms` }}>
+              <div class="mb-6 flex items-center gap-3">
+                <category.icon className="size-6 text-accent-ink" strokeWidth={1.75} aria-hidden="true" />
+                <h3 class="text-2xl font-semibold">{category.label}</h3>
+              </div>
+              <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {category.skills.map((skill) => (
+                  <div class="rounded-2xl bg-card p-5 border border-border hover:-translate-y-1 hover:shadow-md transition-all">
+                    <div class="flex items-baseline justify-between gap-3">
+                      <span class="font-medium">{skill.name}</span>
+                      <span class="text-sm font-mono text-accent-ink tabular-nums">{skill.level}%</span>
+                    </div>
+                    <div class="mt-3 h-1.5 bg-muted rounded-full overflow-hidden">
+                      <div class="h-full bg-accent-ink rounded-full transition-all duration-1000" style={{ width: `${skill.level}%` }} aria-hidden="true" />
+                    </div>
+                    <p class="mt-2 text-xs text-muted-foreground">~{skill.years} tahun pengalaman</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="focus" class="section-space bg-muted" aria-labelledby="focus-title">
+      <div class="site-container">
+        <div class="section-heading">
+          <h2 id="focus-title" class="section-title fade-in">Fokus belajar saat ini</h2>
+          <p class="fade-in">Teknologi yang dieksplorasi untuk proyek masa depan.</p>
+        </div>
+        <div class="grid gap-6 md:grid-cols-3">
+          {currentFocus.map((item) => (
+            <div class="rounded-2xl bg-card p-6 sm:p-8 border border-border fade-in">
+              <item.icon className="size-8 text-accent-ink" strokeWidth={1.5} aria-hidden="true" />
+              <h3 class="mt-4 text-xl font-semibold">{item.title}</h3>
+              <p class="mt-2 leading-7 text-muted-foreground">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="philosophy" class="section-space" aria-labelledby="philosophy-title">
+      <div class="site-container">
+        <div class="max-w-3xl fade-in">
+          <h2 id="philosophy-title" class="section-title">Filosofi pemilihan teknologi</h2>
+          <div class="mt-8 space-y-6 text-lg leading-8">
+            <p><strong>Pilih yang tepat, bukan yang populer.</strong> Teknologi dievaluasi berdasarkan kesesuaian dengan masalah, kematangan ekosistem, dan biaya pemeliharaan jangka panjang.</p>
+            <p><strong>Kedalaman di stack utama.</strong> Astro, React, TypeScript, Hono, PostgreSQL—ini fondasi yang dikuasai dalam-dalam untuk produktivitas maksimal.</p>
+            <p><strong>Lebar di area pendukung.</strong> Mobile, AI/ML, DevOps dipelajari secukupnya untuk bisa memberikan rekomendasi dan membangun fitur integrasi.</p>
+            <p><strong>Hindari lock-in berlebihan.</strong> Pilih standar terbuka dan tooling yang portable. Kode harus bisa dipindahkan jika kebutuhan berubah.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="legacy" class="section-space bg-muted" aria-labelledby="legacy-title">
+      <div class="site-container">
+        <h2 id="legacy-title" class="section-title mb-10 fade-in">Teknologi yang dikuasai sebelumnya</h2>
+        <p class="max-w-2xl text-muted-foreground mb-8 fade-in">Pengalaman masa lalu yang membentuk pemahaman arsitektur dan trade-off teknis saat ini.</p>
+        <div class="flex flex-wrap gap-2 fade-in">
+          {[
+            "PHP (Laravel)", "WordPress", "jQuery", "Bootstrap", "SASS",
+            "MySQL", "MongoDB", "Firebase", "Express.js", "Koa",
+            "Python (Django)", "Java (Spring)", "C# (.NET)", "Go",
+            "Docker Swarm", "Kubernetes (basic)", "AWS (EC2, S3, RDS)",
+            "GitLab CI", "Jenkins", "Nginx", "Linux Admin"
+          ].map((tech) => (
+            <span class="rounded-full bg-card px-3 py-1.5 text-sm border border-border">{tech}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

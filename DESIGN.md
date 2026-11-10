@@ -222,6 +222,8 @@ Avoid a generic analytics dashboard as the entire homepage. Use statistics only 
 ### 7.2 Founder and About
 
 - Introduce the actual founder with real photo, name, role, biography, and relevant background if approved for public display.
+- Follow the reference's personal greeting/profile-led presentation as an editorial introduction, not as a generic resume hero.
+- Founder information should be visible in the desktop sidebar and expanded in the About page. On mobile, show it in the navigation drawer/profile panel.
 - Explain the studio's founder-led working model honestly.
 - Show career/experience timeline only from verified records.
 - Include working principles, communication, ownership, and collaboration approach.
@@ -237,7 +239,7 @@ Avoid a generic analytics dashboard as the entire homepage. Use statistics only 
 
 ### 7.4 Pencapaian / Achievements
 
-- Show verifiable certificates, awards, milestones, shipped products, contributions, or completed learning credentials.
+- Adapt the reference's achievement cards/grid for verifiable certificates, awards, milestones, shipped products, contributions, or completed learning credentials.
 - Include issuer/date/source link where available.
 - If no verified records are available, omit the page/menu item for launch rather than inventing badges.
 
@@ -272,7 +274,7 @@ Never invent metrics, testimonials, client quotes, or business impact. If quanti
 
 ### 7.8 Pricing (/pricing)
 
-**Policy: starting-price presentation.** Do not hide all pricing, and do not publish an unconditional fixed quote.
+**Policy: starting-price presentation (owner-approved).** Do not hide all pricing, and do not publish an unconditional fixed quote.
 
 - Display a clear "Mulai dari" / "Starting at" price for each approved package or service category where the current offer is still valid.
 - Audit current package definitions and displayed amounts in the existing pricing page/data before reusing them. The supplied recording shows UMKM package prices, but the recording alone is not sufficient approval that those amounts remain current.
@@ -285,9 +287,9 @@ Never invent metrics, testimonials, client quotes, or business impact. If quanti
 
 ### 7.9 Dasbor / Development activity / GitHub
 
-Adapt the reference's dashboard, GitHub contribution heatmap, summary cards, and pinned repository patterns:
+Adapt the reference's dashboard, GitHub contribution heatmap, summary cards, and pinned repository patterns. The dashboard may combine a small number of useful studio/founder indicators with recent work, but must not become a vanity-metrics page:
 - Use real GitHub API or existing integration data, with caching and clear last-updated timestamps.
-- Potential data: public repositories, pinned repositories, contributions/commit activity, languages, stars, and recent public activity where the source supports them.
+- Potential data: public repositories, pinned repositories, contributions/commit activity, languages, stars, and recent public activity where the source supports them. Each metric must show its period/source or be omitted.
 - Do not scrape or fabricate unavailable private contribution data.
 - Do not present lifetime/annual stats without defining their period and source.
 - Keep activity as supporting proof, not a replacement for project case studies.
@@ -295,10 +297,18 @@ Adapt the reference's dashboard, GitHub contribution heatmap, summary cards, and
 
 ### 7.10 Kreasi / Content and creative output
 
-If there is real material such as published writing, demos, experiments, or public social posts, curate it with source links and context. Do not embed an arbitrary social feed just to imitate the reference. Ensure third-party content rights and platform embedding requirements are respected.
+Adapt the reference's Kreasi destination as a curated showcase of genuine output beyond client project cards:
+- Product demos, experiments, prototypes, technical explorations, published videos, articles, talks, and selected social posts.
+- Use categories or tabs only when there is enough real content to support them.
+- Link to the original source and add context about the creator's role.
+- Distinguish client work, personal work, learning experiments, and collaborative contributions.
+- Do not embed an arbitrary social feed or copy third-party content just to imitate the reference.
+- Respect platform embedding rules, copyright, and privacy.
+- If no relevant content is ready, keep this as a section within Projects/Insights or omit the menu item until populated.
 
 ### 7.11 Buku Tamu / Guestbook (optional)
 
+Adapt the reference's guestbook concept only as an optional community feature, not a core lead-generation dependency.
 - Optional feature, not a launch blocker.
 - Implement only if moderation, spam protection, privacy notice, and deletion process can be supported.
 - Validate and sanitize all user input server-side.
@@ -306,10 +316,10 @@ If there is real material such as published writing, demos, experiments, or publ
 - Provide a clear empty state and moderation expectations.
 - If these safeguards cannot be delivered, defer the feature and omit its navigation item.
 
-### 7.12 Contact / Links
+### 7.12 Contact
 
 - Provide clear WhatsApp and email routes using existing shared constants where available.
-- Curate social links (GitHub, LinkedIn, Instagram, etc.) only when the destination is verified and maintained.
+- Link to the canonical Links/social directory where implemented; avoid duplicating a long list of social destinations on the contact page.
 - Inquiry form asks for useful project context without excessive friction.
 - Preserve server-side validation and API boundaries.
 - Contact cards should have meaningful labels and accessible destinations.
@@ -320,7 +330,15 @@ If there is real material such as published writing, demos, experiments, or publ
 - Do not introduce Keystatic or a file-based CMS unless explicitly approved.
 - Prioritize articles derived from real engineering work, product decisions, and case studies.
 
-### 7.14 Footer
+### 7.14 Social links and external profile destinations
+
+- Adapt the reference's dedicated Links area as a curated set of external destinations: GitHub, LinkedIn, Instagram, professional profiles, product demos, and other channels only when they are real, public, relevant, and maintained.
+- Group links by purpose (professional, creative, product, community) when there are enough destinations to justify grouping.
+- Include a short description so visitors know what each destination contains.
+- Do not add dead links, private dashboards, or unrelated social accounts.
+- Social destinations may also appear as compact sidebar icons, but the dedicated Links section/page should remain the canonical directory if implemented.
+
+### 7.15 Footer
 
 - Studio identity, concise value proposition, primary links, contact/social links, and copyright.
 - Do not repeat the entire sidebar navigation if it adds clutter.

@@ -75,6 +75,8 @@ Do not assume that a planned page or feature already exists.
 
 - Read DESIGN.md and apps/astro/src/styles/global.css before public UI changes.
 - Keep the public website shell separate from the /admin shell. Do not accidentally apply public navigation or theme assumptions to admin pages.
+- Adapt all relevant information architecture patterns from the two owner-supplied screen recordings: founder profile, dashboard, skills/kreasi, achievements, projects, GitHub activity/repositories, guestbook, contact, and social links. Adapt concepts and hierarchy only; do not copy another person's content, metrics, or exact visual identity.
+- Optional modules (achievements, guestbook, creative feed, live GitHub heatmap) must only ship when supported by real content/data and appropriate security/moderation. Omit empty menu items rather than shipping placeholders.
 - Preserve Astro file-based routing and existing route URLs.
 - Reuse Base.astro, Header.astro, Footer.astro, ThemeScript.astro, ThemeToggle.astro, existing sections, and project/service components when appropriate. Audit them before replacing them.
 - The approved redesign uses a hybrid sidebar + main content layout on desktop, responsive navigation on tablet/mobile, studio-personal identity, and light-first theme with orange brand accent.
@@ -86,9 +88,9 @@ Do not assume that a planned page or feature already exists.
 - Centralize design tokens in global.css; avoid scattered arbitrary hex values.
 - Prefer semantic HTML, accessible labels, keyboard operation, visible focus, and reduced-motion support.
 - Preserve loading, empty, and error states for API-backed content.
-- Do not fabricate testimonials, metrics, GitHub activity, project status, client names, or project outcomes.
+- Do not fabricate testimonials, metrics, GitHub activity, project status, client names, achievements, skills proficiency, follower counts, or project outcomes. All dashboard statistics and profile claims must have a real source, clear period, and accurate attribution.
 - Use Indonesian as the default public language. Do not invent a localization framework; inspect the current route and content setup first.
-- Pricing: preserve the existing /pricing route and inspect its calculator/data. Do not publish fixed prices or guarantee a quote before consultation unless the user explicitly changes this policy.
+- Pricing: preserve /pricing. The owner-approved policy is to display verified "Mulai dari" starting prices, not hide all prices and not present them as binding final quotes. Audit current package amounts and validity before reuse; never invent prices. Explain scope assumptions and direct visitors to consultation for a final estimate. If amounts cannot be verified, use a clearly flagged non-numeric consultation state and ask the owner for confirmation.
 
 ## Data integrity and security
 
@@ -120,7 +122,7 @@ For a website redesign:
 3. Identify reusable components and behavior that must be preserved.
 4. Propose the smallest safe implementation plan.
 5. Implement the shared shell and design tokens first.
-6. Implement pages in this order: homepage, portfolio, project detail only if supported by data/routing, services, pricing, contact, about, activity, blog enhancements.
+6. Implement the experience in this order: shared sidebar/mobile navigation and design tokens; homepage/studio overview; portfolio and case studies; services and pricing (verified starting-price policy); contact; founder/about; skills/kreasi; achievements; GitHub/development dashboard; links/social directory; blog; optional guestbook only after moderation and privacy safeguards.
 7. Keep /admin separate and regression-test its layout and authentication flow.
 8. Validate responsive behavior and accessibility.
 9. Run relevant tests and production build.

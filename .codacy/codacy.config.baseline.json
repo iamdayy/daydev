@@ -6,8 +6,8 @@
     "organization": null,
     "repositoryId": null,
     "repositoryName": null,
-    "createdAt": "2026-11-04T10:51:09.047Z",
-    "updatedAt": "2026-11-04T10:51:09.047Z",
+    "createdAt": "2026-11-11T03:28:48.139Z",
+    "updatedAt": "2026-11-11T03:28:48.139Z",
     "languages": [
       "CSS",
       "JSON",
@@ -2647,6 +2647,10 @@
         {
           "patternId": "Lizard_file-nloc-critical"
         }
+      ],
+      "exclude": [
+        "apps/api/src/tests/**",
+        "*.test.ts"
       ]
     },
     {

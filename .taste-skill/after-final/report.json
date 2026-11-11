@@ -1,0 +1,1815 @@
+{
+ "url": "http://localhost:5000/founder",
+ "at": "2026-11-11T06:06:23.519Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 7,
+   "filled": [
+    0.85,
+    0.48,
+    0.23,
+    0.28,
+    0.58,
+    0.95,
+    0.94
+   ],
+   "motion": {
+    "elements": 15,
+    "css": 1,
+    "transitions": 14,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 5943,
+     "screens": 6.6,
+     "words": 281,
+     "img": 6,
+     "video": 0,
+     "canvas": 0,
+     "svg": 18,
+     "sections": 6,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 1,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "founder-dayan-cutout.png"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Produk digital yang dipakai.",
+     "words": 4,
+     "chars": 28,
+     "lines": 3,
+     "size": 86.4,
+     "vw": 6,
+     "font": "Space Grotesk",
+     "weight": 700,
+     "tracking": -0.065,
+     "leading": 0.98,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "left",
+     "widthRatio": 0.33,
+     "top": 80,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Produk digital yang dipakai.",
+     "words": 4,
+     "lines": 3,
+     "size": 86.4,
+     "font": "Space Grotesk"
+    },
+    "headings": [
+     {
+      "text": "Produk digital yang dipakai.",
+      "words": 4,
+      "chars": 28,
+      "lines": 3,
+      "size": 86.4,
+      "vw": 6,
+      "font": "Space Grotesk",
+      "weight": 700,
+      "tracking": -0.065,
+      "leading": 0.98,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.33,
+      "top": 80,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Memahami manusia sebelum menulis kode.",
+      "words": 5,
+      "chars": 38,
+      "lines": 4,
+      "size": 57.6,
+      "vw": 4,
+      "font": "Space Grotesk",
+      "weight": 400,
+      "tracking": -0.055,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.3,
+      "top": 915,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Dari ide ke produk.",
+      "words": 4,
+      "chars": 19,
+      "lines": 1,
+      "size": 57.6,
+      "vw": 4,
+      "font": "Space Grotesk",
+      "weight": 400,
+      "tracking": -0.055,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.45,
+      "top": 1518,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Teknologi untuk pekerjaan nyata.",
+      "words": 4,
+      "chars": 32,
+      "lines": 2,
+      "size": 57.6,
+      "vw": 4,
+      "font": "Space Grotesk",
+      "weight": 400,
+      "tracking": -0.055,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.3,
+      "top": 3621,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Jujur sejak awal, jelas sampai akhir.",
+      "words": 6,
+      "chars": 37,
+      "lines": 6,
+      "size": 57.6,
+      "vw": 4,
+      "font": "Space Grotesk",
+      "weight": 400,
+      "tracking": -0.055,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.16,
+      "top": 4399,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Yuk diskusi proyek Anda.",
+      "words": 4,
+      "chars": 24,
+      "lines": 1,
+      "size": 56,
+      "vw": 3.9,
+      "font": "Space Grotesk",
+      "weight": 700,
+      "tracking": -0.03,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.44,
+      "top": 5182,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 6,
+     "maxLines": 6,
+     "over2Lines": 3,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 4,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.82,
+       "mono": false
+      },
+      {
+       "family": "Space Grotesk",
+       "share": 0.16,
+       "mono": false
+      },
+      {
+       "family": "JetBrains Mono",
+       "share": 0.02,
+       "mono": true
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      16,
+      18,
+      19,
+      20,
+      24,
+      56,
+      58,
+      86
+     ],
+     "sizeCount": 12,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 17.6,
+      "leading": 1.8,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5
+     },
+     "measureChars": 50,
+     "max": {
+      "size": 86.4,
+      "vw": 6,
+      "font": "Space Grotesk",
+      "text": "yang dipakai."
+     },
+     "monoShare": 0.02,
+     "monoProseShare": 0.02,
+     "monoFamilies": [
+      "JetBrains Mono"
+     ],
+     "monoSamples": [
+      "OVERVIEW",
+      "EXPLORE",
+      "DEVELOPMENT",
+      "CONNECT"
+     ],
+     "microLabels": 2,
+     "microLabelShare": 0.016,
+     "microSamples": [
+      "Temukan saya",
+      "FounderDaydev Studio"
+     ],
+     "upperShare": 0.04,
+     "centerShare": 0.04,
+     "smallText": 2
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f1f3f6",
+       "top": 0,
+       "hsl": {
+        "h": 216,
+        "s": 0.22,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 771,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#17191d",
+       "top": 4255,
+       "hsl": {
+        "h": 220,
+        "s": 0.12,
+        "l": 0.1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#68707a",
+       "share": 0.41
+      },
+      {
+       "color": "#5b6778",
+       "share": 0.22
+      },
+      {
+       "color": "#17191d",
+       "share": 0.18
+      },
+      {
+       "color": "#0a0a0a",
+       "share": 0.06
+      },
+      {
+       "color": "#aab1bb",
+       "share": 0.05
+      }
+     ],
+     "button": {
+      "bg": "#f97316",
+      "hsl": {
+       "h": 25,
+       "s": 0.95,
+       "l": 0.53
+      },
+      "fg": "#0a0a0a"
+     },
+     "lowContrast": [
+      {
+       "text": "Expert",
+       "ratio": 3.6,
+       "need": 4.5,
+       "size": 13.1,
+       "fg": "#e83d6b",
+       "bg": "#f1f3f6"
+      },
+      {
+       "text": "Advanced",
+       "ratio": 3.6,
+       "need": 4.5,
+       "size": 13.1,
+       "fg": "#e83d6b",
+       "bg": "#f1f3f6"
+      },
+      {
+       "text": "Intermediate",
+       "ratio": 3.6,
+       "need": 4.5,
+       "size": 13.1,
+       "fg": "#e83d6b",
+       "bg": "#f1f3f6"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 2,
+     "radius": "pill",
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Konsultasi gratis",
+      "Mari berdiskusi"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 2,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 1,
+     "dashed": 0,
+     "blurred": 4,
+     "roundedBoxes": 1,
+     "boxRadius": 20,
+     "squareMedia": 1,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 6,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 0
+      },
+      {
+       "count": 3,
+       "iconTopped": true,
+       "rounded": false,
+       "top": 1641
+      },
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 3621
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.29
+     }
+    ],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "space grotesk",
+     "inter",
+     "jetbrains mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 5943,
+    "margins": {
+     "left": 312,
+     "right": 27
+    },
+    "sections": [
+     {
+      "sel": "div#konten",
+      "tag": "div",
+      "top": 0,
+      "height": 5426,
+      "words": 216,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Produk digital",
+       "size": 86,
+       "tag": "h1"
+      },
+      "left": 312,
+      "right": 27,
+      "textLeft": 312,
+      "textRight": 27,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.site-footer",
+      "tag": "footer",
+      "top": 5426,
+      "height": 516,
+      "words": 56,
+      "media": 0,
+      "middle": 134,
+      "heading": {
+       "text": "Studio",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 312,
+      "right": 24,
+      "textLeft": 312,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [
+     {
+      "top": 1228,
+      "height": 280
+     },
+     {
+      "top": 3304,
+      "height": 308
+     },
+     {
+      "top": 4108,
+      "height": 280
+     }
+    ],
+    "h1s": [
+     {
+      "text": "Produk digital yang dipakai.",
+      "size": 86,
+      "top": 80,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 312,
+      "n": 10
+     },
+     {
+      "x": 339,
+      "n": 6
+     },
+     {
+      "x": 912,
+      "n": 3
+     },
+     {
+      "x": 888,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 21,
+    "bodySize": 18,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0.1,
+    "voidBox": {
+     "x": 240,
+     "y": 780,
+     "w": 1080,
+     "h": 120
+    }
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 6,
+   "filled": [
+    0.92,
+    0.46,
+    0.21,
+    0.57,
+    0.78,
+    0.96
+   ],
+   "motion": {
+    "elements": 15,
+    "css": 1,
+    "transitions": 14,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 5746,
+     "screens": 5.6,
+     "words": 256,
+     "img": 6,
+     "video": 0,
+     "canvas": 0,
+     "svg": 18,
+     "sections": 6,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 1,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "founder-dayan-cutout.png"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Produk digital yang dipakai.",
+     "words": 4,
+     "chars": 28,
+     "lines": 2,
+     "size": 80,
+     "vw": 10.4,
+     "font": "Space Grotesk",
+     "weight": 700,
+     "tracking": -0.065,
+     "leading": 0.98,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.85,
+     "top": 168,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Produk digital yang dipakai.",
+     "words": 4,
+     "lines": 2,
+     "size": 80,
+     "font": "Space Grotesk"
+    },
+    "headings": [
+     {
+      "text": "Produk digital yang dipakai.",
+      "words": 4,
+      "chars": 28,
+      "lines": 2,
+      "size": 80,
+      "vw": 10.4,
+      "font": "Space Grotesk",
+      "weight": 700,
+      "tracking": -0.065,
+      "leading": 0.98,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.85,
+      "top": 168,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Memahami manusia sebelum menulis kode.",
+      "words": 5,
+      "chars": 38,
+      "lines": 1,
+      "size": 35.2,
+      "vw": 4.6,
+      "font": "Space Grotesk",
+      "weight": 400,
+      "tracking": -0.055,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.91,
+      "top": 1161,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Dari ide ke produk.",
+      "words": 4,
+      "chars": 19,
+      "lines": 1,
+      "size": 35.2,
+      "vw": 4.6,
+      "font": "Space Grotesk",
+      "weight": 400,
+      "tracking": -0.055,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.85,
+      "top": 1677,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Teknologi untuk pekerjaan nyata.",
+      "words": 4,
+      "chars": 32,
+      "lines": 1,
+      "size": 35.2,
+      "vw": 4.6,
+      "font": "Space Grotesk",
+      "weight": 400,
+      "tracking": -0.055,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.91,
+      "top": 3629,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Jujur sejak awal, jelas sampai akhir.",
+      "words": 6,
+      "chars": 37,
+      "lines": 1,
+      "size": 35.2,
+      "vw": 4.6,
+      "font": "Space Grotesk",
+      "weight": 400,
+      "tracking": -0.055,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 4421,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Yuk diskusi proyek Anda.",
+      "words": 4,
+      "chars": 24,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "Space Grotesk",
+      "weight": 700,
+      "tracking": -0.03,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.75,
+      "top": 4720,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 6,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 4,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.82,
+       "mono": false
+      },
+      {
+       "family": "Space Grotesk",
+       "share": 0.18,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      16,
+      18,
+      20,
+      24,
+      32,
+      35,
+      80
+     ],
+     "sizeCount": 11,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 17.6,
+      "leading": 1.8,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5
+     },
+     "measureChars": 64,
+     "max": {
+      "size": 80,
+      "vw": 10.4,
+      "font": "Space Grotesk",
+      "text": "yang dipakai."
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 2,
+     "microLabelShare": 0.018,
+     "microSamples": [
+      "Temukan saya",
+      "FounderDaydev Studio"
+     ],
+     "upperShare": 0.02,
+     "centerShare": 0.02,
+     "smallText": 2
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f1f3f6",
+       "top": 104,
+       "hsl": {
+        "h": 216,
+        "s": 0.22,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 1081,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#17191d",
+       "top": 4341,
+       "hsl": {
+        "h": 220,
+        "s": 0.12,
+        "l": 0.1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#68707a",
+       "share": 0.45
+      },
+      {
+       "color": "#17191d",
+       "share": 0.2
+      },
+      {
+       "color": "#5b6778",
+       "share": 0.18
+      },
+      {
+       "color": "#aab1bb",
+       "share": 0.06
+      },
+      {
+       "color": "#0a0a0a",
+       "share": 0.05
+      }
+     ],
+     "button": {
+      "bg": "#17191d",
+      "hsl": {
+       "h": 220,
+       "s": 0.12,
+       "l": 0.1
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": [
+      {
+       "text": "Expert",
+       "ratio": 3.6,
+       "need": 4.5,
+       "size": 13.1,
+       "fg": "#e83d6b",
+       "bg": "#f1f3f6"
+      },
+      {
+       "text": "Advanced",
+       "ratio": 3.6,
+       "need": 4.5,
+       "size": 13.1,
+       "fg": "#e83d6b",
+       "bg": "#f1f3f6"
+      },
+      {
+       "text": "Intermediate",
+       "ratio": 3.6,
+       "need": 4.5,
+       "size": 13.1,
+       "fg": "#e83d6b",
+       "bg": "#f1f3f6"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 1,
+     "radius": 0,
+     "height": 51,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Mari berdiskusi"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 1,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 3,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 1,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.3
+     }
+    ],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 72,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "space grotesk",
+     "inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 5746,
+    "margins": {
+     "left": 24,
+     "right": 35
+    },
+    "sections": [
+     {
+      "sel": "div#konten",
+      "tag": "div",
+      "top": 104,
+      "height": 4877,
+      "words": 216,
+      "media": 1,
+      "middle": 3,
+      "heading": {
+       "text": "Produk digital",
+       "size": 80,
+       "tag": "h1"
+      },
+      "left": 24,
+      "right": 35,
+      "textLeft": 24,
+      "textRight": 35,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.site-footer",
+      "tag": "footer",
+      "top": 4981,
+      "height": 765,
+      "words": 56,
+      "media": 0,
+      "middle": 146,
+      "heading": {
+       "text": "Studio",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 24,
+      "textLeft": 24,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Produk digital yang dipakai.",
+      "size": 80,
+      "top": 168,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 24,
+      "n": 12
+     },
+     {
+      "x": 48,
+      "n": 9
+     }
+    ],
+    "leftBlocks": 21,
+    "bodySize": 18,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.89,
+    0.65,
+    0.41,
+    0.24,
+    0.57,
+    0.84,
+    0.94,
+    0.87
+   ],
+   "motion": {
+    "elements": 15,
+    "css": 1,
+    "transitions": 14,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 6334,
+     "screens": 7.5,
+     "words": 256,
+     "img": 6,
+     "video": 0,
+     "canvas": 0,
+     "svg": 18,
+     "sections": 6,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 1,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "founder-dayan-cutout.png"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Produk digital yang dipakai.",
+     "words": 4,
+     "chars": 28,
+     "lines": 2,
+     "size": 54.6,
+     "vw": 14,
+     "font": "Space Grotesk",
+     "weight": 700,
+     "tracking": -0.065,
+     "leading": 0.98,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.9,
+     "top": 152,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Produk digital yang dipakai.",
+     "words": 4,
+     "lines": 2,
+     "size": 54.6,
+     "font": "Space Grotesk"
+    },
+    "headings": [
+     {
+      "text": "Produk digital yang dipakai.",
+      "words": 4,
+      "chars": 28,
+      "lines": 2,
+      "size": 54.6,
+      "vw": 14,
+      "font": "Space Grotesk",
+      "weight": 700,
+      "tracking": -0.065,
+      "leading": 0.98,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 152,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Memahami manusia sebelum menulis kode.",
+      "words": 5,
+      "chars": 38,
+      "lines": 2,
+      "size": 35.2,
+      "vw": 9,
+      "font": "Space Grotesk",
+      "weight": 400,
+      "tracking": -0.055,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 1150,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Dari ide ke produk.",
+      "words": 4,
+      "chars": 19,
+      "lines": 1,
+      "size": 35.2,
+      "vw": 9,
+      "font": "Space Grotesk",
+      "weight": 400,
+      "tracking": -0.055,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 1796,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Teknologi untuk pekerjaan nyata.",
+      "words": 4,
+      "chars": 32,
+      "lines": 2,
+      "size": 35.2,
+      "vw": 9,
+      "font": "Space Grotesk",
+      "weight": 400,
+      "tracking": -0.055,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 3749,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Jujur sejak awal, jelas sampai akhir.",
+      "words": 6,
+      "chars": 37,
+      "lines": 2,
+      "size": 35.2,
+      "vw": 9,
+      "font": "Space Grotesk",
+      "weight": 400,
+      "tracking": -0.055,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 4659,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Yuk diskusi proyek Anda.",
+      "words": 4,
+      "chars": 24,
+      "lines": 2,
+      "size": 32,
+      "vw": 8.2,
+      "font": "Space Grotesk",
+      "weight": 700,
+      "tracking": -0.03,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 5025,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Dari ide menjadi aplikasi.",
+      "words": 4,
+      "chars": 26,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Space Grotesk",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 5427,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 1,
+     "centered": 0,
+     "medianWords": 4,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 0.82,
+       "mono": false
+      },
+      {
+       "family": "Space Grotesk",
+       "share": 0.18,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      16,
+      18,
+      20,
+      24,
+      32,
+      35,
+      55
+     ],
+     "sizeCount": 11,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 17.6,
+      "leading": 1.8,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5
+     },
+     "measureChars": 44,
+     "max": {
+      "size": 54.6,
+      "vw": 14,
+      "font": "Space Grotesk",
+      "text": "yang dipakai."
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 2,
+     "microLabelShare": 0.018,
+     "microSamples": [
+      "Temukan saya",
+      "FounderDaydev Studio"
+     ],
+     "upperShare": 0.02,
+     "centerShare": 0.02,
+     "smallText": 2
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f1f3f6",
+       "top": 88,
+       "hsl": {
+        "h": 216,
+        "s": 0.22,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 1070,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#17191d",
+       "top": 4579,
+       "hsl": {
+        "h": 220,
+        "s": 0.12,
+        "l": 0.1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#68707a",
+       "share": 0.45
+      },
+      {
+       "color": "#17191d",
+       "share": 0.2
+      },
+      {
+       "color": "#5b6778",
+       "share": 0.18
+      },
+      {
+       "color": "#aab1bb",
+       "share": 0.06
+      },
+      {
+       "color": "#0a0a0a",
+       "share": 0.05
+      }
+     ],
+     "button": {
+      "bg": "#17191d",
+      "hsl": {
+       "h": 220,
+       "s": 0.12,
+       "l": 0.1
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": [
+      {
+       "text": "Expert",
+       "ratio": 3.6,
+       "need": 4.5,
+       "size": 13.1,
+       "fg": "#e83d6b",
+       "bg": "#f1f3f6"
+      },
+      {
+       "text": "Advanced",
+       "ratio": 3.6,
+       "need": 4.5,
+       "size": 13.1,
+       "fg": "#e83d6b",
+       "bg": "#f1f3f6"
+      },
+      {
+       "text": "Intermediate",
+       "ratio": 3.6,
+       "need": 4.5,
+       "size": 13.1,
+       "fg": "#e83d6b",
+       "bg": "#f1f3f6"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 1,
+     "radius": 0,
+     "height": 51,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Mari berdiskusi"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 1,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 3,
+     "roundedBoxes": 0,
+     "boxRadius": 0,
+     "squareMedia": 1,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 3,
+       "iconTopped": true,
+       "rounded": false,
+       "top": 1896
+      },
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 3860
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.19
+     }
+    ],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 60,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "space grotesk",
+     "inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 6334,
+    "margins": {
+     "left": 20,
+     "right": 23
+    },
+    "sections": [
+     {
+      "sel": "div#konten",
+      "tag": "div",
+      "top": 88,
+      "height": 5267,
+      "words": 216,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "Produk digital",
+       "size": 55,
+       "tag": "h1"
+      },
+      "left": 20,
+      "right": 23,
+      "textLeft": 20,
+      "textRight": 23,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.site-footer",
+      "tag": "footer",
+      "top": 5355,
+      "height": 979,
+      "words": 56,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Studio",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 20,
+      "right": 20,
+      "textLeft": 20,
+      "textRight": 20,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Produk digital yang dipakai.",
+      "size": 55,
+      "top": 152,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 20,
+      "n": 12
+     },
+     {
+      "x": 44,
+      "n": 9
+     }
+    ],
+    "leftBlocks": 21,
+    "bodySize": 18,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "headline-lines",
+   "width": 1440,
+   "message": "3 headline(s) wrap past two lines at 1440px: \"Produk digital yang dipakai.\" → 3 lines (4 words, 86.4px); \"Memahami manusia sebelum menulis kode.\" → 4 lines (5 words, 57.6px); \"Jujur sejak awal, jelas sampai akhir.\" → 6 lines (6 words, 57.6px)",
+   "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 36px or less."
+  },
+  {
+   "level": "FAIL",
+   "id": "mono",
+   "width": 1440,
+   "message": "Monospace type outside code: JetBrains Mono — e.g. \"OVERVIEW\", \"EXPLORE\", \"DEVELOPMENT\", \"CONNECT\"",
+   "fix": "Set it in the text face. Monospace is for literal code inside <pre>/<code> only."
+  },
+  {
+   "level": "WARN",
+   "id": "micro-label",
+   "width": 1440,
+   "message": "2 tiny uppercase letter-spaced label(s): \"Temukan saya\", \"FounderDaydev Studio\"",
+   "fix": "Prefer sentence case at body size.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "width": 1440,
+   "message": "1 box(es) drawn with a 1px outline.",
+   "fix": "Prefer a filled surface or no box."
+  },
+  {
+   "level": "WARN",
+   "id": "glass",
+   "width": 1440,
+   "message": "4 backdrop-blur surfaces.",
+   "fix": "One blurred sticky bar at most; glass cards are a tell.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "icon-cards",
+   "width": 1440,
+   "message": "1 row(s) of identical cards each topped with a small icon (3 cards).",
+   "fix": "Replace with one composed section from the direction: a narrative split, a list set in large type, or real imagery per item.",
+   "alsoAt": [
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "contrast",
+   "width": 1440,
+   "message": "Low-contrast text: \"Expert\" 3.6:1 needs 4.5:1; \"Advanced\" 3.6:1 needs 4.5:1; \"Intermediate\" 3.6:1 needs 4.5:1",
+   "fix": "Darken or lighten the text colour.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "font-count",
+   "width": 1440,
+   "message": "3 typefaces in use (Inter, Space Grotesk, JetBrains Mono).",
+   "fix": "Two at most."
+  },
+  {
+   "level": "WARN",
+   "id": "size-count",
+   "width": 1440,
+   "message": "12 different font sizes (11, 12, 13, 14, 16, 18, 19, 20, 24, 56, 58, 86).",
+   "fix": "A page needs about five: display, heading, lead, body, small.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "grey-body",
+   "width": 1440,
+   "message": "The running text is a soft grey on its ground (5:1).",
+   "fix": "Set body copy in the full ink (7:1 or more). Keep the muted ink for secondary notes; pages read thin and unfinished when everything is grey.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "few-pictures",
+   "width": 1440,
+   "message": "Only 1 picture(s) on the page (1 photographs, footage or raster images, 0 interface fragments). Drawings in SVG do not count.",
+   "fix": "Find real pictures of the subject's world with scripts/assets.mjs (photographs, archival images, maps, engravings, footage), download them to assets/ and give them room: a hero picture, one per section that has a subject, a full-width band. At least four, usually six to twelve."
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "WARN",
+   "id": "small-text",
+   "width": 1440,
+   "message": "2 text block(s) under 13px.",
+   "fix": "Nothing meant to be read goes below 13px.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "dev-server",
+   "width": 1440,
+   "message": "This page is served by a development server (Vite, webpack or Next in dev mode).",
+   "fix": "Run the last gate on the production build too (vite build && vite preview, next build && next start, or the built index.html): minifiers and bundlers change the CSS a visitor receives.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "off-centre",
+   "width": 1440,
+   "message": "The page sits off-centre: its content comes to 312px from the left edge but only to 27px from the right, at 1440px.",
+   "fix": "Give the page one pair of equal margins. Check the wrapper for a max-width without margin-inline: auto, a grid with an empty last column, or padding on one side only. If one side is meant to hold air, it must still be closed by something that reaches the margin (a picture, the navigation's last item, a figure)."
+  },
+  {
+   "level": "WARN",
+   "id": "still-page",
+   "width": 1440,
+   "message": "Little motion: 15 element(s) moved while the page loaded and scrolled.",
+   "fix": "Give every section an entrance for its parts (not one fade of the whole block) and add one moving picture: a looping clip or a slow move on a photograph."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "/home/iamdayy/codes/daydev/.taste-skill/after-final/desktop-fold.jpg",
+   "pages": [
+    "/home/iamdayy/codes/daydev/.taste-skill/after-final/desktop-page-01.jpg",
+    "/home/iamdayy/codes/daydev/.taste-skill/after-final/desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "/home/iamdayy/codes/daydev/.taste-skill/after-final/tablet-fold.jpg",
+   "pages": [
+    "/home/iamdayy/codes/daydev/.taste-skill/after-final/tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "/home/iamdayy/codes/daydev/.taste-skill/after-final/mobile-fold.jpg",
+   "pages": [
+    "/home/iamdayy/codes/daydev/.taste-skill/after-final/mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

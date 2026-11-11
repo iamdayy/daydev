@@ -7,7 +7,6 @@ import {
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useRef } from "react";
 import * as THREE from "three";
-import { HERO_PROJECTS } from "../lib/project-images";
 
 const CROSSFADE_S = 0.6;
 const DAYDEV_COLORS = {
@@ -23,11 +22,21 @@ function smoothstep(t: number) {
   return t * t * (3 - 2 * t);
 }
 
-function ScreenSlides({ current, animate, onReady }: { current: number; animate: boolean; onReady: () => void }) {
+function ScreenSlides({
+  current,
+  images,
+  animate,
+  onReady,
+}: {
+  current: number;
+  images: string[];
+  animate: boolean;
+  onReady: () => void;
+}) {
   const invalidate = useThree((state) => state.invalidate);
   const textures = useLoader(
     THREE.TextureLoader,
-    HERO_PROJECTS.map((p) => p.image),
+    images,
   );
   const shown = useRef(0);
   const incoming = useRef(-1);
@@ -48,7 +57,10 @@ function ScreenSlides({ current, animate, onReady }: { current: number; animate:
       shown.current = current;
       incoming.current = -1;
       progress.current = 1;
-      if (fromMat.current) { fromMat.current.map = textures[current]; fromMat.current.opacity = 1; }
+      if (fromMat.current) {
+        fromMat.current.map = textures[current];
+        fromMat.current.opacity = 1;
+      }
       if (toMat.current) toMat.current.opacity = 0;
       invalidate();
       return;
@@ -95,7 +107,7 @@ function ScreenSlides({ current, animate, onReady }: { current: number; animate:
 
   return (
     <>
-      <mesh position={[0, 0, 0.045]} renderOrder={1}>
+      <mesh position={[0, 0, 0.11]} renderOrder={1}>
         <planeGeometry args={[3.84, 2.04]} />
         <meshBasicMaterial
           ref={fromMat}
@@ -106,7 +118,7 @@ function ScreenSlides({ current, animate, onReady }: { current: number; animate:
           depthWrite={false}
         />
       </mesh>
-      <mesh position={[0, 0, 0.05]} renderOrder={2}>
+      <mesh position={[0, 0, 0.115]} renderOrder={2}>
         <planeGeometry args={[3.84, 2.04]} />
         <meshBasicMaterial
           ref={toMat}
@@ -122,29 +134,49 @@ function ScreenSlides({ current, animate, onReady }: { current: number; animate:
 }
 
 function Chassis({ dark }: { dark: boolean }) {
-  const shellColor = dark ? "#171719" : "#f1ede8";
+  const shellColor = dark ? DAYDEV_COLORS.black : DAYDEV_COLORS.cream;
+  const bezelColor = dark ? "#121214" : DAYDEV_COLORS.charcoal;
   const shellMaterial = (
     <meshStandardMaterial
       color={shellColor}
-      roughness={0.46}
-      metalness={0.08}
-      envMapIntensity={0.7}
+      roughness={0.38}
+      metalness={0.12}
+      envMapIntensity={0.8}
     />
   );
 
   return (
     <>
-      <RoundedBox args={[4.28, 2.48, 0.16]} radius={0.12} smoothness={6} position={[0, 0, -0.04]}>
+      <RoundedBox
+        args={[4.28, 2.48, 0.16]}
+        radius={0.12}
+        smoothness={6}
+        position={[0, 0, -0.04]}
+      >
         {shellMaterial}
       </RoundedBox>
-      <RoundedBox args={[4.02, 2.22, 0.1]} radius={0.08} smoothness={6} position={[0, 0, 0.035]}>
-        <meshStandardMaterial color={dark ? "#09090a" : "#242426"} roughness={0.58} metalness={0.18} />
+      <RoundedBox
+        args={[4.02, 2.22, 0.1]}
+        radius={0.08}
+        smoothness={6}
+        position={[0, 0, 0.035]}
+      >
+        <meshStandardMaterial
+          color={bezelColor}
+          roughness={0.48}
+          metalness={0.2}
+        />
       </RoundedBox>
       <mesh position={[0, -1.49, 0]}>
         <boxGeometry args={[0.22, 0.5, 0.2]} />
         {shellMaterial}
       </mesh>
-      <RoundedBox args={[1.6, 0.14, 0.8]} radius={0.07} smoothness={4} position={[0, -1.81, 0]}>
+      <RoundedBox
+        args={[1.6, 0.14, 0.8]}
+        radius={0.07}
+        smoothness={4}
+        position={[0, -1.81, 0]}
+      >
         {shellMaterial}
       </RoundedBox>
       <mesh position={[0, 1.23, 0.09]}>
@@ -152,8 +184,8 @@ function Chassis({ dark }: { dark: boolean }) {
         <meshStandardMaterial
           color={DAYDEV_COLORS.orange}
           emissive={DAYDEV_COLORS.orange}
-          emissiveIntensity={0.3}
-          roughness={0.4}
+          emissiveIntensity={0.45}
+          roughness={0.32}
         />
       </mesh>
       <mesh position={[1.9, -1.08, 0.09]}>
@@ -161,7 +193,9 @@ function Chassis({ dark }: { dark: boolean }) {
         <meshStandardMaterial
           color={DAYDEV_COLORS.orange}
           emissive={DAYDEV_COLORS.orange}
-          emissiveIntensity={0.7}
+          emissiveIntensity={0.85}
+          roughness={0.28}
+          metalness={0.12}
         />
       </mesh>
     </>
@@ -204,45 +238,75 @@ function FloatingPanel({
   dark: boolean;
   accent?: boolean;
 }) {
-  const panelColor = dark ? "#1b1a1b" : "#fff8f1";
-  const lineColor = accent ? DAYDEV_COLORS.orange : dark ? "#6d6864" : "#d8cfc8";
+  const panelColor = dark ? "#151517" : DAYDEV_COLORS.cream;
+  const lineColor = accent
+    ? DAYDEV_COLORS.orange
+    : dark
+      ? "#8f8984"
+      : DAYDEV_COLORS.burntOrange;
+  const secondaryLineColor = dark
+    ? DAYDEV_COLORS.cream
+    : DAYDEV_COLORS.charcoal;
 
   return (
     <group position={position} rotation={rotation}>
       <RoundedBox args={[1.45, 0.9, 0.08]} radius={0.1} smoothness={5}>
         <meshStandardMaterial
           color={panelColor}
-          roughness={0.62}
-          metalness={0.02}
+          roughness={0.5}
+          metalness={0.08}
           transparent
           opacity={0.9}
         />
       </RoundedBox>
-      <RoundedBox args={[0.95, 0.08, 0.02]} radius={0.03} smoothness={3} position={[-0.1, 0.2, 0.06]}>
+      <RoundedBox
+        args={[0.95, 0.08, 0.02]}
+        radius={0.03}
+        smoothness={3}
+        position={[-0.1, 0.2, 0.06]}
+      >
         <meshBasicMaterial color={lineColor} />
       </RoundedBox>
-      <RoundedBox args={[0.62, 0.08, 0.02]} radius={0.03} smoothness={3} position={[-0.27, 0.02, 0.06]}>
+      <RoundedBox
+        args={[0.62, 0.08, 0.02]}
+        radius={0.03}
+        smoothness={3}
+        position={[-0.27, 0.02, 0.06]}
+      >
         <meshBasicMaterial
-          color={dark ? DAYDEV_COLORS.cream : DAYDEV_COLORS.charcoal}
+          color={secondaryLineColor}
           transparent
-          opacity={0.7}
+          opacity={dark ? 0.78 : 0.68}
         />
       </RoundedBox>
-      <RoundedBox args={[0.28, 0.08, 0.02]} radius={0.03} smoothness={3} position={[0.2, -0.2, 0.06]}>
+      <RoundedBox
+        args={[0.28, 0.08, 0.02]}
+        radius={0.03}
+        smoothness={3}
+        position={[0.2, -0.2, 0.06]}
+      >
         <meshBasicMaterial color={lineColor} />
       </RoundedBox>
     </group>
   );
 }
 
-function SupportingObjects({ active, reduced, dark }: { active: boolean; reduced: boolean; dark: boolean }) {
+function SupportingObjects({
+  active,
+  reduced,
+  dark,
+}: {
+  active: boolean;
+  reduced: boolean;
+  dark: boolean;
+}) {
   const groupRef = useRef<THREE.Group>(null);
   const elapsed = useRef(0);
 
   useFrame((_, delta) => {
     if (!active || reduced || !groupRef.current) return;
     elapsed.current += Math.min(delta, 0.05);
-    const phase = elapsed.current * (Math.PI * 2 / 7);
+    const phase = elapsed.current * ((Math.PI * 2) / 7);
     groupRef.current.position.y = Math.sin(phase) * 0.045;
     groupRef.current.rotation.z = Math.sin(phase * 0.5) * 0.012;
   });
@@ -261,7 +325,7 @@ function SupportingObjects({ active, reduced, dark }: { active: boolean; reduced
         color={DAYDEV_COLORS.peach}
         opacity={0.08}
       />
-      <group scale={0.82}>
+      <group scale={0.98}>
         <FloatingPanel
           position={[3.55, 1.22, -0.3]}
           rotation={[0.04, -0.2, 0.12]}
@@ -302,13 +366,24 @@ function SupportingObjects({ active, reduced, dark }: { active: boolean; reduced
   );
 }
 
-function MonitorRig({ current, reduced, active, dark, onReady, onFailure }: Props) {
+function MonitorRig({
+  current,
+  images,
+  reduced,
+  active,
+  dark,
+  onReady,
+  onFailure,
+}: Props) {
   const tiltRef = useRef<THREE.Group>(null);
   const elapsed = useRef(0);
   const { gl, invalidate } = useThree();
 
   useEffect(() => {
-    const lost = (event: Event) => { event.preventDefault(); onFailure(); };
+    const lost = (event: Event) => {
+      event.preventDefault();
+      onFailure();
+    };
     gl.domElement.addEventListener("webglcontextlost", lost);
     return () => gl.domElement.removeEventListener("webglcontextlost", lost);
   }, [gl, onFailure]);
@@ -324,22 +399,33 @@ function MonitorRig({ current, reduced, active, dark, onReady, onFailure }: Prop
   useFrame((_, delta) => {
     if (!active || reduced || !tiltRef.current) return;
     elapsed.current += Math.min(delta, 0.05);
-    const phase = elapsed.current * (Math.PI * 2 / 6);
+    const phase = elapsed.current * ((Math.PI * 2) / 6);
     tiltRef.current.position.y = 0.315 + Math.sin(phase) * 0.065;
     tiltRef.current.rotation.y = -0.12 + Math.sin(phase * 0.5) * 0.12;
     tiltRef.current.rotation.x = 0.03 + Math.sin(phase) * 0.02;
   });
 
   return (
-    <group ref={tiltRef} position={[0, 0.315, 0]} rotation={[0.03, -0.12, 0]}>
+    <group
+      ref={tiltRef}
+      position={[0, 0.315, 0]}
+      rotation={[0.03, -0.12, 0]}
+      scale={1.16}
+    >
       <Chassis dark={dark} />
-      <ScreenSlides current={current} animate={active && !reduced} onReady={onReady} />
+      <ScreenSlides
+        current={current}
+        images={images}
+        animate={active && !reduced}
+        onReady={onReady}
+      />
     </group>
   );
 }
 
 interface Props {
   current: number;
+  images: string[];
   reduced: boolean;
   active: boolean;
   dark: boolean;
@@ -347,58 +433,90 @@ interface Props {
   onFailure: () => void;
 }
 
-export default function HeroMonitor({ current, reduced, active, dark, onReady, onFailure }: Props) {
+export default function HeroMonitor({
+  current,
+  images,
+  reduced,
+  active,
+  dark,
+  onReady,
+  onFailure,
+}: Props) {
   return (
-          <Canvas
-            dpr={[1, 1.5]}
-            frameloop={active && !reduced ? "always" : "demand"}
-            gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
-            camera={{ position: [0, 0, 7.25], fov: 42 }}
-            style={{ pointerEvents: "none" }}
-            aria-hidden="true"
-            fallback={null}
-          >
-            <ambientLight intensity={dark ? 0.72 : 1.05} color={DAYDEV_COLORS.cream} />
-            <directionalLight position={[3, 4, 5]} intensity={1.55} color={DAYDEV_COLORS.cream} />
-            <directionalLight position={[-4, -1, 3]} intensity={0.32} color={DAYDEV_COLORS.orange} />
-            <Suspense fallback={null}>
-              <Environment resolution={256} frames={1}>
-                <Lightformer
-                  form="circle"
-                  intensity={3}
-                  position={[0, 5, -9]}
-                  scale={2}
-                  color={DAYDEV_COLORS.cream}
-                />
-                <Lightformer
-                  form="rect"
-                  intensity={2}
-                  position={[6, 1, -2]}
-                  rotation={[0, -Math.PI / 2, 0]}
-                  scale={[6, 1.2, 1]}
-                  color={DAYDEV_COLORS.cream}
-                />
-                <Lightformer
-                  form="rect"
-                  intensity={1.2}
-                  position={[-6, 0, -1]}
-                  rotation={[0, Math.PI / 2, 0]}
-                  scale={[5, 1, 1]}
-                  color={DAYDEV_COLORS.orange}
-                />
-              </Environment>
-              <SupportingObjects active={active} reduced={reduced} dark={dark} />
-              <MonitorRig current={current} reduced={reduced} active={active} dark={dark} onReady={onReady} onFailure={onFailure} />
-            </Suspense>
-            <ContactShadows
-              frames={1}
-              position={[0, -1.56, 0]}
-              opacity={dark ? 0.5 : 0.16}
-              scale={8}
-              blur={2.6}
-              far={3}
-              color="#7c2d12"
-            />
-          </Canvas>
+    <Canvas
+      dpr={[1, 1.5]}
+      frameloop={active && !reduced ? "always" : "demand"}
+      gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
+      camera={{ position: [0, 0, 7.25], fov: 52 }}
+      style={{
+        pointerEvents: "none",
+        overflow: "visible",
+        width: "100%",
+        height: "100%",
+      }}
+      aria-hidden="true"
+      fallback={null}
+    >
+      <ambientLight
+        intensity={dark ? 0.72 : 1.05}
+        color={DAYDEV_COLORS.cream}
+      />
+      <directionalLight
+        position={[3, 4, 5]}
+        intensity={1.55}
+        color={DAYDEV_COLORS.cream}
+      />
+      <directionalLight
+        position={[-4, -1, 3]}
+        intensity={0.32}
+        color={DAYDEV_COLORS.orange}
+      />
+      <Suspense fallback={null}>
+        <Environment resolution={256} frames={1}>
+          <Lightformer
+            form="circle"
+            intensity={3}
+            position={[0, 5, -9]}
+            scale={2}
+            color={DAYDEV_COLORS.cream}
+          />
+          <Lightformer
+            form="rect"
+            intensity={2}
+            position={[6, 1, -2]}
+            rotation={[0, -Math.PI / 2, 0]}
+            scale={[6, 1.2, 1]}
+            color={DAYDEV_COLORS.cream}
+          />
+          <Lightformer
+            form="rect"
+            intensity={1.2}
+            position={[-6, 0, -1]}
+            rotation={[0, Math.PI / 2, 0]}
+            scale={[5, 1, 1]}
+            color={DAYDEV_COLORS.orange}
+          />
+        </Environment>
+        <SupportingObjects active={active} reduced={reduced} dark={dark} />
+        <MonitorRig
+          current={current}
+          images={images}
+          reduced={reduced}
+          active={active}
+          dark={dark}
+          onReady={onReady}
+          onFailure={onFailure}
+        />
+      </Suspense>
+      <ContactShadows
+        frames={1}
+        position={[0, -1.56, 0]}
+        opacity={dark ? 0.5 : 0.16}
+        scale={8}
+        blur={2.6}
+        far={3}
+        color="#7c2d12"
+      />
+    </Canvas>
   );
 }

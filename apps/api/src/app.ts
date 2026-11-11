@@ -7,6 +7,7 @@ import type { Env } from "./lib/types";
 import { defaultHook } from "./lib/zhelpers";
 import { authRoutes } from "./routes/auth";
 import { blogRoutes } from "./routes/blog";
+import { contentRoutes } from "./routes/content";
 import { portfolioRoutes } from "./routes/portfolio";
 import { pricingRoutes } from "./routes/pricing";
 import { statsRoutes } from "./routes/stats";
@@ -38,6 +39,7 @@ portfolioRoutes(app);
 blogRoutes(app);
 pricingRoutes(app);
 testimonialRoutes(app);
+contentRoutes(app);
 uploadRoutes(app);
 
 app.doc("/swagger/openapi.json", {
@@ -56,6 +58,7 @@ app.doc("/swagger/openapi.json", {
     { name: "blog", description: "Artikel blog" },
     { name: "pricing", description: "Paket harga" },
     { name: "testimonials", description: "Testimoni klien" },
+    { name: "content", description: "Fakta situs dan buku tamu" },
     { name: "uploads", description: "Presigned upload ke R2" },
   ],
 });

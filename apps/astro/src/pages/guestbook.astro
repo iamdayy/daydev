@@ -1,31 +1,9 @@
 ---
 import Base from "../layouts/Base.astro";
-import { waLink } from "@daydev/shared-types";
+import { getGuestbook, loadData } from "../lib/api";
 import { MessageSquare, Send, User, Calendar, Heart, Star } from "lucide-react";
 
-const mockEntries = [
-  {
-    name: "Ahmad R.",
-    role: "Founder, Startup Fintech",
-    message: "Daydev bantu kami bangun MVP dalam 6 minggu. Komunikasi jelas, kode rapi, dan support pasca-launch sangat membantu. Recommended untuk startup early-stage.",
-    rating: 5,
-    date: "2025-01-15",
-  },
-  {
-    name: "Siti N.",
-    role: "Mahasiswa Sistem Informasi",
-    message: "Bimbingan teknis skripsi sangat terstruktur. Pak Daydev tidak hanya bantu coding, tapi juga ajarkan best practice dokumentasi dan arsitektur. Terima kasih!",
-    rating: 5,
-    date: "2024-11-20",
-  },
-  {
-    name: "Budi S.",
-    role: "Owner, UMKM Kuliner",
-    message: "Website toko online kami jadi lebih cepat dan mudah dikelola. Fitur WhatsApp order langsung membantu pelanggan. Harga transparan dari awal.",
-    rating: 5,
-    date: "2024-09-08",
-  },
-];
+const entries = await loadData(getGuestbook());
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("id-ID", {
@@ -58,7 +36,8 @@ const formatDate = (iso: string) =>
           <p class="fade-in">Testimoni dan pesan dari mereka yang sudah bekerja sama atau berinteraksi dengan Daydev.</p>
         </div>
         <div class="space-y-6">
-          {mockEntries.map((entry, index) => (
+          {entries.ok && entries.data.length === 0 && <p class="text-muted-foreground">Belum ada pesan yang dipublikasikan.</p>}
+          {entries.ok && entries.data.map((entry, index) => (
             <article class="rounded-2xl bg-card p-6 sm:p-8 border border-border fade-in" style={{ transitionDelay: `${index * 100}ms` }}>
               <div class="flex items-start gap-4">
                 <div class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-secondary font-display text-xl font-bold text-foreground" aria-hidden="true">
@@ -70,7 +49,7 @@ const formatDate = (iso: string) =>
                       <h3 class="text-lg font-semibold">{entry.name}</h3>
                       <p class="text-sm text-muted-foreground">{entry.role}</p>
                     </div>
-                    <time class="shrink-0 text-sm text-muted-foreground">{formatDate(entry.date)}</time>
+                    <time class="shrink-0 text-sm text-muted-foreground">{formatDate(entry.submitted_at)}</time>
                   </div>
                   <div class="mt-4 flex gap-1" role="img" aria-label={`Rating ${entry.rating} dari 5`}>
                     {Array.from({ length: 5 }).map((_, i) => (
@@ -92,8 +71,7 @@ const formatDate = (iso: string) =>
           <h2 id="write-title" class="section-title text-center">Tinggalkan pesan</h2>
           <p class="mt-5 text-center leading-7 text-muted-foreground">Pengalaman Anda membantu kami tumbuh dan memberikan gambaran jujur bagi pengunjung lain.</p>
 
-          <form id="guestbook-form" class="mt-8 space-y-6" action="https://wa.me/6285175284253" method="get" target="_blank">
-            <input type="hidden" name="text" id="guestbook-message" value="" />
+          <form id="guestbook-form" class="mt-8 space-y-6">
             <div class="grid gap-4 sm:grid-cols-2">
               <div>
                 <label for="guest-name" class="block mb-2 font-medium">Nama</label>
@@ -125,9 +103,9 @@ const formatDate = (iso: string) =>
             </div>
             <button type="submit" class="button-primary w-full" id="guestbook-submit">
               <Send className="size-4 mr-2" aria-hidden="true" />
-              Kirim via WhatsApp
+              Kirim pesan
             </button>
-            <p class="text-center text-sm text-muted-foreground">Pesan akan dikirim ke WhatsApp Daydev untuk ditinjau dan dipublikasikan (dengan izin Anda).</p>
+            <p class="text-center text-sm text-muted-foreground">Pesan akan ditinjau sebelum dipublikasikan.</p>
           </form>
         </div>
       </div>
@@ -159,12 +137,8 @@ const formatDate = (iso: string) =>
 
 <script>
   const form = document.getElementById("guestbook-form") as HTMLFormElement | null;
-  const hiddenInput = document.getElementById("guestbook-message") as HTMLInputElement | null;
-  const submitBtn = document.getElementById("guestbook-submit");
-
-  submitBtn?.addEventListener("click", (event) => {
+  form?.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (!form || !hiddenInput) return;
     const name = (form.querySelector("#guest-name") as HTMLInputElement)?.value;
     const role = (form.querySelector("#guest-role") as HTMLInputElement)?.value;
     const rating = (form.querySelector('input[name="rating"]:checked') as HTMLInputElement)?.value;
@@ -173,8 +147,21 @@ const formatDate = (iso: string) =>
       alert("Nama, rating, dan pesan wajib diisi.");
       return;
     }
-    const text = `Buku Tamu Daydev\nNama: ${name}\nPeran: ${role || "-"}\nRating: ${rating}/5\nPesan: ${message}`;
-    hiddenInput.value = text;
-    form.submit();
+    const button = form.querySelector("button[type=submit]") as HTMLButtonElement;
+    button.disabled = true;
+    try {
+      const response = await fetch(`${import.meta.env.PUBLIC_API_URL || "http://localhost:8000"}/guestbook`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, role: role || null, rating: Number(rating), message }),
+      });
+      if (!response.ok) throw new Error("Pesan gagal dikirim.");
+      form.reset();
+      alert("Terima kasih. Pesan Anda menunggu moderasi.");
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Pesan gagal dikirim.");
+    } finally {
+      button.disabled = false;
+    }
   });
 </script>

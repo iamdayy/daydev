@@ -2,6 +2,12 @@
 import Base from "../layouts/Base.astro";
 import { Github, Instagram, Mail, Globe, Code2, FileText, ExternalLink, Linkedin as LinkedinIcon } from "lucide-react";
 import { waLink, WHATSAPP } from "@daydev/shared-types";
+import { getPortfolio, loadData } from "../lib/api";
+
+const portfolio = await loadData(getPortfolio());
+const productLinks = portfolio.ok ? portfolio.data.filter((item) => item.demo_url).map((item) => ({
+  icon: Globe, label: item.title, href: item.demo_url!, description: item.description,
+})) : [];
 
 const linkCategories = [
   {
@@ -17,12 +23,7 @@ const linkCategories = [
   {
     label: "Produk & Proyek",
     icon: Code2,
-    links: [
-      { icon: Globe, label: "SISKU", href: "https://sisku.daydev.studio", description: "Sistem Informasi Sekolah" },
-      { icon: Globe, label: "EcoWarn", href: "https://ecowarn.daydev.studio", description: "Smart Hub Monitoring Lingkungan" },
-      { icon: Globe, label: "HIMATIKA", href: "https://himatika-itsnupekalongan.com", description: "Ecosystem Mahasiswa Matematika" },
-      { icon: Globe, label: "Invitation Demo", href: "https://invitation-interactive-storyboard.daydev.studio", description: "Undangan Digital Interaktif" },
-    ],
+    links: productLinks,
   },
   {
     label: "Dokumentasi & Sumber Daya",

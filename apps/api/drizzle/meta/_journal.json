@@ -8,6 +8,13 @@
       "when": 1790247602241,
       "tag": "0000_white_weapon_omega",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794402267160,
+      "tag": "0001_high_marvel_zombies",
+      "breakpoints": true
     }
   ]
 }

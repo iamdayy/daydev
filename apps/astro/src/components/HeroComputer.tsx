@@ -1,6 +1,5 @@
 import { Component, Suspense, lazy, useCallback, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
-import { HERO_PROJECTS } from "../lib/project-images";
 
 const HeroMonitor = lazy(() => import("./HeroMonitor"));
 const reducedQuery = "(prefers-reduced-motion: reduce)";
@@ -21,7 +20,16 @@ class MonitorBoundary extends Component<{ children: ReactNode; onFailure: () => 
   render() { return this.state.failed ? null : this.props.children; }
 }
 
-export default function HeroComputer() {
+interface HeroProject {
+  title: string;
+  demo_url: string | null;
+  cover_image_url: string;
+}
+
+export default function HeroComputer({ projects }: { projects: HeroProject[] }) {
+  if (projects.length === 0) return null;
+  const heroProjects = projects.filter((project) => project.demo_url);
+  if (heroProjects.length === 0) return null;
   const reduced = useSyncExternalStore(subscribeReduced, () => window.matchMedia(reducedQuery).matches, () => false);
   const dark = useSyncExternalStore(subscribeTheme, () => document.documentElement.dataset.theme === "dark", () => false);
   const [mounted, setMounted] = useState(false);
@@ -51,15 +59,15 @@ export default function HeroComputer() {
 
   useEffect(() => {
     if (!animate) return;
-    const timer = window.setInterval(() => setIndex((current) => (current + 1) % HERO_PROJECTS.length), 6000);
+    const timer = window.setInterval(() => setIndex((current) => (current + 1) % heroProjects.length), 6000);
     return () => window.clearInterval(timer);
-  }, [animate]);
+  }, [animate, heroProjects.length]);
 
   const step = (direction: number) => {
     setPaused(true);
-    setIndex((current) => (current + direction + HERO_PROJECTS.length) % HERO_PROJECTS.length);
+    setIndex((current) => (current + direction + heroProjects.length) % heroProjects.length);
   };
-  const project = HERO_PROJECTS[index];
+  const project = heroProjects[index % heroProjects.length];
 
   return (
     <figure
@@ -71,15 +79,15 @@ export default function HeroComputer() {
       onFocusCapture={() => setFocused(true)}
       onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false); }}
     >
-      <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label={`Buka demo ${project.title}`} className="hero-screen">
+      <a href={project.demo_url!} target="_blank" rel="noopener noreferrer" aria-label={`Buka demo ${project.title}`} className="hero-screen">
         <div className={`hero-fallback ${ready && !failed ? "opacity-0" : "opacity-100"}`}>
-          <img src={project.image} alt={`Tampilan ${project.title}`} width="1440" height="810" fetchPriority="high" />
+          <img src={project.cover_image_url} alt={`Tampilan ${project.title}`} width="1440" height="810" fetchPriority="high" />
         </div>
         {mounted && !failed && (
           <div className={`hero-canvas ${ready ? "opacity-100" : "opacity-0"}`} aria-hidden="true">
             <MonitorBoundary onFailure={onFailure}>
               <Suspense fallback={null}>
-                <HeroMonitor current={index} reduced={reduced} active={animate} dark={dark} onReady={onReady} onFailure={onFailure} />
+                <HeroMonitor current={index} images={heroProjects.map((item) => item.cover_image_url)} reduced={reduced} active={animate} dark={dark} onReady={onReady} onFailure={onFailure} />
               </Suspense>
             </MonitorBoundary>
           </div>
@@ -87,12 +95,12 @@ export default function HeroComputer() {
       </a>
       <div className="hero-caption glass-surface mt-4">
         <div className="flex flex-wrap items-center gap-3">
-          <a href={project.link} target="_blank" rel="noopener noreferrer" className="group min-h-11 min-w-0 flex-1" aria-label={`Buka demo ${project.title}`} aria-atomic="true">
+          <a href={project.demo_url!} target="_blank" rel="noopener noreferrer" className="group min-h-11 min-w-0 flex-1" aria-label={`Buka demo ${project.title}`} aria-atomic="true">
             <ArrowUpRight className="size-4 shrink-0 text-accent-ink" aria-hidden="true" />
           </a>
         </div>
         <div className="mt-2 hero-gallery-controls" role="group" aria-label="Kontrol galeri">
-          <span className="hero-gallery-count" aria-hidden="true">{index + 1} / {HERO_PROJECTS.length}</span>
+          <span className="hero-gallery-count" aria-hidden="true">{index + 1} / {heroProjects.length}</span>
           <button type="button" disabled={!mounted} onClick={() => step(-1)} aria-label="Proyek sebelumnya" className="icon-button"><ChevronLeft className="size-5" aria-hidden="true" /></button>
           {!reduced && <button type="button" disabled={!mounted} onClick={() => setPaused((value) => !value)} aria-label={paused ? "Putar animasi hero" : "Jeda animasi hero"} aria-pressed={paused} className="icon-button">{paused ? <Play className="size-4" aria-hidden="true" /> : <Pause className="size-4" aria-hidden="true" />}</button>}
           <button type="button" disabled={!mounted} onClick={() => step(1)} aria-label="Proyek berikutnya" className="icon-button"><ChevronRight className="size-5" aria-hidden="true" /></button>

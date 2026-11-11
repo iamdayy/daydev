@@ -61,6 +61,7 @@
   --inverse-foreground: #ffffff;
   --inverse-muted: #a5afbe;
   --site-header-height: 6.5rem;
+  --background-dot: rgb(194 65 12 / 18%);
 }
 
 :root[data-theme="dark"] {
@@ -87,6 +88,7 @@
   --shadow-soft: 0 10px 28px rgb(0 0 0 / 22%);
   --shadow-float: 0 16px 36px rgb(0 0 0 / 30%);
   --glass-highlight: rgb(255 255 255 / 8%);
+  --background-dot: rgb(251 146 60 / 16%);
 }
 
 @theme inline {
@@ -139,6 +141,7 @@ body[class~="bg-muted/50"] {
 
 body::before,
 body::after {
+  z-index: 0;
   position: fixed;
   inset: 0;
   pointer-events: none;
@@ -146,47 +149,42 @@ body::after {
 }
 
 body::before {
-  z-index: -1;
-  background:
-    radial-gradient(circle at 8% 8%, rgb(249 115 22 / 14%), transparent 30rem),
-    radial-gradient(
-      circle at 92% 38%,
-      rgb(251 146 60 / 11%),
-      transparent 34rem
-    ),
-    radial-gradient(circle at 48% 100%, rgb(234 88 12 / 8%), transparent 30rem);
+  background: radial-gradient(
+    circle,
+    var(--background-dot) 0 1px,
+    transparent 1.8px
+  );
+  background-size: 30px 30px;
+  mask-image: radial-gradient(
+    ellipse 68% 54% at 62% 18%,
+    #000 0 32%,
+    rgb(0 0 0 / 58%) 54%,
+    transparent 82%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 68% 54% at 62% 18%,
+    #000 0 32%,
+    rgb(0 0 0 / 58%) 54%,
+    transparent 82%
+  );
+  opacity: 0.34;
 }
 
 body::after {
-  z-index: -1;
-  opacity: 0.42;
-  background-image:
-    radial-gradient(circle at 12% 18%, var(--accent) 0 1.5px, transparent 2px),
+  background:
+    radial-gradient(circle at 8% 8%, rgb(249 115 22 / 22%), transparent 30rem),
     radial-gradient(
-      circle at 27% 74%,
-      var(--accent-soft) 0 1px,
-      transparent 1.75px
+      circle at 92% 38%,
+      rgb(251 146 60 / 17%),
+      transparent 34rem
     ),
-    radial-gradient(circle at 43% 31%, var(--accent) 0 1px, transparent 1.75px),
-    radial-gradient(
-      circle at 61% 83%,
-      var(--accent-soft) 0 1.5px,
-      transparent 2px
-    ),
-    radial-gradient(circle at 78% 16%, var(--accent) 0 1px, transparent 1.75px),
-    radial-gradient(
-      circle at 91% 68%,
-      var(--accent-soft) 0 1.5px,
-      transparent 2px
-    ),
-    linear-gradient(
-      28deg,
-      transparent 0 49.85%,
-      rgb(249 115 22 / 8%) 49.9% 50%,
-      transparent 50.05% 100%
-    );
-  background-size: 100% 100%;
+    radial-gradient(circle at 48% 100%, rgb(234 88 12 / 12%), transparent 30rem);
   animation: daydev-particle-drift 24s ease-in-out infinite alternate;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes daydev-particle-drift {
@@ -1175,6 +1173,8 @@ section[class~="bg-secondary/70"] {
   padding-top: 2rem;
   padding-bottom: 1rem;
   max-width: 29rem;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-copy > p:first-child {
@@ -1187,12 +1187,17 @@ section[class~="bg-secondary/70"] {
   grid-column: 2;
   grid-row: 1 / 4;
   align-self: end;
+  position: relative;
+  z-index: 0;
+  overflow: visible;
 }
 
 .hero-kicker {
   grid-column: 1;
   grid-row: 1;
   align-self: end;
+  position: relative;
+  z-index: 1;
   color: var(--accent-ink);
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -1205,6 +1210,7 @@ section[class~="bg-secondary/70"] {
 .hero-gallery {
   position: relative;
   min-width: 0;
+  overflow: visible;
 }
 
 .hero-screen {
@@ -1213,6 +1219,7 @@ section[class~="bg-secondary/70"] {
   width: 100%;
   aspect-ratio: 1.25;
   border-radius: 1rem;
+  overflow: visible;
 }
 
 .hero-fallback {
@@ -1245,7 +1252,8 @@ section[class~="bg-secondary/70"] {
 
 .hero-canvas {
   position: absolute;
-  inset: 0;
+  inset: -40%;
+  z-index: 0;
   pointer-events: none;
 }
 

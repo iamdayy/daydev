@@ -15,6 +15,10 @@ export const ALLOWED_ADMIN_PATHS = [
   "/admin/testimonials",
   "/admin/testimonials/:id",
   "/admin/uploads/presign",
+  "/admin/content",
+  "/admin/content/:id",
+  "/admin/guestbook",
+  "/admin/guestbook/:id",
 ];
 
 export function validateAdminPath(path: string): boolean {

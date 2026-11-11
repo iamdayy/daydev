@@ -23,6 +23,7 @@ import { db } from "../src/db/client";
 import {
   adminUsers,
   portfolioItems,
+  siteContent,
 } from "../src/db/schema";
 import { hashPassword } from "../src/lib/hashes";
 
@@ -129,6 +130,7 @@ async function upsertAdmin(): Promise<void> {
     console.log("  - admin skip (set ADMIN_EMAIL + ADMIN_PASSWORD untuk membuat).");
     return;
   }
+
   const existing = await db.query.adminUsers.findFirst({
     where: eq(adminUsers.email, email.toLowerCase()),
   });
@@ -136,12 +138,30 @@ async function upsertAdmin(): Promise<void> {
     console.log("  - admin skip (email sudah ada).");
     return;
   }
+
   await db.insert(adminUsers).values({
     email: email.toLowerCase(),
     passwordHash: await hashPassword(password),
     name: email.split("@")[0],
   });
   console.log(`  + admin: ${email}`);
+}
+
+async function upsertSiteContent(): Promise<void> {
+  const items = [
+    { kind: "milestone", key: "studio-berdiri", title: "Studio berdiri", value: "Daydev Studio didirikan sebagai studio produk digital founder-led untuk membantu UMKM, mahasiswa, dan startup.", metadata: { year: "2023", icon: "trophy" } },
+    { kind: "milestone", key: "stack-modern", title: "Stack modern diadopsi", value: "Migrasi ke stack modern: Astro, React Islands, Hono API, Neon PostgreSQL, dan Cloudflare R2.", metadata: { year: "2024", icon: "award" } },
+    { kind: "milestone", key: "integrasi-ai", title: "Fokus integrasi AI/ML", value: "Eksplorasi kemampuan AI/ML sebagai bagian dari layanan pengembangan produk digital.", metadata: { year: "2025", icon: "target" } },
+    { kind: "skill", key: "astro", title: "Astro", value: "95", metadata: { category: "Frontend", years: "2" } },
+    { kind: "skill", key: "react", title: "React", value: "90", metadata: { category: "Frontend", years: "4" } },
+    { kind: "skill", key: "typescript", title: "TypeScript", value: "92", metadata: { category: "Frontend", years: "4" } },
+    { kind: "skill", key: "node-js", title: "Node.js", value: "90", metadata: { category: "Backend", years: "4" } },
+    { kind: "skill", key: "postgresql", title: "PostgreSQL", value: "85", metadata: { category: "Backend", years: "3" } },
+  ];
+  for (const item of items) {
+    const existing = await db.query.siteContent.findFirst({ where: eq(siteContent.key, item.key) });
+    if (!existing) await db.insert(siteContent).values({ ...item, isPublished: true });
+  }
 }
 
 // --- bantuan gambar -----------------------------------------------------------
@@ -246,6 +266,7 @@ async function main() {
   // await upsertPricing();
   // await upsertTestimonials();
   await upsertAdmin();
+  await upsertSiteContent();
   console.log("Seed selesai.");
 }
 

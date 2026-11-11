@@ -1,9 +1,10 @@
 ---
 import Base from "../../layouts/Base.astro";
-import { getStats, loadData } from "../../lib/api";
+import { getSiteContent, getStats, loadData } from "../../lib/api";
 import { Trophy, Award, Target, TrendingUp, Star, Users, Briefcase, Zap } from "lucide-react";
 
 const stats = await loadData(getStats());
+const content = await loadData(getSiteContent("milestone"));
 
 // Achievements hanya ditampilkan jika ada data terverifikasi dari API
 const verifiedStats = (stats.data ?? []).filter((s) => s.value.trim());
@@ -41,26 +42,12 @@ const achievementCategories = [
   },
 ];
 
-const milestones = [
-  {
-    icon: Trophy,
-    title: "Studio berdiri",
-    description: "Daydev Studio didirikan sebagai studio produk digital founder-led untuk membantu UMKM, mahasiswa, dan startup.",
-    year: "2023",
-  },
-  {
-    icon: Award,
-    title: "Stack modern diadopsi",
-    description: "Migrasi ke stack modern: Astro 5, React Islands, Hono API, Neon PostgreSQL, dan Cloudflare R2.",
-    year: "2024",
-  },
-  {
-    icon: Target,
-    title: "Fokus integrasi AI/ML",
-    description: "Eksplorasi kemampuan AI/ML sebagai bagian dari layanan pengembangan produk digital.",
-    year: "2025",
-  },
-];
+const milestones = (content.data ?? []).map((item) => ({
+  icon: item.metadata?.icon === "award" ? Award : item.metadata?.icon === "target" ? Target : Trophy,
+  title: item.title,
+  description: item.value,
+  year: String(item.metadata?.year ?? ""),
+}));
 ---
 
 <Base

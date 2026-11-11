@@ -5,6 +5,8 @@ import type {
   SiteStat,
   TeamMember,
   Testimonial,
+  SiteContent,
+  GuestbookEntry,
 } from "@daydev/shared-types";
 
 const configuredApiUrl = import.meta.env.PUBLIC_API_URL?.trim();
@@ -95,6 +97,16 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 export async function getTestimonials(): Promise<Testimonial[]> {
   const data = await fetchJson<{ testimonials: Testimonial[] }>("/testimonials");
   return data.testimonials;
+}
+
+export async function getSiteContent(kind: string): Promise<SiteContent[]> {
+  const data = await fetchJson<{ content: SiteContent[] }>(`/content/${encodeURIComponent(kind)}`);
+  return data.content;
+}
+
+export async function getGuestbook(): Promise<GuestbookEntry[]> {
+  const data = await fetchJson<{ entries: GuestbookEntry[] }>("/guestbook");
+  return data.entries;
 }
 
 export async function getBlogSlugs(): Promise<string[]> {

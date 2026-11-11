@@ -1,0 +1,11 @@
+---
+import Admin from "../../layouts/Admin.astro";
+import GuestbookManager from "../../components/admin/GuestbookManager";
+import DataNotice from "../../components/DataNotice.astro";
+import { loadData } from "../../lib/api";
+export const prerender = false;
+const entries = await loadData(Promise.resolve({ entries: [] as import("@daydev/shared-types").GuestbookEntry[] }));
+---
+<Admin title="Buku tamu" description="Moderasi pesan pengunjung sebelum ditampilkan secara publik.">
+  {entries.ok ? <GuestbookManager client:load initial={entries.data.entries} /> : <DataNotice title="Buku tamu belum dapat dimuat" />}
+</Admin>

@@ -93,6 +93,28 @@ export interface Testimonial {
   is_published: boolean;
 }
 
+export interface SiteContent {
+  id: string;
+  kind: string;
+  key: string;
+  title: string;
+  value: string;
+  metadata: Record<string, unknown> | null;
+  display_order: number;
+  is_published: boolean;
+  updated_at: string;
+}
+
+export interface GuestbookEntry {
+  id: string;
+  name: string;
+  role: string | null;
+  message: string;
+  rating: number;
+  submitted_at: string;
+  is_published: boolean;
+}
+
 // ---------------------------------------------------------------------------
 // Brand / WhatsApp
 // ---------------------------------------------------------------------------

@@ -29,6 +29,32 @@ export const teamMembers = pgTable("team_members", {
   isPublished: boolean("is_published").notNull().default(false),
 });
 
+export const siteContent = pgTable("site_content", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  kind: text("kind").notNull(),
+  key: text("key").notNull(),
+  title: text("title").notNull(),
+  value: text("value").notNull(),
+  metadata: jsonb("metadata").$type<Record<string, unknown> | null>(),
+  displayOrder: integer("display_order").notNull().default(0),
+  isPublished: boolean("is_published").notNull().default(false),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export const guestbookEntries = pgTable("guestbook_entries", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  role: text("role"),
+  message: text("message").notNull(),
+  rating: integer("rating").notNull().default(5),
+  submittedAt: timestamp("submitted_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  isPublished: boolean("is_published").notNull().default(false),
+});
+
 export const portfolioItems = pgTable("portfolio_items", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: text("title").notNull(),
@@ -136,6 +162,8 @@ export type BlogPost = typeof blogPosts.$inferSelect;
 export type PricingCategory = typeof pricingCategories.$inferSelect;
 export type PricingPackage = typeof pricingPackages.$inferSelect;
 export type Testimonial = typeof testimonials.$inferSelect;
+export type SiteContent = typeof siteContent.$inferSelect;
+export type GuestbookEntry = typeof guestbookEntries.$inferSelect;
 export type AdminUser = typeof adminUsers.$inferSelect;
 export type Session = typeof sessions.$inferSelect;
 
@@ -147,6 +175,8 @@ export const schema = {
   pricingCategories,
   pricingPackages,
   testimonials,
+  siteContent,
+  guestbookEntries,
   adminUsers,
   sessions,
 };

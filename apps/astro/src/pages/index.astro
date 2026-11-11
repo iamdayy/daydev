@@ -23,7 +23,6 @@ import {
   getTestimonials,
   loadData,
 } from "../lib/api";
-import { HERO_PROJECTS } from "../lib/project-images";
 
 const [portfolio, testimonials, posts] = await Promise.all([
   loadData(getPortfolio()),
@@ -79,7 +78,7 @@ const featuredPosts = (posts.data ?? [])
           </p>
         </div>
         <div class="hero-visual">
-          <HeroComputer client:load />
+          <HeroComputer client:load projects={portfolio.data ?? []} />
         </div>
       </div>
     </section>
@@ -383,16 +382,16 @@ const featuredPosts = (posts.data ?? [])
         </div>
         <div class="projects-grid">
           {
-            HERO_PROJECTS.map((p) => (
+            (portfolio.data ?? []).map((p) => (
               <article class="fade-in">
                 <a
-                  href={p.link}
+                  href={p.demo_url ?? "/portfolio"}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="block aspect-[4/3] overflow-hidden rounded-xl bg-secondary p-4 sm:p-6"
                 >
                   <img
-                    src={p.image}
+                    src={p.cover_image_url}
                     alt={`Antarmuka ${p.title}`}
                     width="800"
                     height="600"

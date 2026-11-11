@@ -1,0 +1,11 @@
+---
+import Admin from "../../layouts/Admin.astro";
+import ContentManager from "../../components/admin/ContentManager";
+import DataNotice from "../../components/DataNotice.astro";
+import { getSiteContent, loadData } from "../../lib/api";
+export const prerender = false;
+const content = await loadData(getSiteContent("all"));
+---
+<Admin title="Data situs" description="Kelola fakta publik seperti skill, milestone, kontak, dan tautan.">
+  {content.ok ? <ContentManager client:load initial={content.data} /> : <DataNotice title="Data situs belum dapat dimuat" />}
+</Admin>

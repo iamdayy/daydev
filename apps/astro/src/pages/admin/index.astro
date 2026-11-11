@@ -1,16 +1,18 @@
 ---
 import Admin from "../../layouts/Admin.astro";
-import { getBlogPosts, getPortfolio, getStats, getTestimonials, loadData } from "../../lib/api";
+import { getBlogPosts, getPortfolio, getPricing, getStats, getTeam, getTestimonials, loadData } from "../../lib/api";
 import DataNotice from "../../components/DataNotice.astro";
 import { BarChart3, FileText, FolderGit2, MessageSquareQuote, Users, WalletCards } from "lucide-react";
 
 export const prerender = false;
 
-const [stats, portfolio, posts, testimonials] = await Promise.all([
+const [stats, portfolio, posts, testimonials, team, pricing] = await Promise.all([
   loadData(getStats()),
   loadData(getPortfolio()),
   loadData(getBlogPosts()),
   loadData(getTestimonials()),
+  loadData(getTeam()),
+  loadData(getPricing()),
 ]);
 
 const cards = [
@@ -42,8 +44,8 @@ const cards = [
     desc: "Kurasi ulasan klien yang tampil di situs.",
     count: testimonials.data?.length,
   },
-  { href: "/admin/team", icon: Users, title: "Team", desc: "Kelola profil anggota tim.", count: undefined },
-  { href: "/admin/pricing", icon: WalletCards, title: "Pricing", desc: "Kelola kategori dan paket layanan.", count: undefined },
+  { href: "/admin/team", icon: Users, title: "Team", desc: "Kelola profil anggota tim.", count: team.data?.length },
+  { href: "/admin/pricing", icon: WalletCards, title: "Pricing", desc: "Kelola kategori dan paket layanan.", count: pricing.data?.length },
 ];
 ---
 

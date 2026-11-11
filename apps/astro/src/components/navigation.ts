@@ -17,6 +17,7 @@ export const navigationGroups: NavGroup[] = [
     items: [
       { label: "Beranda", href: "/" },
       { label: "Tentang Daydev", href: "/about" },
+      { label: "Tim Daydev", href: "/team" },
       { label: "Founder", href: "/founder" },
     ],
   },

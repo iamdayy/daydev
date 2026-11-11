@@ -1,0 +1,39 @@
+---
+import TeamSection from "../components/sections/TeamSection.astro";
+import Base from "../layouts/Base.astro";
+import { getTeam, loadData } from "../lib/api";
+
+export const prerender = false;
+
+const team = await loadData(getTeam());
+---
+
+<Base
+  title="Tim Daydev"
+  description="Kenali tim Daydev Studio yang membangun produk digital untuk bisnis dan individu."
+  canonicalPath="/team"
+>
+  <main>
+    <header class="page-intro">
+      <div class="site-container page-intro-grid">
+        <h1 class="page-title">Tim Daydev.</h1>
+        <p>
+          Orang-orang di balik proses perancangan dan pengembangan produk
+          digital yang masuk akal.
+        </p>
+      </div>
+    </header>
+
+    {team.ok ? (
+      <TeamSection teams={team.data} />
+    ) : (
+      <section class="section-space">
+        <div class="site-container">
+          <p class="text-muted-foreground">
+            Data tim belum dapat dimuat. Silakan coba lagi nanti.
+          </p>
+        </div>
+      </section>
+    )}
+  </main>
+</Base>

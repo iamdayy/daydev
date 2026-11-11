@@ -37,20 +37,27 @@ const nav = [
   </head>
   <body class="min-h-screen bg-muted/50 text-foreground antialiased">
     <a href="#konten-admin" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-card focus:p-4">Lewati ke konten</a>
-    <header class="sticky top-0 z-20 border-b border-border bg-card text-foreground">
-      <div class="site-container grid grid-cols-[1fr_auto] items-center gap-x-4 py-3 lg:grid-cols-[auto_1fr_auto] lg:gap-8">
-        <a href="/admin" class="inline-flex min-h-11 items-center text-lg font-bold tracking-tight">
-          Daydev <span class="text-accent-ink">Admin</span>
-        </a>
-        <nav class="order-last col-span-2 mt-2 grid grid-cols-3 gap-1 sm:grid-cols-5 lg:order-none lg:col-span-1 lg:mt-0" aria-label="Navigasi admin">
+    <div class="min-h-screen lg:grid lg:grid-cols-[17rem_1fr]">
+      <aside class="border-b border-border bg-card text-foreground lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:border-b-0 lg:border-r">
+        <div class="flex items-center justify-between px-5 py-4 lg:block lg:px-6 lg:py-7">
+          <a href="/admin" class="inline-flex min-h-11 items-center text-lg font-bold tracking-tight">
+            Daydev <span class="text-accent-ink">Admin</span>
+          </a>
+          <form action={actions.logout} method="POST" class="shrink-0 lg:mt-10" enctype="multipart/form-data">
+            <button type="submit" class="min-h-11 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-ink lg:w-full">
+              Keluar
+            </button>
+          </form>
+        </div>
+        <nav class="flex gap-1 overflow-x-auto px-4 pb-4 lg:block lg:space-y-1 lg:overflow-visible lg:px-4" aria-label="Navigasi admin">
           {
             nav.map((item) => (
               <a
                 href={item.href}
                 aria-current={Astro.url.pathname === item.href ? "page" : undefined}
-                class={`flex min-h-11 items-center justify-center rounded-lg px-2 py-2 text-sm font-medium transition-colors ${
+                class={`flex min-h-11 shrink-0 items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors lg:w-full ${
                   Astro.url.pathname === item.href
-                    ? "bg-secondary text-foreground"
+                    ? "bg-accent text-accent-ink"
                     : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                 }`}
               >
@@ -59,29 +66,21 @@ const nav = [
             ))
           }
         </nav>
-        <form
-          action={actions.logout}
-          method="POST"
-          class="shrink-0"
-          enctype="multipart/form-data"
-        >
-          <button
-            type="submit"
-            class="min-h-11 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-ink"
-          >
-            Keluar
-          </button>
-        </form>
-      </div>
-    </header>
+        <div class="hidden px-6 pb-6 pt-4 text-xs leading-5 text-muted-foreground lg:block">
+          Kelola konten, data, dan publikasi situs Daydev.
+        </div>
+      </aside>
 
-    <ThemeScript />
-    <main id="konten-admin" tabindex="-1" class="site-container py-8 lg:py-10">
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
-        {description && <p class="mt-2 max-w-2xl text-muted-foreground">{description}</p>}
+      <div class="min-w-0">
+        <ThemeScript />
+        <main id="konten-admin" tabindex="-1" class="site-container py-8 lg:py-10">
+          <div class="mb-8">
+            <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
+            {description && <p class="mt-2 max-w-2xl text-muted-foreground">{description}</p>}
+          </div>
+          <slot />
+        </main>
       </div>
-      <slot />
-    </main>
+    </div>
   </body>
 </html>

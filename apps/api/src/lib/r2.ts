@@ -12,7 +12,6 @@ const ALLOWED_CONTENT_TYPES = new Set([
   "image/gif",
 ]);
 
-const MAX_UPLOAD_BYTES = 5 * 1024 * 1024; // 5 MB
 
 /** S3 client yang di-point ke endpoint R2. */
 export function getR2Client(): S3Client {
@@ -63,8 +62,15 @@ export interface PresignResult {
 }
 
 export interface PresignOptions {
-  maxBytes?: number;
   expiresIn?: number;
+}
+
+export function getR2CorsOrigins(): string[] {
+  return (process.env.CORS_ORIGINS ??
+    "http://localhost:3000,http://localhost:3001,http://localhost:4321,http://localhost:5000,http://127.0.0.1:3000,http://127.0.0.1:3001,http://127.0.0.1:4321,http://127.0.0.1:5000,https://daydev.studio,https://www.daydev.studio")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
 }
 
 /**
@@ -90,7 +96,6 @@ export async function createPresignedUpload(
     Bucket: bucketName,
     Key: key,
     ContentType: contentType,
-    ContentLength: options.maxBytes ?? MAX_UPLOAD_BYTES,
   });
 
   const url = await getSignedUrl(client, command, { expiresIn });

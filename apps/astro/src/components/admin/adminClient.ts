@@ -29,6 +29,9 @@ function uniqueFilename(name: string): string {
 
 /** Upload file ke R2 lewat presigned URL, kembalikan URL publik. */
 export async function uploadToR2(file: File): Promise<string> {
+  if (file.size > 5 * 1024 * 1024) {
+    throw new Error("Ukuran file maksimal 5 MB.");
+  }
   const { url, publicUrl } = await call<{ url: string; publicUrl: string }>(
     "/admin/uploads/presign",
     "POST",
@@ -39,6 +42,6 @@ export async function uploadToR2(file: File): Promise<string> {
     headers: { "Content-Type": file.type || "application/octet-stream" },
     body: file,
   });
-  if (!res.ok) throw new Error("Upload ke R2 gagal.");
+  if (!res.ok) throw new Error(`Upload ke R2 gagal (HTTP ${res.status}).`);
   return publicUrl;
 }

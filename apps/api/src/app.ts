@@ -1,5 +1,6 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { swaggerUI } from "@hono/swagger-ui";
+import { cors } from "hono/cors";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { adminAuth } from "./lib/auth";
 import { HttpError, RateLimitError } from "./lib/http-error";
@@ -16,6 +17,20 @@ import { testimonialRoutes } from "./routes/testimonials";
 import { uploadRoutes } from "./routes/uploads";
 
 export const app = new OpenAPIHono<Env>({ defaultHook });
+
+const allowedOrigins = new Set(
+  (process.env.CORS_ORIGINS ??
+    "http://localhost:5000,http://127.0.0.1:5000,https://daydev.studio,https://www.daydev.studio")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+);
+
+app.use("*", cors({
+  origin: (origin) => (allowedOrigins.has(origin) ? origin : ""),
+  allowHeaders: ["Content-Type", "Authorization"],
+  allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+}));
 
 // Semua endpoint /admin/* butuh bearer JWT + session aktif.
 app.use("/admin/*", adminAuth);

@@ -1,0 +1,8 @@
+---
+import Admin from "../../layouts/Admin.astro";
+import TeamManager from "../../components/admin/TeamManager";
+export const prerender = false;
+---
+<Admin title="Team" description="Kelola profil anggota tim yang tampil di situs.">
+  <TeamManager client:load initial={[]} />
+</Admin>

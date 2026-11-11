@@ -2,7 +2,7 @@
 import Admin from "../../layouts/Admin.astro";
 import { getBlogPosts, getPortfolio, getStats, getTestimonials, loadData } from "../../lib/api";
 import DataNotice from "../../components/DataNotice.astro";
-import { BarChart3, FileText, FolderGit2, MessageSquareQuote } from "lucide-react";
+import { BarChart3, FileText, FolderGit2, MessageSquareQuote, Users, WalletCards } from "lucide-react";
 
 export const prerender = false;
 
@@ -42,6 +42,8 @@ const cards = [
     desc: "Kurasi ulasan klien yang tampil di situs.",
     count: testimonials.data?.length,
   },
+  { href: "/admin/team", icon: Users, title: "Team", desc: "Kelola profil anggota tim.", count: undefined },
+  { href: "/admin/pricing", icon: WalletCards, title: "Pricing", desc: "Kelola kategori dan paket layanan.", count: undefined },
 ];
 ---
 

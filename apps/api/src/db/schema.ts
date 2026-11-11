@@ -41,7 +41,7 @@ export const siteContent = pgTable("site_content", {
   updatedAt: timestamp("updated_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
-});
+}, (table) => [uniqueIndex("site_content_kind_key_idx").on(table.kind, table.key)]);
 
 export const guestbookEntries = pgTable("guestbook_entries", {
   id: uuid("id").primaryKey().defaultRandom(),

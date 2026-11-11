@@ -14,6 +14,7 @@
     "ADMIN_EMAIL",
     "ADMIN_PASSWORD",
     "PUBLIC_API_URL",
+    "CORS_ORIGINS",
     "PORT",
     "VERCEL",
     "NODE_ENV"

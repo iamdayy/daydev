@@ -1,0 +1,8 @@
+---
+import Admin from "../../layouts/Admin.astro";
+import PricingManager from "../../components/admin/PricingManager";
+export const prerender = false;
+---
+<Admin title="Pricing" description="Kelola kategori harga dan paket layanan.">
+  <PricingManager client:load initial={[]} />
+</Admin>

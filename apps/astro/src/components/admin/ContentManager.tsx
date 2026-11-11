@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import type { SiteContent } from "@daydev/shared-types";
 import { call } from "./adminClient";
 
-const EMPTY = { kind: "skill", key: "", title: "", value: "", displayOrder: 0, isPublished: false };
+const EMPTY = { kind: "skill", key: "", title: "", value: "", metadata: "", displayOrder: 0, isPublished: false };
 type FormState = typeof EMPTY;
 
 export default function ContentManager({ initial }: { initial: SiteContent[] }) {
@@ -18,13 +18,23 @@ export default function ContentManager({ initial }: { initial: SiteContent[] }) 
   const save = async (event: React.FormEvent) => {
     event.preventDefault(); setMessage(null);
     try {
-      const body = { ...form, displayOrder: Number(form.displayOrder), metadata: null };
+      let metadata: Record<string, unknown> | null = null;
+      if (form.metadata.trim()) {
+        try {
+          metadata = JSON.parse(form.metadata) as Record<string, unknown>;
+        } catch {
+          setMessage("Metadata harus berupa JSON yang valid.");
+          return;
+        }
+      }
+      const body = { ...form, displayOrder: Number(form.displayOrder), metadata };
       await call(editing ? `/admin/content/${editing.id}` : "/admin/content", editing ? "PUT" : "POST", body);
       setMessage("Konten disimpan."); reset(); await refresh();
     } catch (error) { setMessage(error instanceof Error ? error.message : "Gagal menyimpan."); }
   };
   const edit = (item: SiteContent) => setForm({
     kind: item.kind, key: item.key, title: item.title, value: item.value,
+    metadata: item.metadata ? JSON.stringify(item.metadata, null, 2) : "",
     displayOrder: item.display_order, isPublished: item.is_published,
   });
   const remove = async (item: SiteContent) => {
@@ -40,6 +50,7 @@ export default function ContentManager({ initial }: { initial: SiteContent[] }) 
         <input className={input} placeholder="Key unik" required value={form.key} onChange={(e) => setForm({ ...form, key: e.target.value })} />
         <input className={input} placeholder="Judul" required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
         <input className={input} placeholder="Nilai" value={form.value} onChange={(e) => setForm({ ...form, value: e.target.value })} />
+        <textarea className={`${input} sm:col-span-2`} rows={3} placeholder='Metadata JSON (opsional)' value={form.metadata} onChange={(e) => setForm({ ...form, metadata: e.target.value })} />
         <input className={input} type="number" min="0" placeholder="Urutan" value={form.displayOrder} onChange={(e) => setForm({ ...form, displayOrder: Number(e.target.value) })} />
       </div>
       <label className="mt-4 flex gap-2 text-sm"><input type="checkbox" checked={form.isPublished} onChange={(e) => setForm({ ...form, isPublished: e.target.checked })} /> Tampilkan di situs</label>

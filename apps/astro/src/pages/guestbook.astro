@@ -36,7 +36,21 @@ const formatDate = (iso: string) =>
           <p class="fade-in">Testimoni dan pesan dari mereka yang sudah bekerja sama atau berinteraksi dengan Daydev.</p>
         </div>
         <div class="space-y-6">
-          {entries.ok && entries.data.length === 0 && <p class="text-muted-foreground">Belum ada pesan yang dipublikasikan.</p>}
+          {!entries.ok && (
+            <div class="rounded-2xl border border-border bg-card px-6 py-10 text-center">
+              <MessageSquare className="mx-auto size-10 text-muted-foreground" aria-hidden="true" />
+              <p class="mt-4 font-medium">Pesan tamu belum dapat dimuat.</p>
+              <p class="mt-2 text-sm text-muted-foreground">Silakan coba lagi nanti.</p>
+            </div>
+          )}
+          {entries.ok && entries.data.length === 0 && (
+            <div class="rounded-2xl border border-border bg-card px-6 py-10 text-center">
+              <MessageSquare className="mx-auto size-10 text-accent-ink" aria-hidden="true" />
+              <p class="mt-4 font-medium">Belum ada pesan yang dipublikasikan.</p>
+              <p class="mt-2 text-sm text-muted-foreground">Jadilah orang pertama yang meninggalkan pesan untuk Daydev.</p>
+              <a href="#write" class="button-secondary mt-5 inline-flex">Tinggalkan pesan</a>
+            </div>
+          )}
           {entries.ok && entries.data.map((entry, index) => (
             <article class="rounded-2xl bg-card p-6 sm:p-8 border border-border fade-in" style={{ transitionDelay: `${index * 100}ms` }}>
               <div class="flex items-start gap-4">
@@ -83,16 +97,26 @@ const formatDate = (iso: string) =>
               </div>
             </div>
             <div>
-              <label for="guest-rating" class="block mb-2 font-medium">Rating</label>
-              <div class="flex gap-2" role="radiogroup" aria-label="Rating 1-5">
+              <span class="mb-2 block font-medium">Rating</span>
+              <div id="guest-rating" class="flex gap-1" role="radiogroup" aria-label="Rating 1-5">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <label class="flex-1 cursor-pointer">
-                    <input type="radio" name="rating" value={i + 1} class="sr-only" required />
-                    <div class="flex justify-center gap-1 p-3 rounded-xl border border-border hover:bg-muted transition-colors has-[:checked]:border-accent-ink has-[:checked]:bg-accent/10">
-                      {Array.from({ length: 5 }).map((_, j) => (
-                        <Star className={`size-5 ${j <= i ? "fill-current text-amber-500" : "text-muted-foreground"}`} aria-hidden="true" />
-                      ))}
-                    </div>
+                  <label
+                    data-rating={i + 1}
+                    class="group cursor-pointer rounded-lg p-2 transition-colors hover:bg-accent/10 focus-within:bg-accent/10"
+                    title={`${i + 1} dari 5`}
+                  >
+                    <input
+                      type="radio"
+                      name="rating"
+                      value={i + 1}
+                      class="peer sr-only"
+                      required
+                      aria-label={`${i + 1} dari 5`}
+                    />
+                    <Star
+                      className="guestbook-star size-7 text-muted-foreground transition-colors group-hover:fill-current group-hover:text-amber-500"
+                      aria-hidden="true"
+                    />
                   </label>
                 ))}
               </div>
@@ -137,6 +161,29 @@ const formatDate = (iso: string) =>
 
 <script>
   const form = document.getElementById("guestbook-form") as HTMLFormElement | null;
+  const ratingGroup = document.getElementById("guest-rating");
+  const ratingLabels = Array.from(ratingGroup?.querySelectorAll<HTMLElement>("[data-rating]") ?? []);
+  const updateStars = (rating: number) => {
+    ratingLabels.forEach((label) => {
+      const star = label.querySelector(".guestbook-star");
+      const active = Number(label.dataset.rating) <= rating;
+      star?.classList.toggle("fill-current", active);
+      star?.classList.toggle("text-amber-500", active);
+      star?.classList.toggle("text-muted-foreground", !active);
+    });
+  };
+
+  ratingLabels.forEach((label) => {
+    label.addEventListener("mouseenter", () => updateStars(Number(label.dataset.rating)));
+    label.addEventListener("mouseleave", () => {
+      const selected = form?.querySelector<HTMLInputElement>('input[name="rating"]:checked');
+      updateStars(selected ? Number(selected.value) : 0);
+    });
+    label.querySelector("input")?.addEventListener("change", (event) => {
+      updateStars(Number((event.currentTarget as HTMLInputElement).value));
+    });
+  });
+
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const name = (form.querySelector("#guest-name") as HTMLInputElement)?.value;

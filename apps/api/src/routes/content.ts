@@ -18,6 +18,28 @@ const guestbookBody = z.object({
   message: z.string().min(10).max(2000), rating: z.number().int().min(1).max(5),
 });
 
+const serializeContent = (row: typeof siteContent.$inferSelect) => ({
+  id: row.id,
+  kind: row.kind,
+  key: row.key,
+  title: row.title,
+  value: row.value,
+  metadata: row.metadata,
+  display_order: row.displayOrder,
+  is_published: row.isPublished,
+  updated_at: row.updatedAt.toISOString(),
+});
+
+const serializeGuestbook = (row: typeof guestbookEntries.$inferSelect) => ({
+  id: row.id,
+  name: row.name,
+  role: row.role,
+  message: row.message,
+  rating: row.rating,
+  submitted_at: row.submittedAt.toISOString(),
+  is_published: row.isPublished,
+});
+
 export const contentRoutes = (app: App): void => {
   app.openapi(createRoute({
     method: "get", path: "/content/{kind}", tags: ["content"],
@@ -28,19 +50,22 @@ export const contentRoutes = (app: App): void => {
     const rows = await db.select().from(siteContent)
       .where(and(kind === "all" ? eq(siteContent.isPublished, true) : eq(siteContent.kind, kind), eq(siteContent.isPublished, true)))
       .orderBy(asc(siteContent.displayOrder), asc(siteContent.title));
-    return c.json({ content: rows }, 200);
+    return c.json({ content: rows.map(serializeContent) }, 200);
   });
   app.openapi(createRoute({
     method: "get", path: "/admin/content", tags: ["content"],
     responses: responses(z.object({ content: z.array(raw) }), "Semua konten faktual."),
-  }), async (c) => c.json({ content: await db.select().from(siteContent).orderBy(asc(siteContent.kind), asc(siteContent.displayOrder)) }, 200));
+  }), async (c) => {
+    const rows = await db.select().from(siteContent).orderBy(asc(siteContent.kind), asc(siteContent.displayOrder));
+    return c.json({ content: rows.map(serializeContent) }, 200);
+  });
   app.openapi(createRoute({
     method: "post", path: "/admin/content", tags: ["content"],
     request: { body: { content: { "application/json": { schema: contentBody } } } },
     responses: responses(z.object({ content: raw }), "Konten dibuat."),
   }), async (c) => {
     const [row] = await db.insert(siteContent).values(c.req.valid("json")).returning();
-    return c.json({ content: row }, 200);
+    return c.json({ content: serializeContent(row) }, 200);
   });
   app.openapi(createRoute({
     method: "put", path: "/admin/content/{id}", tags: ["content"],
@@ -49,7 +74,7 @@ export const contentRoutes = (app: App): void => {
   }), async (c) => {
     const [row] = await db.update(siteContent).set({ ...c.req.valid("json"), updatedAt: new Date() }).where(eq(siteContent.id, c.req.valid("param").id)).returning();
     if (!row) return c.json({ error: "Konten tidak ditemukan." }, 404);
-    return c.json({ content: row }, 200);
+    return c.json({ content: serializeContent(row) }, 200);
   });
   app.openapi(createRoute({
     method: "delete", path: "/admin/content/{id}", tags: ["content"],
@@ -63,19 +88,37 @@ export const contentRoutes = (app: App): void => {
   app.openapi(createRoute({
     method: "get", path: "/guestbook", tags: ["guestbook"],
     responses: responses(z.object({ entries: z.array(raw) }), "Pesan buku tamu yang disetujui."),
-  }), async (c) => c.json({ entries: await db.select().from(guestbookEntries).where(eq(guestbookEntries.isPublished, true)).orderBy(asc(guestbookEntries.submittedAt)) }, 200));
+  }), async (c) => {
+    const rows = await db.select().from(guestbookEntries)
+      .where(eq(guestbookEntries.isPublished, true))
+      .orderBy(asc(guestbookEntries.submittedAt));
+    return c.json({
+      entries: rows.map((row) => ({
+        id: row.id,
+        name: row.name,
+        role: row.role,
+        message: row.message,
+        rating: row.rating,
+        submitted_at: row.submittedAt.toISOString(),
+        is_published: row.isPublished,
+      })),
+    }, 200);
+  });
   app.openapi(createRoute({
     method: "post", path: "/guestbook", tags: ["guestbook"],
     request: { body: { content: { "application/json": { schema: guestbookBody } } } },
     responses: responses(z.object({ entry: raw }), "Pesan dikirim untuk moderasi."),
   }), async (c) => {
     const [row] = await db.insert(guestbookEntries).values(c.req.valid("json")).returning();
-    return c.json({ entry: row }, 200);
+    return c.json({ entry: serializeGuestbook(row) }, 200);
   });
   app.openapi(createRoute({
     method: "get", path: "/admin/guestbook", tags: ["guestbook"],
     responses: responses(z.object({ entries: z.array(raw) }), "Semua pesan buku tamu."),
-  }), async (c) => c.json({ entries: await db.select().from(guestbookEntries).orderBy(asc(guestbookEntries.submittedAt)) }, 200));
+  }), async (c) => {
+    const rows = await db.select().from(guestbookEntries).orderBy(asc(guestbookEntries.submittedAt));
+    return c.json({ entries: rows.map(serializeGuestbook) }, 200);
+  });
   app.openapi(createRoute({
     method: "put", path: "/admin/guestbook/{id}", tags: ["guestbook"],
     request: { params: idParam, body: { content: { "application/json": { schema: guestbookBody.partial().extend({ isPublished: z.boolean().optional() }) } } } },
@@ -83,7 +126,7 @@ export const contentRoutes = (app: App): void => {
   }), async (c) => {
     const [row] = await db.update(guestbookEntries).set(c.req.valid("json")).where(eq(guestbookEntries.id, c.req.valid("param").id)).returning();
     if (!row) return c.json({ error: "Pesan tidak ditemukan." }, 404);
-    return c.json({ entry: row }, 200);
+    return c.json({ entry: serializeGuestbook(row) }, 200);
   });
   app.openapi(createRoute({
     method: "delete", path: "/admin/guestbook/{id}", tags: ["guestbook"],

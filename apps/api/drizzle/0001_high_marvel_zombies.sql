@@ -19,3 +19,5 @@ CREATE TABLE "site_content" (
 	"is_published" boolean DEFAULT false NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
+--> statement-breakpoint
+CREATE UNIQUE INDEX "site_content_kind_key_idx" ON "site_content" USING btree ("kind","key");

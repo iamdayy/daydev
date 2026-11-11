@@ -148,21 +148,13 @@ body::after {
 body::before {
   z-index: -1;
   background:
-    radial-gradient(
-      circle at 8% 8%,
-      rgb(249 115 22 / 14%),
-      transparent 30rem
-    ),
+    radial-gradient(circle at 8% 8%, rgb(249 115 22 / 14%), transparent 30rem),
     radial-gradient(
       circle at 92% 38%,
       rgb(251 146 60 / 11%),
       transparent 34rem
     ),
-    radial-gradient(
-      circle at 48% 100%,
-      rgb(234 88 12 / 8%),
-      transparent 30rem
-    );
+    radial-gradient(circle at 48% 100%, rgb(234 88 12 / 8%), transparent 30rem);
 }
 
 body::after {
@@ -170,11 +162,23 @@ body::after {
   opacity: 0.42;
   background-image:
     radial-gradient(circle at 12% 18%, var(--accent) 0 1.5px, transparent 2px),
-    radial-gradient(circle at 27% 74%, var(--accent-soft) 0 1px, transparent 1.75px),
+    radial-gradient(
+      circle at 27% 74%,
+      var(--accent-soft) 0 1px,
+      transparent 1.75px
+    ),
     radial-gradient(circle at 43% 31%, var(--accent) 0 1px, transparent 1.75px),
-    radial-gradient(circle at 61% 83%, var(--accent-soft) 0 1.5px, transparent 2px),
+    radial-gradient(
+      circle at 61% 83%,
+      var(--accent-soft) 0 1.5px,
+      transparent 2px
+    ),
     radial-gradient(circle at 78% 16%, var(--accent) 0 1px, transparent 1.75px),
-    radial-gradient(circle at 91% 68%, var(--accent-soft) 0 1.5px, transparent 2px),
+    radial-gradient(
+      circle at 91% 68%,
+      var(--accent-soft) 0 1.5px,
+      transparent 2px
+    ),
     linear-gradient(
       28deg,
       transparent 0 49.85%,
@@ -295,7 +299,9 @@ textarea::placeholder {
   overflow: hidden;
   border-radius: 1rem;
   background: color-mix(in srgb, var(--muted) 72%, transparent);
-  box-shadow: var(--shadow-soft), inset 0 1px 0 var(--glass-highlight);
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 0 var(--glass-highlight);
   backdrop-filter: blur(16px) saturate(108%);
   -webkit-backdrop-filter: blur(16px) saturate(108%);
 }
@@ -869,8 +875,11 @@ textarea::placeholder {
 
 .glass-surface {
   background: color-mix(in srgb, var(--frost) 78%, var(--accent) 4%);
-  border: 1px solid color-mix(in srgb, var(--frost-border) 72%, var(--accent) 10%);
-  box-shadow: var(--shadow-soft), inset 0 1px 0 var(--glass-highlight);
+  border: 1px solid
+    color-mix(in srgb, var(--frost-border) 72%, var(--accent) 10%);
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 0 var(--glass-highlight);
   backdrop-filter: blur(24px) saturate(115%);
   -webkit-backdrop-filter: blur(24px) saturate(115%);
 }
@@ -903,23 +912,33 @@ textarea::placeholder {
 }
 
 /* Shared treatment for semantic surfaces used by cards, sections, and panels. */
-:where(article, aside, details, [data-ui], [class*="rounded-"]):not(button):not(a):not(input):not(select):not(textarea).bg-card {
+:where(article, aside, details, [data-ui], [class*="rounded-"]):not(button):not(
+    a
+  ):not(input):not(select):not(textarea).bg-card {
   border: 1px solid color-mix(in srgb, var(--border) 72%, var(--accent) 10%);
   background: color-mix(in srgb, var(--card) 86%, var(--accent) 4%);
-  box-shadow: var(--shadow-soft), inset 0 1px 0 var(--glass-highlight);
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 0 var(--glass-highlight);
   backdrop-filter: blur(18px) saturate(112%);
   -webkit-backdrop-filter: blur(18px) saturate(112%);
 }
 
-:where(article, aside, details, [data-ui], [class*="rounded-"]):not(button):not(a):not(input):not(select):not(textarea).bg-secondary {
+:where(article, aside, details, [data-ui], [class*="rounded-"]):not(button):not(
+    a
+  ):not(input):not(select):not(textarea).bg-secondary {
   border-color: color-mix(in srgb, var(--border) 64%, var(--accent) 12%);
   background: color-mix(in srgb, var(--secondary) 84%, var(--accent) 5%);
-  box-shadow: var(--shadow-soft), inset 0 1px 0 var(--glass-highlight);
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 0 var(--glass-highlight);
   backdrop-filter: blur(18px) saturate(112%);
   -webkit-backdrop-filter: blur(18px) saturate(112%);
 }
 
-:where(article, aside, details, [data-ui], [class*="rounded-"]):not(button):not(a):not(input):not(select):not(textarea):where(
+:where(article, aside, details, [data-ui], [class*="rounded-"]):not(button):not(
+    a
+  ):not(input):not(select):not(textarea):where(
     [class~="bg-muted"],
     [class~="bg-muted/30"],
     [class~="bg-muted/50"],
@@ -927,7 +946,9 @@ textarea::placeholder {
   ) {
   border-color: color-mix(in srgb, var(--border) 64%, var(--accent) 9%);
   background: color-mix(in srgb, var(--muted) 86%, var(--accent) 3%);
-  box-shadow: var(--shadow-soft), inset 0 1px 0 var(--glass-highlight);
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 0 var(--glass-highlight);
   backdrop-filter: blur(18px) saturate(110%);
   -webkit-backdrop-filter: blur(18px) saturate(110%);
 }

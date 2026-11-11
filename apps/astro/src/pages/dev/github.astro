@@ -1,32 +1,76 @@
 ---
-import Base from "../../layouts/Base.astro";
+import {
+  Calendar,
+  Code2,
+  Flame,
+  GitCommit,
+  Github,
+  LayoutDashboard,
+  Star,
+  Zap,
+} from "lucide-react";
 import DataNotice from "../../components/DataNotice.astro";
-import { Github, Calendar, Flame, Star, Zap, Code2, LayoutDashboard, GitCommit } from "lucide-react";
+import Base from "../../layouts/Base.astro";
+import {
+  getEventDescription,
+  getEventType,
+  getGitHubData,
+  getStreaks,
+} from "../../lib/github";
 
 const currentYear = new Date().getFullYear();
+const github = await getGitHubData(currentYear).catch(() => null);
+const calendar = github?.calendar;
+const streaks = calendar ? getStreaks(calendar) : null;
+const contributionTotal =
+  calendar?.reduce((total, day) => total + day.contributionCount, 0) ?? null;
+const heatmapDays =
+  calendar?.map((day) => {
+    const date = new Date(`${day.date}T00:00:00Z`);
+    const dayOfYear = Math.floor(
+      (date.getTime() - Date.UTC(currentYear, 0, 1)) / 86_400_000,
+    );
+    const offset = new Date(Date.UTC(currentYear, 0, 1)).getUTCDay();
 
-const mockStats = {
-  contributions: "1,247",
-  repositories: 23,
-  starsGiven: 156,
-  streak: 14,
-  longestStreak: 42,
-};
-
-const recentActivity = [
-  { type: "push", repo: "daydev/astro-site", time: "2 jam lalu", desc: "Update hero section & navigation" },
-  { type: "issue", repo: "daydev/api", time: "5 jam lalu", desc: "Fix portfolio API filtering" },
-  { type: "pr", repo: "daydev/shared-types", time: "1 hari lalu", desc: "Add founder profile types" },
-  { type: "star", repo: "vercel/next.js", time: "2 hari lalu", desc: "Starred for reference" },
-  { type: "push", repo: "daydev/astro-site", time: "3 hari lalu", desc: "Implement consultation CTA" },
-];
-
-const topRepos = [
-  { name: "daydev/astro-site", stars: 12, description: "Website Daydev Studio - Astro 5 + React Islands", language: "TypeScript" },
-  { name: "daydev/api", stars: 8, description: "Hono API with Neon PostgreSQL", language: "TypeScript" },
-  { name: "daydev/shared-types", stars: 5, description: "Shared types between frontend & API", language: "TypeScript" },
-  { name: "daydev/portfolio-components", stars: 3, description: "Reusable portfolio components", language: "TypeScript" },
-];
+    return {
+      ...day,
+      column: Math.floor((dayOfYear + offset) / 7) + 1,
+      row: date.getUTCDay() + 1,
+    };
+  }) ?? [];
+const heatmapMonths = Array.from(
+  new Map(
+    heatmapDays.map((day) => [
+      new Date(`${day.date}T00:00:00Z`).getUTCMonth(),
+      {
+        label: new Intl.DateTimeFormat("id-ID", {
+          month: "short",
+          timeZone: "UTC",
+        }).format(new Date(`${day.date}T00:00:00Z`)),
+        column: day.column,
+      },
+    ]),
+  ).values(),
+);
+const recentActivity =
+  github?.events.slice(0, 5).map((event) => ({
+    type: getEventType(event),
+    repo: event.repo.name,
+    time: new Intl.RelativeTimeFormat("id", { numeric: "auto" }).format(
+      -Math.max(
+        1,
+        Math.round(
+          (Date.now() - new Date(event.created_at).getTime()) / 86_400_000,
+        ),
+      ),
+      "day",
+    ),
+    desc: getEventDescription(event),
+  })) ?? [];
+const topRepos =
+  github?.repositories
+    .sort((a, b) => b.stargazers_count - a.stargazers_count)
+    .slice(0, 5) ?? [];
 ---
 
 <Base
@@ -41,24 +85,58 @@ const topRepos = [
           <Github className="size-8 text-accent-ink" aria-hidden="true" />
           <h1 class="page-title">GitHub Activity.</h1>
         </div>
-        <p>Aktivitas pengembangan di GitHub: kontribusi, repositori, dan alur kerja. Data diambil dari repositori Daydev Studio.</p>
+        <p>
+          Aktivitas pengembangan di GitHub: kontribusi, repositori, dan alur
+          kerja. Data diambil dari repositori Daydev Studio.
+        </p>
       </div>
     </header>
 
     <section id="stats" class="section-space" aria-labelledby="stats-title">
       <div class="site-container">
-        <h2 id="stats-title" class="section-title mb-10 fade-in">Ringkasan tahun ini</h2>
+        <h2 id="stats-title" class="section-title mb-10 fade-in">
+          Ringkasan tahun ini
+        </h2>
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
           {[
-            { icon: Calendar, label: "Kontribusi", value: mockStats.contributions },
-            { icon: Flame, label: "Streak saat ini", value: `${mockStats.streak} hari` },
-            { icon: Star, label: "Longest streak", value: `${mockStats.longestStreak} hari` },
-            { icon: Code2, label: "Repositori", value: String(mockStats.repositories) },
-            { icon: Zap, label: "Stars given", value: String(mockStats.starsGiven) },
+            {
+              icon: Calendar,
+              label: `Kontribusi ${currentYear}`,
+              value:
+                contributionTotal === null
+                  ? "-"
+                  : contributionTotal.toLocaleString("id-ID"),
+            },
+            {
+              icon: Flame,
+              label: "Streak saat ini",
+              value: streaks ? `${streaks.current} hari` : "-",
+            },
+            {
+              icon: Star,
+              label: "Longest streak",
+              value: streaks ? `${streaks.longest} hari` : "-",
+            },
+            {
+              icon: Code2,
+              label: "Repositori",
+              value: github ? String(github.repositories.length) : "-",
+            },
+            {
+              icon: Zap,
+              label: "Aktivitas publik",
+              value: github ? String(github.events.length) : "-",
+            },
           ].map((stat) => (
             <div class="rounded-2xl bg-card p-6 border border-border fade-in text-center">
-              <stat.icon className="size-8 mx-auto text-accent-ink" strokeWidth={1.75} aria-hidden="true" />
-              <p class="mt-4 text-3xl font-bold tracking-tight tabular-nums">{stat.value}</p>
+              <stat.icon
+                className="size-8 mx-auto text-accent-ink"
+                strokeWidth={1.75}
+                aria-hidden="true"
+              />
+              <p class="mt-4 text-3xl font-bold tracking-tight tabular-nums">
+                {stat.value}
+              </p>
               <p class="mt-1 text-sm text-muted-foreground">{stat.label}</p>
             </div>
           ))}
@@ -66,19 +144,87 @@ const topRepos = [
       </div>
     </section>
 
-    <section id="heatmap" class="section-space bg-muted" aria-labelledby="heatmap-title">
+    <section
+      id="heatmap"
+      class="section-space bg-muted"
+      aria-labelledby="heatmap-title"
+    >
       <div class="site-container">
-        <h2 id="heatmap-title" class="section-title mb-10 fade-in">Heatmap kontribusi</h2>
-        <div class="rounded-2xl bg-card p-6 border border-border fade-in">
-          <DataNotice
-            title="Heatmap GitHub belum tersedia"
-            message="Integrasi GitHub API memerlukan token akses. Fitur ini akan menampilkan heatmap kontribusi tahunan mirip profil GitHub saat dikonfigurasi."
-            retryHref="/dev/github"
-          />
+        <h2 id="heatmap-title" class="section-title mb-10 fade-in">
+          Heatmap kontribusi
+        </h2>
+        <div
+          class="rounded-2xl bg-card p-6 border border-border fade-in"
+          style="width: fit-content; overflow-x: auto; self-align: center; margin-inline: auto;"
+        >
+          {calendar && heatmapDays.length > 0 ? (
+            <div class="heatmap-scroll">
+              <div class="heatmap">
+                <div class="heatmap-months" aria-hidden="true">
+                  {heatmapMonths.map((month) => (
+                    <span style={`grid-column: ${month.column + 1} / span 4`}>
+                      {month.label}
+                    </span>
+                  ))}
+                </div>
+                <div class="heatmap-body">
+                  <div class="heatmap-weekdays" aria-hidden="true">
+                    <span></span>
+                    <span>Sen</span>
+                    <span></span>
+                    <span>Rab</span>
+                    <span></span>
+                    <span>Jum</span>
+                    <span></span>
+                  </div>
+                  <div class="heatmap-grid">
+                    {heatmapDays.map((day) => (
+                      <span
+                        title={`${day.date}: ${day.contributionCount} kontribusi`}
+                        aria-label={`${day.date}: ${day.contributionCount} kontribusi`}
+                        class="heatmap-day"
+                        style={`grid-column: ${day.column}; grid-row: ${day.row}; background-color: ${day.contributionCount === 0 ? "var(--heatmap-empty)" : day.color}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div class="heatmap-footer">
+                  <span>
+                    {contributionTotal?.toLocaleString("id-ID")} kontribusi
+                    dalam {currentYear}
+                  </span>
+                  <span
+                    class="heatmap-legend"
+                    aria-label="Lebih sedikit ke lebih banyak kontribusi"
+                  >
+                    <span>Lebih sedikit</span>
+                    <i style="background: var(--heatmap-empty)"></i>
+                    <i style="background: #9be9a8"></i>
+                    <i style="background: #40c463"></i>
+                    <i style="background: #216e39"></i>
+                    <span>Lebih banyak</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <DataNotice
+              title="Heatmap GitHub belum tersedia"
+              message="Tambahkan GITHUB_TOKEN di environment server untuk mengaktifkan data kontribusi GraphQL."
+              retryHref="/dev/github"
+            />
+          )}
         </div>
         <p class="mt-6 text-center text-sm text-muted-foreground">
           <Github className="inline size-4 align-middle" aria-hidden="true" />
-          <a href="https://github.com/iamdayy" target="_blank" rel="noopener noreferrer" class="text-link ml-2">Lihat profil GitHub penuh</a>
+          <a
+            href="https://github.com/iamdayy"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-link ml-2"
+          >
+            Lihat profil GitHub penuh
+          </a>
         </p>
       </div>
     </section>
@@ -86,52 +232,110 @@ const topRepos = [
     <section id="recent" class="section-space" aria-labelledby="recent-title">
       <div class="site-container">
         <div class="section-heading">
-          <h2 id="recent-title" class="section-title fade-in">Aktivitas terbaru</h2>
-          <p class="fade-in">Komit, PR, issue, dan aktivitas lain dari repositori Daydev.</p>
+          <h2 id="recent-title" class="section-title fade-in">
+            Aktivitas terbaru
+          </h2>
+          <p class="fade-in">
+            Komit, PR, issue, dan aktivitas lain dari repositori Daydev.
+          </p>
         </div>
         <div class="rounded-2xl bg-card border border-border overflow-hidden fade-in">
-          <ul class="divide-y divide-border" role="list">
-            {recentActivity.map((activity, index) => (
-              <li class="flex items-center gap-4 p-5 hover:bg-muted/50 transition-colors">
-                <div class={`flex size-10 items-center justify-center rounded-xl shrink-0 ${
-                  activity.type === "push" ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400" :
-                  activity.type === "pr" ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" :
-                  activity.type === "issue" ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400" :
-                  "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                }`}>
-                  {activity.type === "push" && <Code2 className="size-5" aria-hidden="true" />}
-                  {activity.type === "pr" && <GitCommit className="size-5" aria-hidden="true" />}
-                  {activity.type === "issue" && <LayoutDashboard className="size-5" aria-hidden="true" />}
-                  {activity.type === "star" && <Star className="size-5" aria-hidden="true" />}
-                </div>
-                <div class="min-w-0 flex-1">
-                  <p class="font-medium truncate">{activity.repo}</p>
-                  <p class="text-sm text-muted-foreground truncate">{activity.desc}</p>
-                </div>
-                <time class="shrink-0 text-sm text-muted-foreground">{activity.time}</time>
-              </li>
-            ))}
-          </ul>
+          {recentActivity.length > 0 ? (
+            <ul class="divide-y divide-border" role="list">
+              {recentActivity.map((activity) => (
+                <li class="flex items-center gap-4 p-5 hover:bg-muted/50 transition-colors">
+                  <div
+                    class={`flex size-10 items-center justify-center rounded-xl shrink-0 ${
+                      activity.type === "push"
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                        : activity.type === "pr"
+                          ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                          : activity.type === "issue"
+                            ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                            : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                    }`}
+                  >
+                    {activity.type === "push" && (
+                      <Code2 className="size-5" aria-hidden="true" />
+                    )}
+                    {activity.type === "pr" && (
+                      <GitCommit className="size-5" aria-hidden="true" />
+                    )}
+                    {activity.type === "issue" && (
+                      <LayoutDashboard className="size-5" aria-hidden="true" />
+                    )}
+                    {activity.type === "other" && (
+                      <Star className="size-5" aria-hidden="true" />
+                    )}
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <p class="font-medium truncate">{activity.repo}</p>
+                    <p class="text-sm text-muted-foreground truncate">
+                      {activity.desc}
+                    </p>
+                  </div>
+                  <time class="shrink-0 text-sm text-muted-foreground">
+                    {activity.time}
+                  </time>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <DataNotice
+              title="Aktivitas GitHub belum tersedia"
+              message="GitHub tidak mengembalikan aktivitas publik untuk akun ini."
+              retryHref="/dev/github"
+            />
+          )}
           <div class="p-5 border-t border-border">
-            <a href="https://github.com/iamdayy" target="_blank" rel="noopener noreferrer" class="text-link">Lihat aktivitas lengkap di GitHub</a>
+            <a
+              href="https://github.com/iamdayy"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-link"
+            >
+              Lihat aktivitas lengkap di GitHub
+            </a>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="repos" class="section-space bg-muted" aria-labelledby="repos-title">
+    <section
+      id="repos"
+      class="section-space bg-muted"
+      aria-labelledby="repos-title"
+    >
       <div class="site-container">
-        <h2 id="repos-title" class="section-title mb-10 fade-in">Repositori utama</h2>
+        <h2 id="repos-title" class="section-title mb-10 fade-in">
+          Repositori utama
+        </h2>
         <div class="grid gap-6">
           {topRepos.map((repo) => (
-            <a href={`https://github.com/${repo.name}`} target="_blank" rel="noopener noreferrer" class="group block rounded-2xl bg-card p-6 border border-border hover:-translate-y-1 hover:shadow-lg transition-all fade-in">
+            <a
+              href={repo.html_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group block rounded-2xl bg-card p-6 border border-border hover:-translate-y-1 hover:shadow-lg transition-all fade-in"
+            >
               <div class="flex items-start justify-between gap-4">
                 <div class="min-w-0">
-                  <p class="font-mono text-sm text-accent-ink">{repo.name}</p>
-                  <p class="mt-2 text-sm leading-6 text-muted-foreground">{repo.description}</p>
+                  <p class="font-mono text-sm text-accent-ink">
+                    {repo.full_name}
+                  </p>
+                  <p class="mt-2 text-sm leading-6 text-muted-foreground">
+                    {repo.description || "Tidak ada deskripsi."}
+                  </p>
                   <div class="mt-3 flex items-center gap-3 text-sm text-muted-foreground">
-                    <span class="flex items-center gap-1"><Star className="size-4" aria-hidden="true" />{repo.stars}</span>
-                    <span class="px-2 py-0.5 rounded bg-muted">{repo.language}</span>
+                    <span class="flex items-center gap-1">
+                      <Star className="size-4" aria-hidden="true" />
+                      {repo.stargazers_count}
+                    </span>
+                    {repo.language && (
+                      <span class="px-2 py-0.5 rounded bg-muted">
+                        {repo.language}
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div class="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -145,3 +349,106 @@ const topRepos = [
     </section>
   </main>
 </Base>
+
+<style>
+  .heatmap-scroll {
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+
+  .heatmap {
+    --heatmap-cell: 0.78rem;
+    --heatmap-gap: 0.28rem;
+    --heatmap-label: 2rem;
+    min-width: calc(
+      var(--heatmap-label) + (53 * var(--heatmap-cell)) +
+        (52 * var(--heatmap-gap))
+    );
+  }
+
+  .heatmap-months {
+    display: grid;
+    grid-template-columns: var(--heatmap-label) repeat(53, var(--heatmap-cell));
+    column-gap: var(--heatmap-gap);
+    min-height: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--muted-foreground);
+    font-size: 0.7rem;
+  }
+
+  .heatmap-months span {
+    white-space: nowrap;
+  }
+
+  .heatmap-body {
+    display: flex;
+    gap: var(--heatmap-gap);
+  }
+
+  .heatmap-weekdays {
+    display: grid;
+    grid-template-rows: repeat(7, var(--heatmap-cell));
+    row-gap: var(--heatmap-gap);
+    width: var(--heatmap-label);
+    flex: none;
+    color: var(--muted-foreground);
+    font-size: 0.65rem;
+    line-height: var(--heatmap-cell);
+    text-align: right;
+  }
+
+  .heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(53, var(--heatmap-cell));
+    grid-template-rows: repeat(7, var(--heatmap-cell));
+    column-gap: var(--heatmap-gap);
+    row-gap: var(--heatmap-gap);
+  }
+
+  .heatmap-day {
+    display: block;
+    width: var(--heatmap-cell);
+    height: var(--heatmap-cell);
+    border-radius: 0.2rem;
+  }
+
+  .heatmap-day:hover {
+    outline: 2px solid var(--foreground);
+    outline-offset: 1px;
+  }
+
+  .heatmap-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+
+  .heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    white-space: nowrap;
+  }
+
+  .heatmap-legend i {
+    display: block;
+    width: var(--heatmap-cell);
+    height: var(--heatmap-cell);
+    border-radius: 0.2rem;
+  }
+
+  @media (max-width: 640px) {
+    .heatmap {
+      --heatmap-cell: 0.68rem;
+      --heatmap-gap: 0.2rem;
+    }
+
+    .heatmap-footer {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>
